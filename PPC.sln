@@ -1,0 +1,24 @@
+﻿
+Microsoft Visual Studio Solution File, Format Version 12.00
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "PPCiOS", "PPCiOS\PPCiOS.csproj", "{2615A1D8-2B0B-4F75-9D91-B1C8D80739AC}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "PPCAndroid", "PPCAndroid\PPCAndroid.csproj", "{4957FE76-2FE8-436B-8F39-EE93E7D21D95}"
+EndProject
+Project("{D954291E-2A0B-460D-934E-DC6B0785DB48}") = "Shared", "Shared\Shared.shproj", "{A899C0F1-6ADD-4CCD-8A93-808CE8767078}"
+EndProject
+Global
+	GlobalSection(SolutionConfigurationPlatforms) = preSolution
+		Debug|Any CPU = Debug|Any CPU
+		Release|Any CPU = Release|Any CPU
+	EndGlobalSection
+	GlobalSection(ProjectConfigurationPlatforms) = postSolution
+		{2615A1D8-2B0B-4F75-9D91-B1C8D80739AC}.Debug|Any CPU.ActiveCfg = Debug|iPhoneSimulator
+		{2615A1D8-2B0B-4F75-9D91-B1C8D80739AC}.Debug|Any CPU.Build.0 = Debug|iPhoneSimulator
+		{2615A1D8-2B0B-4F75-9D91-B1C8D80739AC}.Release|Any CPU.ActiveCfg = Release|iPhoneSimulator
+		{2615A1D8-2B0B-4F75-9D91-B1C8D80739AC}.Release|Any CPU.Build.0 = Release|iPhoneSimulator
+		{4957FE76-2FE8-436B-8F39-EE93E7D21D95}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{4957FE76-2FE8-436B-8F39-EE93E7D21D95}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{4957FE76-2FE8-436B-8F39-EE93E7D21D95}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{4957FE76-2FE8-436B-8F39-EE93E7D21D95}.Release|Any CPU.Build.0 = Release|Any CPU
+	EndGlobalSection
+EndGlobal
