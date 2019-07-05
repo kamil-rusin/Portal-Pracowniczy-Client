@@ -1,0 +1,19 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<resources>
+    <!-- Inherit from the light Material Theme -->
+    <!--<style name="MyCustomTheme" parent="android:Theme.Material.Light">-->
+    <style name="MyCustomTheme" parent="@style/Theme.AppCompat.Light">
+       
+        <!-- Override the app bar color -->
+        <item name="android:windowActionBar">@color/light_green</item>
+        <!-- Override the color of UI controls -->
+        <item name="android:colorAccent">@color/dark_green</item>
+        <item name="android:textColorPrimary">@color/white</item>
+        <item name="android:windowBackground">@color/gray</item>
+        <item name="android:navigationBarColor">@color/dark_green</item>
+        <item name="android:colorPrimaryDark">@color/dark_green</item>
+       
+    </style>
+</resources>
+
+   

@@ -83,10 +83,15 @@
             <SubType>Designer</SubType>
         </AndroidResource>
         <AndroidResource Include="Resources\menu\bottom_navigation_main.axml" />
-        <AndroidResource Include="Resources\values\colors.xml" />
+        <AndroidResource Include="Resources\values-v21\styles.xml" />
+        <AndroidResource Include="Resources\values\colors_old.xml" />
         <AndroidResource Include="Resources\values\ic_launcher_background.xml" />
+        <AndroidResource Include="Resources\values\Rekord-Theme.xml">
+          <SubType>Designer</SubType>
+          <Generator></Generator>
+        </AndroidResource>
         <AndroidResource Include="Resources\values\strings.xml" />
-        <AndroidResource Include="Resources\values\styles.xml" />
+        <AndroidResource Include="Resources\values\styles_old.xml" />
     </ItemGroup>
     <ItemGroup>
         <PackageReference Include="ReactiveUI" Version="9.18.2" />
