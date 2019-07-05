@@ -4,6 +4,8 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent">
+
+   
     
     <android.support.design.widget.BottomNavigationView
         android:id="@+id/bottom_navigation"
@@ -14,6 +16,7 @@
         app:itemIconTint="@drawable/nav_item_color_state"
         app:itemTextColor="@drawable/nav_item_color_state"
         app:menu="@menu/bottom_navigation_main"
-    />
+        
+    /> 
     
 </RelativeLayout>

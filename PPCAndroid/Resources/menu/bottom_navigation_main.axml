@@ -1,15 +1,14 @@
 <?xml version="1.0" encoding="utf-8"?>
 <menu xmlns:android="http://schemas.android.com/apk/res/android"
-      xmlns:app="http://schemas.android.com/apk/res-auto"
-      >
-    
+      xmlns:app="http://schemas.android.com/apk/res-auto">
+
     <!--TODO:zmienić event showAsAction-->
     <item
-        android:id="@+id/action_showpersonaldata"
-        android:enabled="true"
-        android:icon="@drawable/personaldata"
-        android:title="Personalia"
-        app:showAsAction="ifRoom"/>
+            android:id="@+id/action_showpersonaldata"
+            android:enabled="true"
+            android:icon="@drawable/personaldata"
+            android:title="Personalia"
+            app:showAsAction="ifRoom"/>
 
     <item
             android:id="@+id/action_backtodashboard"
@@ -24,5 +23,5 @@
             android:icon="@drawable/logout"
             android:title="Wyloguj"
             app:showAsAction="ifRoom"/>
-    
+
 </menu>
