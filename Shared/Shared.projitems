@@ -10,6 +10,8 @@
   </PropertyGroup>
   <ItemGroup>
     <Compile Include="$(MSBuildThisFileDirectory)Model\ClickerModel.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)Model\LoginModel.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)ViewModels\ClickerViewModel.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)ViewModels\LoginViewModel.cs" />
   </ItemGroup>
 </Project>

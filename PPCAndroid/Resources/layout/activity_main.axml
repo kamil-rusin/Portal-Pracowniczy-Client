@@ -17,6 +17,34 @@
         app:itemTextColor="@drawable/nav_item_color_state"
         app:menu="@menu/bottom_navigation_main"
         
-    /> 
-    
+    />
+    <Button
+            android:layout_width="97dp"
+            android:layout_height="wrap_content"
+            android:id="@+id/loginButton"
+            android:textAppearance="@android:style/TextAppearance.DeviceDefault"
+            tools:text="@string/app_name" android:text="My text" android:layout_centerHorizontal="true"
+            android:layout_alignParentBottom="true" android:layout_marginBottom="210dp"
+            android:textColor="@color/white" style="@style/AppTheme"/>
+    <EditText
+            android:layout_width="199dp"
+            android:layout_height="41dp"
+            android:inputType="textPassword"
+            android:ems="10"
+            android:id="@+id/passwordEditText"
+            android:layout_centerHorizontal="true"
+            android:textAppearance="@android:style/TextAppearance.DeviceDefault"
+            android:textColor="?android:attr/colorAccent" android:layout_alignParentBottom="true"
+            android:layout_marginBottom="273dp"/>
+    <EditText
+            android:layout_width="205dp"
+            android:layout_height="37dp"
+            android:inputType="textPersonName"
+            android:text="Name"
+            android:ems="10"
+            android:layout_alignParentTop="true" android:layout_marginTop="246dp" android:id="@+id/usernameEditText"
+            android:layout_centerHorizontal="true"
+            android:textAppearance="@android:style/TextAppearance.DeviceDefault"
+            android:textColor="?android:attr/colorAccent"/>
+
 </RelativeLayout>

@@ -10,24 +10,33 @@ using Shared.ViewModels;
 namespace PPCAndroid
 {
     [Activity(Label = "@string/app_name", Theme = "@style/Theme.AppCompat.Light.NoActionBar", MainLauncher = true)]
-    public class MainActivity : ReactiveActivity<ClickerViewModel>
+    public class MainActivity : ReactiveActivity<LoginViewModel>
     {
-        private Button ClickerButton;
-        
+        private Button LogInButton;
+        private EditText UsernameEditText;
+        private EditText PasswordEditText;
+
         protected override void OnCreate(Bundle savedInstanceState)
         {
-            ViewModel = new ClickerViewModel(new ClickerModel());
+            ViewModel = new LoginViewModel(new LoginModel());
             base.OnCreate(savedInstanceState);
             SetContentView(Resource.Layout.activity_main);
 
-            ClickerButton = FindViewById<Button>(Resource.Id.clickerButton);
+            LogInButton = FindViewById<Button>(Resource.Id.loginButton);
+            UsernameEditText = FindViewById<EditText>(Resource.Id.usernameEditText);
+            PasswordEditText = FindViewById<EditText>(Resource.Id.passwordEditText);
 
-            ClickerButton.Text = "click me!";
+            LogInButton.Text = "click me!";
             //tu bindujemy dane
-            this.OneWayBind(ViewModel, x => x.ClickedResult, a => a.ClickerButton.Text);
+            this.Bind(ViewModel, x => x.Username, a => a.UsernameEditText.Text);
+            this.Bind(ViewModel, x => x.Password, a => a.PasswordEditText.Text);
             //tu bindujemy eventy
-            this.BindCommand(ViewModel, x => x.IncrementClickerCommand, v => v.ClickerButton);
+            this.BindCommand(ViewModel, x => x.CheckCommand, v => v.LogInButton);
 
+            LogInButton.Click += (s, e) =>
+            {
+                Toast.MakeText(this, "Login " + ViewModel.CheckResult.ToString(), ToastLength.Short).Show();
+            };
 
             /*var bottomNavigation = FindViewById<BottomNavigationView>(Resource.Id.bottom_navigation);
             bottomNavigation.NavigationItemSelected += (s, e) =>
