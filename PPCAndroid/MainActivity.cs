@@ -3,20 +3,33 @@ using Android.OS;
 using Android.Support.V7.App;
 using Android.Support.Design.Widget;
 using Android.Widget;
+using Model;
+using ReactiveUI;
+using Shared.ViewModels;
 
 namespace PPCAndroid
 {
     [Activity(Label = "@string/app_name", Theme = "@style/Theme.AppCompat.Light.NoActionBar", MainLauncher = true)]
-    public class MainActivity : AppCompatActivity
+    public class MainActivity : ReactiveActivity<ClickerViewModel>
     {
+        private Button ClickerButton;
+        
         protected override void OnCreate(Bundle savedInstanceState)
         {
-            
-            base.OnCreate(savedInstanceState); 
-            // Set our view from the "main" layout resource
+            ViewModel = new ClickerViewModel(new ClickerModel());
+            base.OnCreate(savedInstanceState);
             SetContentView(Resource.Layout.activity_main);
 
-            var bottomNavigation = FindViewById<BottomNavigationView>(Resource.Id.bottom_navigation);
+            ClickerButton = FindViewById<Button>(Resource.Id.clickerButton);
+
+            ClickerButton.Text = "click me!";
+            //tu bindujemy dane
+            this.OneWayBind(ViewModel, x => x.ClickedResult, a => a.ClickerButton.Text);
+            //tu bindujemy eventy
+            this.BindCommand(ViewModel, x => x.IncrementClickerCommand, v => v.ClickerButton);
+
+
+            /*var bottomNavigation = FindViewById<BottomNavigationView>(Resource.Id.bottom_navigation);
             bottomNavigation.NavigationItemSelected += (s, e) =>
             {
                 switch (e.Item.ItemId)
@@ -31,7 +44,7 @@ namespace PPCAndroid
                         Toast.MakeText(this, "Action Logout clicked", ToastLength.Short).Show();
                         break;
                 }
-            };
+            };*/
         } 
     }
 }

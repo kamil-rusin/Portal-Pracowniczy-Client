@@ -61,11 +61,6 @@
         <Compile Include="MainActivity.cs" />
         <Compile Include="Resources\Resource.Designer.cs" />
         <Compile Include="Properties\AssemblyInfo.cs" />
-        <Compile Include="Model\Todo.cs" />
-        <Compile Include="Services\ILogin.cs" />
-        <Compile Include="ViewModels\ItemsViewModel.cs" />
-        <Compile Include="ViewModels\LoginViewModel.cs" />
-        <Compile Include="ViewModels\ViewModelBase.cs" />
     </ItemGroup>
     <ItemGroup>
         <None Include="Resources\AboutResources.txt" />
@@ -97,6 +92,7 @@
         <PackageReference Include="ReactiveUI" Version="9.18.2" />
         <PackageReference Include="ReactiveUI.AndroidSupport" Version="9.18.2" />
         <PackageReference Include="ReactiveUI.Events" Version="9.18.2" />
+        <PackageReference Include="Xamarin.Android.Support.Annotations" Version="27.0.2.1" />
         <PackageReference Include="Xamarin.Android.Support.Compat" Version="27.0.2.1" />
         <PackageReference Include="Xamarin.Android.Support.Design" Version="27.0.2.1" />
     </ItemGroup>
@@ -104,6 +100,7 @@
       <Content Include="README.md" />
     </ItemGroup>
     <Import Project="$(MSBuildExtensionsPath)\Xamarin\Android\Xamarin.Android.CSharp.targets" />
+    <Import Project="..\Shared\Shared.projitems" Label="Shared" />
     <!-- To modify your build process, add your task inside one of the targets below and uncomment it.
       Other similar extension points exist, see Microsoft.Common.targets.
       <Target Name="BeforeBuild">
