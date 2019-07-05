@@ -9,9 +9,12 @@
     <Import_RootNamespace>Shared</Import_RootNamespace>
   </PropertyGroup>
   <ItemGroup>
-    <Compile Include="$(MSBuildThisFileDirectory)Model\ClickerModel.cs" />
-    <Compile Include="$(MSBuildThisFileDirectory)Model\LoginModel.cs" />
-    <Compile Include="$(MSBuildThisFileDirectory)ViewModels\ClickerViewModel.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)View\ContentPageBase.cs" />
+    <Folder Include="$(MSBuildThisFileDirectory)Model" />
+    <Compile Include="$(MSBuildThisFileDirectory)Service\ILogin.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)Service\LoginService.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)ViewModels\DashboardViewModel.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)ViewModels\LoginViewModel.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)ViewModels\ViewModelBase.cs" />
   </ItemGroup>
 </Project>

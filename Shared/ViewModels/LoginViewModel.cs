@@ -1,46 +1,66 @@
 using System.Reactive;
 using System.Reactive.Linq;
-using Model;
+using PPCAndroid.Shared.Service;
 using ReactiveUI;
 
 namespace Shared.ViewModels
 {
-    public class LoginViewModel : ReactiveObject
+    public class LoginViewModel : ViewModelBase
     {
-        private readonly LoginModel _loginModel;
+        private ILogin _loginService;
         
-        public string Username
+        private string _userName;
+        public string UserName
         {
-            get => _loginModel.Username;
-            set => _loginModel.Username = value;
+            get => _userName;
+            //notify when property user name changes
+            set => this.RaiseAndSetIfChanged(ref _userName, value);
         }
 
+
+        private string _password;
         public string Password
         {
-            get => _loginModel.Password;
-            set => _loginModel.Password = value;
+            get => _password;
+            set => this.RaiseAndSetIfChanged(ref _password, value);
         }
 
-        public LoginViewModel(LoginModel loginModel)
+        ObservableAsPropertyHelper<bool> _validLogin;
+        public bool ValidLogin
         {
-            _loginModel = loginModel;
-            CheckCommand = ReactiveCommand.Create(CheckData);
-
-            _checkResult = CheckCommand
-                .ToProperty(this, x => x.CheckResult);
+            get { return _validLogin?.Value ?? false; }
         }
-
-        //??? co to robi
-        private readonly ObservableAsPropertyHelper<bool> _checkResult;
-
-        public bool CheckResult => _checkResult.Value;
+ 
+        public ReactiveCommand<Unit,Unit> LoginCommand { get; private set; }
         
-        public ReactiveCommand<Unit, bool> CheckCommand { get; }
-        
-        
-        private bool CheckData()
+        //wycialem hostscreen z argumentow
+        public LoginViewModel(ILogin login) : base()
         {
-            return _loginModel.CheckData();
+            _loginService = login;
+
+            this.WhenAnyValue(x => x.UserName, x => x.Password,
+                    (username, password) =>
+                        (
+                            //Validate the password
+                            !string.IsNullOrEmpty(password) && password.Length > 5
+                        )
+                        &&
+                        (
+                            //Validate the username
+                            !string.IsNullOrEmpty(username)
+                        ))
+                .ToProperty(this, v => v.ValidLogin, out _validLogin);
+
+            LoginCommand = ReactiveCommand.CreateFromTask(async () =>
+            {
+
+                var lg = await login.Login(_userName, _password);
+                if (lg)
+                {
+                    //TODO: przejście na inny ekran
+                }
+            }, this.WhenAnyValue(x => x.ValidLogin, x => x.ValidLogin, (validLogin, valid) => ValidLogin && valid));
+
         }
     }
 }

@@ -3,7 +3,7 @@ using Android.OS;
 using Android.Support.V7.App;
 using Android.Support.Design.Widget;
 using Android.Widget;
-using Model;
+using PPCAndroid.Shared.Service;
 using ReactiveUI;
 using Shared.ViewModels;
 
@@ -18,7 +18,7 @@ namespace PPCAndroid
 
         protected override void OnCreate(Bundle savedInstanceState)
         {
-            ViewModel = new LoginViewModel(new LoginModel());
+            ViewModel = new LoginViewModel(new LoginService());
             base.OnCreate(savedInstanceState);
             SetContentView(Resource.Layout.activity_main);
 
@@ -26,16 +26,12 @@ namespace PPCAndroid
             UsernameEditText = FindViewById<EditText>(Resource.Id.usernameEditText);
             PasswordEditText = FindViewById<EditText>(Resource.Id.passwordEditText);
 
-            LogInButton.Text = "click me!";
-            //tu bindujemy dane
-            this.Bind(ViewModel, x => x.Username, a => a.UsernameEditText.Text);
-            this.Bind(ViewModel, x => x.Password, a => a.PasswordEditText.Text);
-            //tu bindujemy eventy
-            this.BindCommand(ViewModel, x => x.CheckCommand, v => v.LogInButton);
+            
+            this.BindCommand(ViewModel, x => x.LoginCommand, v => v.LogInButton);
 
             LogInButton.Click += (s, e) =>
             {
-                Toast.MakeText(this, "Login " + ViewModel.CheckResult.ToString(), ToastLength.Short).Show();
+                Toast.MakeText(this, "Login " + ViewModel.ValidLogin.ToString(), ToastLength.Short).Show();
             };
 
             /*var bottomNavigation = FindViewById<BottomNavigationView>(Resource.Id.bottom_navigation);
