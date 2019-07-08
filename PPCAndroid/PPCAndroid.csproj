@@ -59,6 +59,7 @@
     </ItemGroup>
     <ItemGroup>
         <Compile Include="BaseActivity.cs" />
+        <Compile Include="DashboardActivity.cs" />
         <Compile Include="MainActivity.cs" />
         <Compile Include="Resources\Resource.Designer.cs" />
         <Compile Include="Properties\AssemblyInfo.cs" />
@@ -80,6 +81,10 @@
         <AndroidResource Include="Resources\drawable\nav_item_color_state.xml" />
         <AndroidResource Include="Resources\drawable\personaldata.png" />
         <AndroidResource Include="Resources\drawable\replacement.png" />
+        <AndroidResource Include="Resources\layout\activity_dashboard.axml">
+          <SubType>Designer</SubType>
+          <Generator>MSBuild:UpdateGeneratedFiles</Generator>
+        </AndroidResource>
         <AndroidResource Include="Resources\layout\activity_main.axml">
             <SubType>Designer</SubType>
         </AndroidResource>
