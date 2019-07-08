@@ -8,6 +8,7 @@ using Android.Widget;
 using PPCAndroid.Shared.Service;
 using ReactiveUI;
 using Shared.ViewModels;
+using AlertDialog = Android.App.AlertDialog;
 
 namespace PPCAndroid
 {
@@ -22,7 +23,7 @@ namespace PPCAndroid
         protected override void OnCreate(Bundle savedInstanceState)
         {
             OnCreateBase(savedInstanceState);
-
+            
             /*var bottomNavigation = FindViewById<BottomNavigationView>(Resource.Id.bottom_navigation);
             bottomNavigation.NavigationItemSelected += (s, e) =>
             {
@@ -50,11 +51,29 @@ namespace PPCAndroid
         {
             this.Bind(ViewModel, x => x.UserName, a => a._usernameEditText.Text).DisposeWith(disposables);
             this.Bind(ViewModel, x => x.Password, a => a._passwordEditText.Text).DisposeWith(disposables);
+            
         }
 
         protected override void RegisterViewModel()
         {
             ViewModel = new LoginViewModel(new LoginService());
+        }
+
+        protected override void RegisterInteractions()
+        {
+            this.WhenActivated(d => { d(ViewModel.Confirm.RegisterHandler(async interaction =>
+            {
+                var confirmation = false; 
+                var builder = new AlertDialog.Builder(this);
+                var alert = builder.Create();
+                alert.SetTitle("Potwierdzenie");
+                alert.SetMessage("Na pewno chcesz się zalogować?");
+                alert.SetButton("Tak", (sender, args) => confirmation = true);
+                alert.SetButton2("Nie", (sender, args) => confirmation = false);
+                alert.Show();
+                
+                interaction.SetOutput(confirmation);
+            })); });
         }
 
         protected override void RegisterView()

@@ -12,9 +12,9 @@ namespace PPCAndroid.Shared.Service
         {
             _userCredentials = new Dictionary<string, string>
             {
-                {"admin", "admin"}, 
-                {"mietek", "mietek"}, 
-                {"marek", "marek"}
+                {"admin1", "admin1"}, 
+                {"quest", "iamquest"}, 
+                {"wojciech", "wojciech"}
             };
         }
 

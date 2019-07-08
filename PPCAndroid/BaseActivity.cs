@@ -16,6 +16,7 @@ namespace PPCAndroid
             RegisterViewModel();
             RegisterView();
             RegisterControls();
+            RegisterInteractions();
             
             this.WhenActivated(disposables =>
             {
@@ -29,5 +30,6 @@ namespace PPCAndroid
         protected abstract void BindProperties(CompositeDisposable disposables);
         protected abstract void BindCommands(CompositeDisposable disposables);    
         protected abstract void RegisterViewModel();
+        protected abstract void RegisterInteractions();
     }
 }

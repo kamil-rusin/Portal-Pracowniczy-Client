@@ -10,18 +10,17 @@ namespace Shared.ViewModels
 {
     public class LoginViewModel : ViewModelBase
     {
+        private readonly Interaction<Unit, bool> _confirm;
+        public Interaction<Unit, bool> Confirm => this._confirm;
+        
+        
         private ILogin _loginService;
         
         private string _userName;
         public string UserName
         {
-            get
-            {
-                Log.WriteLine(LogPriority.Info,"login","zmienilem username");
-                return _userName;
-            }
-            
-            //notify when property user name changes
+            get => _userName;
+
             set => this.RaiseAndSetIfChanged(ref _userName, value);
         }
 
@@ -39,22 +38,26 @@ namespace Shared.ViewModels
         {
             _loginService = login;
             
+            this._confirm = new Interaction<Unit, bool>();
+            
             var canLogin = this.WhenAnyValue(x => x.UserName, x => x.Password, LoginInputValidator.Validate);
-            LoginCommand = ReactiveCommand.CreateFromTask(async () => { await Login(); }, canLogin);
+            LoginCommand = ReactiveCommand.CreateFromTask(async () => { await Login();  }, canLogin);
         }
 
         private async Task<IObservable<bool>> Login()
         {
-            Log.WriteLine(LogPriority.Info, "login", "tworze taska");
             var lg = await _loginService.Login(_userName, _password);
 
-            return Observable.Return(lg);
-                
             if (lg)
             {
-                Log.WriteLine(LogPriority.Info, "login", "zmieniam ekran");
-                //TODO: przejście na inny ekran
+                var confirmation = await _confirm.Handle(new Unit());
+
+                if (confirmation)
+                {
+                    //TODO: przejście na inny ekran  
+                }
             }
+            return Observable.Return(lg);
         }
     }
 
