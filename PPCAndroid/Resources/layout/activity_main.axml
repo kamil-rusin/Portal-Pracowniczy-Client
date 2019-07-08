@@ -19,13 +19,12 @@
         
     />
     <Button
-            android:layout_width="97dp"
-            android:layout_height="wrap_content"
-            android:id="@+id/loginButton"
-            android:textAppearance="@android:style/TextAppearance.DeviceDefault"
-            tools:text="@string/app_name" android:text="My text" android:layout_centerHorizontal="true"
-            android:layout_alignParentBottom="true" android:layout_marginBottom="210dp"
-            android:textColor="@color/white" style="@style/AppTheme"/>
+            android:text="Zaloguj"
+            android:layout_width="139dp"
+            android:layout_height="55dp"
+            android:layout_alignParentBottom="true"
+            android:layout_marginBottom="167dp" android:id="@+id/loginButton" android:layout_centerHorizontal="true"/>
+    
     <EditText
             android:layout_width="199dp"
             android:layout_height="41dp"
@@ -46,5 +45,6 @@
             android:layout_centerHorizontal="true"
             android:textAppearance="@android:style/TextAppearance.DeviceDefault"
             android:textColor="?android:attr/colorAccent"/>
+ 
 
 </RelativeLayout>

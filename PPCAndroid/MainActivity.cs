@@ -1,7 +1,9 @@
-﻿using Android.App;
+﻿using System.Reactive.Disposables;
+using Android.App;
 using Android.OS;
 using Android.Support.V7.App;
 using Android.Support.Design.Widget;
+using Android.Util;
 using Android.Widget;
 using PPCAndroid.Shared.Service;
 using ReactiveUI;
@@ -10,29 +12,16 @@ using Shared.ViewModels;
 namespace PPCAndroid
 {
     [Activity(Label = "@string/app_name", Theme = "@style/Theme.AppCompat.Light.NoActionBar", MainLauncher = true)]
-    public class MainActivity : ReactiveActivity<LoginViewModel>
+    public class MainActivity :  BaseActivity<LoginViewModel>
     {
-        private Button LogInButton;
-        private EditText UsernameEditText;
-        private EditText PasswordEditText;
+        private Button _logInButton;
+        private EditText _usernameEditText;
+        private EditText _passwordEditText;
 
+       
         protected override void OnCreate(Bundle savedInstanceState)
         {
-            ViewModel = new LoginViewModel(new LoginService());
-            base.OnCreate(savedInstanceState);
-            SetContentView(Resource.Layout.activity_main);
-
-            LogInButton = FindViewById<Button>(Resource.Id.loginButton);
-            UsernameEditText = FindViewById<EditText>(Resource.Id.usernameEditText);
-            PasswordEditText = FindViewById<EditText>(Resource.Id.passwordEditText);
-
-            
-            this.BindCommand(ViewModel, x => x.LoginCommand, v => v.LogInButton);
-
-            LogInButton.Click += (s, e) =>
-            {
-                Toast.MakeText(this, "Login " + ViewModel.ValidLogin.ToString(), ToastLength.Short).Show();
-            };
+            OnCreateBase(savedInstanceState);
 
             /*var bottomNavigation = FindViewById<BottomNavigationView>(Resource.Id.bottom_navigation);
             bottomNavigation.NavigationItemSelected += (s, e) =>
@@ -50,6 +39,34 @@ namespace PPCAndroid
                         break;
                 }
             };*/
-        } 
+        }
+
+        protected override void BindCommands(CompositeDisposable disposables)
+        {
+            this.BindCommand(ViewModel, x => x.LoginCommand, v => v._logInButton).DisposeWith(disposables);
+        }
+
+        protected override void BindProperties(CompositeDisposable disposables)
+        {
+            this.Bind(ViewModel, x => x.UserName, a => a._usernameEditText.Text).DisposeWith(disposables);
+            this.Bind(ViewModel, x => x.Password, a => a._passwordEditText.Text).DisposeWith(disposables);
+        }
+
+        protected override void RegisterViewModel()
+        {
+            ViewModel = new LoginViewModel(new LoginService());
+        }
+
+        protected override void RegisterView()
+        {
+            SetContentView(Resource.Layout.activity_main);
+        }
+
+        protected override void RegisterControls()
+        {
+            _logInButton = FindViewById<Button>(Resource.Id.loginButton);
+            _usernameEditText = FindViewById<EditText>(Resource.Id.usernameEditText);
+            _passwordEditText = FindViewById<EditText>(Resource.Id.passwordEditText);
+        }
     }
 }

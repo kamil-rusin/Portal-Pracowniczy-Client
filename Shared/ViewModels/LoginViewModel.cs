@@ -1,5 +1,8 @@
+using System;
 using System.Reactive;
 using System.Reactive.Linq;
+using System.Threading.Tasks;
+using Android.Util;
 using PPCAndroid.Shared.Service;
 using ReactiveUI;
 
@@ -12,7 +15,12 @@ namespace Shared.ViewModels
         private string _userName;
         public string UserName
         {
-            get => _userName;
+            get
+            {
+                Log.WriteLine(LogPriority.Info,"login","zmienilem username");
+                return _userName;
+            }
+            
             //notify when property user name changes
             set => this.RaiseAndSetIfChanged(ref _userName, value);
         }
@@ -24,43 +32,38 @@ namespace Shared.ViewModels
             get => _password;
             set => this.RaiseAndSetIfChanged(ref _password, value);
         }
-
-        ObservableAsPropertyHelper<bool> _validLogin;
-        public bool ValidLogin
-        {
-            get { return _validLogin?.Value ?? false; }
-        }
  
         public ReactiveCommand<Unit,Unit> LoginCommand { get; private set; }
         
-        //wycialem hostscreen z argumentow
-        public LoginViewModel(ILogin login) : base()
+        public LoginViewModel(ILogin login)
         {
             _loginService = login;
+            
+            var canLogin = this.WhenAnyValue(x => x.UserName, x => x.Password, LoginInputValidator.Validate);
+            LoginCommand = ReactiveCommand.CreateFromTask(async () => { await Login(); }, canLogin);
+        }
 
-            this.WhenAnyValue(x => x.UserName, x => x.Password,
-                    (username, password) =>
-                        (
-                            //Validate the password
-                            !string.IsNullOrEmpty(password) && password.Length > 5
-                        )
-                        &&
-                        (
-                            //Validate the username
-                            !string.IsNullOrEmpty(username)
-                        ))
-                .ToProperty(this, v => v.ValidLogin, out _validLogin);
+        private async Task<IObservable<bool>> Login()
+        {
+            Log.WriteLine(LogPriority.Info, "login", "tworze taska");
+            var lg = await _loginService.Login(_userName, _password);
 
-            LoginCommand = ReactiveCommand.CreateFromTask(async () =>
+            return Observable.Return(lg);
+                
+            if (lg)
             {
+                Log.WriteLine(LogPriority.Info, "login", "zmieniam ekran");
+                //TODO: przejście na inny ekran
+            }
+        }
+    }
 
-                var lg = await login.Login(_userName, _password);
-                if (lg)
-                {
-                    //TODO: przejście na inny ekran
-                }
-            }, this.WhenAnyValue(x => x.ValidLogin, x => x.ValidLogin, (validLogin, valid) => ValidLogin && valid));
-
+    public static class LoginInputValidator
+    {
+        private const int MinimumPasswordLength = 5;
+        public static bool Validate(string username, string password)
+        {
+            return !string.IsNullOrEmpty(password) && password.Length > MinimumPasswordLength && !string.IsNullOrEmpty(username);
         }
     }
 }
