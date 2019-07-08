@@ -1,5 +1,6 @@
 ﻿using System.Reactive.Disposables;
 using Android.App;
+using Android.Content;
 using Android.OS;
 using Android.Widget;
 using PPCAndroid.Shared.Service;
@@ -31,7 +32,6 @@ namespace PPCAndroid
         {
             this.Bind(ViewModel, x => x.UserName, a => a._usernameEditText.Text).DisposeWith(disposables);
             this.Bind(ViewModel, x => x.Password, a => a._passwordEditText.Text).DisposeWith(disposables);
-            
         }
 
         protected override void RegisterViewModel()
@@ -41,9 +41,16 @@ namespace PPCAndroid
 
         protected override void RegisterInteractions()
         {
+            this.WhenActivated(d => { d(ViewModel.GoToDashboard.RegisterHandler(async interaction =>
+                {
+                    var intent = new Intent(this, typeof(DashboardActivity));
+                    StartActivity(intent);
+                })); 
+            });
+            
             this.WhenActivated(d => { d(ViewModel.Confirm.RegisterHandler(async interaction =>
             {
-                var confirmation = false; 
+                bool confirmation = true; 
                 var builder = new AlertDialog.Builder(this);
                 var alert = builder.Create();
                 alert.SetTitle("Potwierdzenie");

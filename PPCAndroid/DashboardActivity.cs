@@ -53,7 +53,7 @@ namespace PPCAndroid
 
         protected override void RegisterView()
         {
-         
+            SetContentView(Resource.Layout.activity_dashboard);
         }
 
         protected override void RegisterControls()

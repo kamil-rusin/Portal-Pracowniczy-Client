@@ -2,7 +2,6 @@ using System;
 using System.Reactive;
 using System.Reactive.Linq;
 using System.Threading.Tasks;
-using Android.Util;
 using PPCAndroid.Shared.Service;
 using ReactiveUI;
 
@@ -10,12 +9,14 @@ namespace Shared.ViewModels
 {
     public class LoginViewModel : ViewModelBase
     {
+        #region Interactions
         private readonly Interaction<Unit, bool> _confirm;
+        private readonly Interaction<Unit, Unit> _goToDashboard;
         public Interaction<Unit, bool> Confirm => this._confirm;
+        public Interaction<Unit, Unit> GoToDashboard => this._goToDashboard;
+        #endregion
         
-        
-        private ILogin _loginService;
-        
+        #region Propertises
         private string _userName;
         public string UserName
         {
@@ -24,21 +25,23 @@ namespace Shared.ViewModels
             set => this.RaiseAndSetIfChanged(ref _userName, value);
         }
 
-
         private string _password;
         public string Password
         {
             get => _password;
             set => this.RaiseAndSetIfChanged(ref _password, value);
         }
- 
+        #endregion
+        
+        private ILogin _loginService;
         public ReactiveCommand<Unit,Unit> LoginCommand { get; private set; }
         
         public LoginViewModel(ILogin login)
         {
             _loginService = login;
             
-            this._confirm = new Interaction<Unit, bool>();
+            _goToDashboard = new Interaction<Unit, Unit>();
+            _confirm = new Interaction<Unit, bool>();
             
             var canLogin = this.WhenAnyValue(x => x.UserName, x => x.Password, LoginInputValidator.Validate);
             LoginCommand = ReactiveCommand.CreateFromTask(async () => { await Login();  }, canLogin);
@@ -54,9 +57,11 @@ namespace Shared.ViewModels
 
                 if (confirmation)
                 {
-                    //TODO: przejście na inny ekran  
+                    //TODO: przejście na inny ekran, tu jest błąd przy rejestracji interakcji  
+                    var yes = await _goToDashboard.Handle(new Unit());
                 }
             }
+            //TODO: should it return something?
             return Observable.Return(lg);
         }
     }
