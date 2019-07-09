@@ -1,4 +1,5 @@
-﻿using System.Reactive.Disposables;
+﻿using System.Reactive;
+using System.Reactive.Disposables;
 using Android.App;
 using Android.Content;
 using Android.OS;
@@ -46,6 +47,7 @@ namespace PPCAndroid
                 {
                     //var intent = new Intent(this, typeof(DashboardActivity));
                     //StartActivity(intent);
+                    interaction.SetOutput(new Unit());
                 })); 
             });
             
