@@ -11,12 +11,12 @@ namespace Shared.ViewModels
     {
         #region Interactions
         private Interaction<Unit, bool> _confirm;
-        private Interaction<Unit, Unit> _goToDashboard;
+        private Interaction<Unit, bool> _goToDashboard;
         public Interaction<Unit, bool> Confirm => this._confirm;
-        public Interaction<Unit, Unit> GoToDashboard => this._goToDashboard;
+        public Interaction<Unit, bool> GoToDashboard => this._goToDashboard;
         #endregion
         
-        #region Propertises
+        #region Properties
         private string _userName;
         public string UserName
         {
@@ -40,7 +40,7 @@ namespace Shared.ViewModels
         {
             _loginService = login;
             
-            this._goToDashboard = new Interaction<Unit, Unit>();
+            this._goToDashboard = new Interaction<Unit, bool>();
             this._confirm = new Interaction<Unit, bool>();
             
             var canLogin = this.WhenAnyValue(x => x.UserName, x => x.Password, LoginInputValidator.Validate);
@@ -58,7 +58,7 @@ namespace Shared.ViewModels
                 if (confirmation)
                 {
                     //TODO: przejście na inny ekran, tu jest błąd przy rejestracji interakcji  
-                    var yes = await _goToDashboard.Handle(new Unit());
+                     _goToDashboard.Handle(new Unit());
                 }
             }
             //TODO: should it return something?

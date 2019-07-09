@@ -45,21 +45,27 @@ namespace PPCAndroid
         {
             this.WhenActivated(d => { d(ViewModel.GoToDashboard.RegisterHandler(async interaction =>
                 {
-                    //var intent = new Intent(this, typeof(DashboardActivity));
-                    //StartActivity(intent);
-                    interaction.SetOutput(new Unit());
+                    var intent = new Intent(this, typeof(DashboardActivity));
+                    StartActivity(intent);
+                    interaction.SetOutput(true);
                 })); 
             });
             
             this.WhenActivated(d => { d(ViewModel.Confirm.RegisterHandler(async interaction =>
             {
+                bool confirmation = true;
                 var builder = new AlertDialog.Builder(this);
-                var alert = builder.Create();
-                alert.SetTitle("Potwierdzenie");
-                alert.SetMessage("Na pewno chcesz się zalogować?");
-                alert.SetButton("Tak", (sender, args) => interaction.SetOutput(true));
-                alert.SetButton2("Nie", (sender, args) => interaction.SetOutput(false));
+                builder.SetTitle("Potwierdzenie");
+                builder.SetMessage("Na pewno chcesz się zalogować?");
+                builder.SetPositiveButton("Tak", (sender, args) => confirmation = true);
+                //alert.SetButton("Tak", (sender, args) => interaction.SetOutput(true));
+                builder.SetNegativeButton("Nie", (sender, args) => confirmation = false); 
+                //alert.SetButton2("Nie", (sender, args) => interaction.SetOutput(false)); 
+                var alert = builder.Create(); 
                 alert.Show();
+                
+
+                interaction.SetOutput(confirmation);
             })); });
         }
 

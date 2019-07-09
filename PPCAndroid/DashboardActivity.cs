@@ -1,6 +1,7 @@
 using System.Reactive.Disposables;
 using Android.App;
 using Android.OS;
+using Android.Widget;
 using Shared.ViewModels;
 
 namespace PPCAndroid
@@ -8,7 +9,9 @@ namespace PPCAndroid
     [Activity(Label = "DashboardActivity", Theme = "@style/Theme.AppCompat.Light.NoActionBar")]
     public class DashboardActivity :  BaseActivity<DashboardViewModel>
     {
-    
+        private TextView _entryTextView;
+        private TextView _timeTextView;
+        
         protected override void OnCreate(Bundle savedInstanceState)
         {
             OnCreateBase(savedInstanceState);
@@ -58,7 +61,8 @@ namespace PPCAndroid
 
         protected override void RegisterControls()
         {
-
+            _entryTextView = FindViewById<TextView>(Resource.Id.entryTextView);
+            _timeTextView = FindViewById<TextView>(Resource.Id.timeTextView);
         }
     }
 }
