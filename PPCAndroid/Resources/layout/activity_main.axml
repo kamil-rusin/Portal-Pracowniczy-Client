@@ -5,13 +5,13 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent">
 
-    
+
     <Button
             android:text="Zaloguj"
             android:layout_width="139dp"
             android:layout_height="55dp"
             android:layout_alignParentBottom="true"
-            android:layout_marginBottom="167dp" android:id="@+id/loginButton" android:layout_centerHorizontal="true"
+            android:layout_marginBottom="199dp" android:id="@+id/loginButton" android:layout_centerHorizontal="true"
             style="@style/MyCustomTheme"/>
 
     <EditText
@@ -20,20 +20,36 @@
             android:inputType="textPassword"
             android:ems="10"
             android:id="@+id/passwordEditText"
-            android:layout_centerHorizontal="true"
             android:textAppearance="@android:style/TextAppearance.DeviceDefault"
-            android:textColor="?android:attr/colorAccent" android:layout_alignParentBottom="true"
-            android:layout_marginBottom="288dp"/>
+            android:textColor="?android:attr/colorAccent"
+            android:layout_centerInParent="true" android:hint="Hasło"/>
     <EditText
             android:layout_width="205dp"
             android:layout_height="37dp"
             android:inputType="textPersonName"
-            android:text="Username"
             android:ems="10"
-            android:layout_alignParentTop="true" android:layout_marginTop="184dp" android:id="@+id/usernameEditText"
+            android:layout_alignParentTop="true" android:layout_marginTop="212dp" android:id="@+id/usernameEditText"
             android:layout_centerHorizontal="true"
             android:textAppearance="@android:style/TextAppearance.DeviceDefault"
-            android:textColor="?android:attr/colorAccent"/>
- 
+            android:textColor="?android:attr/colorAccent" android:hint="Nazwa użytkownika"/>
+    <ImageView
+            android:src="@drawable/personaldata"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:id="@+id/usernameImageView" android:layout_alignParentStart="true" android:layout_marginStart="47dp"
+            android:layout_alignBottom="@+id/usernameEditText"/>
+    <ImageView
+            android:src="@drawable/password"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_alignStart="@+id/usernameImageView" android:id="@+id/passwordImageView"
+            android:layout_centerVertical="true"/>
+    <ImageView
+            android:src="@drawable/rekord_si"
+            android:layout_width="211dp"
+            android:layout_height="63dp" android:layout_alignParentTop="true" android:layout_marginTop="73dp"
+            android:id="@+id/logoImageView"
+            android:layout_centerHorizontal="true"/>
+
 
 </RelativeLayout>
