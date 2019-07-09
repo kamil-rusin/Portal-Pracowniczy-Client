@@ -10,8 +10,8 @@ namespace Shared.ViewModels
     public class LoginViewModel : ViewModelBase
     {
         #region Interactions
-        private readonly Interaction<Unit, bool> _confirm;
-        private readonly Interaction<Unit, Unit> _goToDashboard;
+        private Interaction<Unit, bool> _confirm;
+        private Interaction<Unit, Unit> _goToDashboard;
         public Interaction<Unit, bool> Confirm => this._confirm;
         public Interaction<Unit, Unit> GoToDashboard => this._goToDashboard;
         #endregion
@@ -40,8 +40,8 @@ namespace Shared.ViewModels
         {
             _loginService = login;
             
-            _goToDashboard = new Interaction<Unit, Unit>();
-            _confirm = new Interaction<Unit, bool>();
+            this._goToDashboard = new Interaction<Unit, Unit>();
+            this._confirm = new Interaction<Unit, bool>();
             
             var canLogin = this.WhenAnyValue(x => x.UserName, x => x.Password, LoginInputValidator.Validate);
             LoginCommand = ReactiveCommand.CreateFromTask(async () => { await Login();  }, canLogin);

@@ -2,6 +2,7 @@
 using Android.App;
 using Android.Content;
 using Android.OS;
+using Android.Service.QuickSettings;
 using Android.Widget;
 using PPCAndroid.Shared.Service;
 using ReactiveUI;
@@ -43,23 +44,20 @@ namespace PPCAndroid
         {
             this.WhenActivated(d => { d(ViewModel.GoToDashboard.RegisterHandler(async interaction =>
                 {
-                    var intent = new Intent(this, typeof(DashboardActivity));
-                    StartActivity(intent);
+                    //var intent = new Intent(this, typeof(DashboardActivity));
+                    //StartActivity(intent);
                 })); 
             });
             
             this.WhenActivated(d => { d(ViewModel.Confirm.RegisterHandler(async interaction =>
             {
-                bool confirmation = true; 
                 var builder = new AlertDialog.Builder(this);
                 var alert = builder.Create();
                 alert.SetTitle("Potwierdzenie");
                 alert.SetMessage("Na pewno chcesz się zalogować?");
-                alert.SetButton("Tak", (sender, args) => confirmation = true);
-                alert.SetButton2("Nie", (sender, args) => confirmation = false);
+                alert.SetButton("Tak", (sender, args) => interaction.SetOutput(true));
+                alert.SetButton2("Nie", (sender, args) => interaction.SetOutput(false));
                 alert.Show();
-                
-                interaction.SetOutput(confirmation);
             })); });
         }
 
