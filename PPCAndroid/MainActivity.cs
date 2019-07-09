@@ -1,6 +1,13 @@
-﻿using System.Reactive.Disposables;
+﻿using System;
+using System.Collections.Generic;
+using System.Reactive.Disposables;
+using Android;
 using Android.App;
+using Android.Content;
+using Android.Content.PM;
+using Android.Net.Wifi;
 using Android.OS;
+using Android.Util;
 using Android.Widget;
 using PPCAndroid.Shared.Service;
 using ReactiveUI;
@@ -15,11 +22,35 @@ namespace PPCAndroid
         private Button _logInButton;
         private EditText _usernameEditText;
         private EditText _passwordEditText;
-
+        static WifiManager _wifiManager;
+        private WifiScanReceiver _receiverWifi;
+        static List<ScanResult> _wifiList;
        
         protected override void OnCreate(Bundle savedInstanceState)
         {
             OnCreateBase(savedInstanceState);
+            
+            
+            
+            //workspace
+            _wifiManager = (WifiManager) GetSystemService(Context.WifiService);
+
+            if (_wifiManager.IsWifiEnabled == false)
+            {
+                _wifiManager.SetWifiEnabled(true);
+            }
+            
+            _receiverWifi = new WifiScanReceiver();
+            RegisterReceiver(_receiverWifi, new IntentFilter(WifiManager.ScanResultsAvailableAction));
+            _wifiManager.StartScan();
+
+            if (_wifiList != null)
+            {
+                foreach (var network in _wifiList)
+                {
+                    Log.Info("sieci", network.Ssid);
+                }
+            }
         }
 
         protected override void BindCommands(CompositeDisposable disposables)
@@ -66,6 +97,45 @@ namespace PPCAndroid
             _logInButton = FindViewById<Button>(Resource.Id.loginButton);
             _usernameEditText = FindViewById<EditText>(Resource.Id.usernameEditText);
             _passwordEditText = FindViewById<EditText>(Resource.Id.passwordEditText);
+        }
+
+        protected override void OnResume()
+        {
+            base.OnResume();
+
+            if(Build.VERSION.SdkInt >= BuildVersionCodes.M)
+            {
+                if(CheckCallingPermission(Manifest.Permission.AccessCoarseLocation) != (int)Permission.Granted)
+                {
+                    RequestPermissions(new String[]{Manifest.Permission.AccessCoarseLocation}, 87);
+                }
+            }
+        }
+
+        protected override void OnPause()
+        {
+            
+            if (_receiverWifi != null) 
+            {
+                UnregisterReceiver(_receiverWifi);
+                _receiverWifi = null;
+            }
+
+            base.OnPause();
+        }
+
+        private class WifiScanReceiver : BroadcastReceiver
+        {
+
+            public override void OnReceive(Context context, Intent intent)
+            {
+
+                if (intent.Action.Equals(WifiManager.ScanResultsAvailableAction))
+                {
+                    _wifiList = (List<ScanResult>) _wifiManager.ScanResults;
+                }
+
+            }
         }
     }
 }
