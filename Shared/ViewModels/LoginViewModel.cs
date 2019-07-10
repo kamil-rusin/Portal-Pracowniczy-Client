@@ -10,10 +10,9 @@ namespace Shared.ViewModels
     public class LoginViewModel : ViewModelBase
     {
         #region Interactions
-        private Interaction<Unit, bool> _confirm;
-        private Interaction<Unit, bool> _goToDashboard;
-        public Interaction<Unit, bool> Confirm => this._confirm;
-        public Interaction<Unit, bool> GoToDashboard => this._goToDashboard;
+
+        public Interaction<Unit, bool> Confirm { get; }
+        public Interaction<Unit, Unit> GoToDashboard { get; }
         #endregion
         
         #region Properties
@@ -40,8 +39,8 @@ namespace Shared.ViewModels
         {
             _loginService = login;
             
-            this._goToDashboard = new Interaction<Unit, bool>();
-            this._confirm = new Interaction<Unit, bool>();
+            GoToDashboard= new Interaction<Unit, Unit>();
+            Confirm = new Interaction<Unit, bool>();
             
             var canLogin = this.WhenAnyValue(x => x.UserName, x => x.Password, LoginInputValidator.Validate);
             LoginCommand = ReactiveCommand.CreateFromTask(async () => { await Login();  }, canLogin);
@@ -50,18 +49,18 @@ namespace Shared.ViewModels
         private async Task<IObservable<bool>> Login()
         {
             var lg = await _loginService.Login(_userName, _password);
-
+            //TODO: refactor, druga funkcja Login a ta to TryLogin
             if (lg)
             {
-                var confirmation = await _confirm.Handle(new Unit());
+                var confirmation = await Confirm.Handle(Unit.Default);
 
                 if (confirmation)
                 {
                     //TODO: przejście na inny ekran, tu jest błąd przy rejestracji interakcji  
-                     _goToDashboard.Handle(new Unit());
+                     await GoToDashboard.Handle(Unit.Default);
                 }
             }
-            //TODO: should it return something?
+            
             return Observable.Return(lg);
         }
     }

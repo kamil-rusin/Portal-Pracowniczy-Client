@@ -47,7 +47,7 @@ namespace PPCAndroid
                 {
                     var intent = new Intent(this, typeof(DashboardActivity));
                     StartActivity(intent);
-                    interaction.SetOutput(true);
+                    interaction.SetOutput(Unit.Default);
                 })); 
             });
             
@@ -61,9 +61,10 @@ namespace PPCAndroid
                 //alert.SetButton("Tak", (sender, args) => interaction.SetOutput(true));
                 builder.SetNegativeButton("Nie", (sender, args) => confirmation = false); 
                 //alert.SetButton2("Nie", (sender, args) => interaction.SetOutput(false)); 
-                var alert = builder.Create(); 
-                alert.Show();
                 
+                
+                /*var alert = builder.Create(); 
+                alert.Show();*/
 
                 interaction.SetOutput(confirmation);
             })); });
