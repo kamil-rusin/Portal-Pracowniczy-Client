@@ -16,9 +16,7 @@ namespace PPCAndroid
             RegisterViewModel();
             RegisterView();
             RegisterControls();
-/*
             RegisterInteractions();
-*/
             
             this.WhenActivated(disposables =>
             {

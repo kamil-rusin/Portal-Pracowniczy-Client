@@ -7,6 +7,8 @@ using Android.Content;
 using Android.Content.PM;
 using Android.Net.Wifi;
 using Android.OS;
+using Android.Support.V4.App;
+using Android.Support.V4.Content;
 using Android.Util;
 using Android.Widget;
 using PPCAndroid.Mappers;
@@ -111,14 +113,20 @@ namespace PPCAndroid
                 _onResumeCalled = true;
                 if (Build.VERSION.SdkInt >= BuildVersionCodes.M)
                 {
-                    //TODO: kod 
-                    if (CheckCallingPermission(Manifest.Permission.AccessCoarseLocation) != (int) Permission.Granted ||
+                    string[] permissions = {Manifest.Permission.AccessCoarseLocation, Manifest.Permission.AccessFineLocation};
+                     
+                    if (!HasPermissions(this, permissions))
+                    {
+                        RequestPermissions(permissions, 87);
+                    }
+
+                    /*if (CheckCallingPermission(Manifest.Permission.AccessCoarseLocation) != (int) Permission.Granted ||
                         CheckCallingPermission(Manifest.Permission.AccessFineLocation) != (int) Permission.Granted)
                     {
                         RequestPermissions(
-                            new String[] {Manifest.Permission.AccessCoarseLocation, Manifest.Permission.AccessFineLocation},
+                            new string[] {Manifest.Permission.AccessCoarseLocation, Manifest.Permission.AccessFineLocation},
                             87);
-                    }
+                    }*/
 
                     /*if(CheckCallingPermission(Manifest.Permission.AccessFineLocation) != (int)Permission.Granted)
                     {
@@ -131,7 +139,18 @@ namespace PPCAndroid
             base.OnResume();
         }
 
-        /*
+        private static bool HasPermissions(Context context, string[] permissions) {
+            if (context == null || permissions == null) return true;
+            foreach (var permission in permissions)
+            {
+                if (ContextCompat.CheckSelfPermission(context, permission) != Permission.Granted)
+                {
+                    return false;
+                }
+            }
+            return true;
+        }
+
         protected override void OnPause()
         {
             
@@ -144,8 +163,7 @@ namespace PPCAndroid
             base.OnPause();
         }
         
-        
-*/
+
         private class WifiScanReceiver : BroadcastReceiver
         {
             public override void OnReceive(Context context, Intent intent)
