@@ -60,7 +60,9 @@
     <ItemGroup>
         <Compile Include="BaseActivity.cs" />
         <Compile Include="DashboardActivity.cs" />
+        <Compile Include="JobServices\WifiJobService.cs" />
         <Compile Include="MainActivity.cs" />
+        <Compile Include="Mappers\WifiNetworkMapper.cs" />
         <Compile Include="Resources\Resource.Designer.cs" />
         <Compile Include="Properties\AssemblyInfo.cs" />
     </ItemGroup>

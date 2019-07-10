@@ -9,6 +9,7 @@ using Android.Net.Wifi;
 using Android.OS;
 using Android.Util;
 using Android.Widget;
+using PPCAndroid.Mappers;
 using PPCAndroid.Shared.Service;
 using ReactiveUI;
 using Shared.ViewModels;
@@ -17,21 +18,20 @@ using AlertDialog = Android.App.AlertDialog;
 namespace PPCAndroid
 {
     [Activity(Label = "@string/app_name", Theme = "@style/Theme.AppCompat.Light.NoActionBar", MainLauncher = true)]
-    public class MainActivity :  BaseActivity<LoginViewModel>
+    public class MainActivity : BaseActivity<LoginViewModel>
     {
         private Button _logInButton;
         private EditText _usernameEditText;
         private EditText _passwordEditText;
         static WifiManager _wifiManager;
         private WifiScanReceiver _receiverWifi;
-        static List<ScanResult> _wifiList;
-       
+        private static IList<ScanResult> _wifiList;
+
         protected override void OnCreate(Bundle savedInstanceState)
         {
             OnCreateBase(savedInstanceState);
-            
-            
-            
+
+
             //workspace
             _wifiManager = (WifiManager) GetSystemService(Context.WifiService);
 
@@ -39,18 +39,18 @@ namespace PPCAndroid
             {
                 _wifiManager.SetWifiEnabled(true);
             }
-            
+
             _receiverWifi = new WifiScanReceiver();
             RegisterReceiver(_receiverWifi, new IntentFilter(WifiManager.ScanResultsAvailableAction));
-            _wifiManager.StartScan();
+            var startedSuccess = _wifiManager.StartScan();
 
-            if (_wifiList != null)
+            /*if (_wifiList != null)
             {
                 foreach (var network in _wifiList)
                 {
                     Log.Info("sieci", network.Ssid);
                 }
-            }
+            }*/
         }
 
         protected override void BindCommands(CompositeDisposable disposables)
@@ -62,7 +62,6 @@ namespace PPCAndroid
         {
             this.Bind(ViewModel, x => x.UserName, a => a._usernameEditText.Text).DisposeWith(disposables);
             this.Bind(ViewModel, x => x.Password, a => a._passwordEditText.Text).DisposeWith(disposables);
-            
         }
 
         protected override void RegisterViewModel()
@@ -72,19 +71,22 @@ namespace PPCAndroid
 
         protected override void RegisterInteractions()
         {
-            this.WhenActivated(d => { d(ViewModel.Confirm.RegisterHandler(async interaction =>
+            this.WhenActivated(d =>
             {
-                var confirmation = false; 
-                var builder = new AlertDialog.Builder(this);
-                var alert = builder.Create();
-                alert.SetTitle("Potwierdzenie");
-                alert.SetMessage("Na pewno chcesz się zalogować?");
-                alert.SetButton("Tak", (sender, args) => confirmation = true);
-                alert.SetButton2("Nie", (sender, args) => confirmation = false);
-                alert.Show();
-                
-                interaction.SetOutput(confirmation);
-            })); });
+                d(ViewModel.Confirm.RegisterHandler(async interaction =>
+                {
+                    var confirmation = false;
+                    var builder = new AlertDialog.Builder(this);
+                    var alert = builder.Create();
+                    alert.SetTitle("Potwierdzenie");
+                    alert.SetMessage("Na pewno chcesz się zalogować?");
+                    alert.SetButton("Tak", (sender, args) => confirmation = true);
+                    alert.SetButton2("Nie", (sender, args) => confirmation = false);
+                    alert.Show();
+
+                    interaction.SetOutput(confirmation);
+                }));
+            });
         }
 
         protected override void RegisterView()
@@ -103,15 +105,25 @@ namespace PPCAndroid
         {
             base.OnResume();
 
-            if(Build.VERSION.SdkInt >= BuildVersionCodes.M)
+            if (Build.VERSION.SdkInt >= BuildVersionCodes.M)
             {
-                if(CheckCallingPermission(Manifest.Permission.AccessCoarseLocation) != (int)Permission.Granted)
+                //TODO: kod 
+                if (CheckCallingPermission(Manifest.Permission.AccessCoarseLocation) != (int) Permission.Granted ||
+                    CheckCallingPermission(Manifest.Permission.AccessFineLocation) != (int) Permission.Granted)
                 {
-                    RequestPermissions(new String[]{Manifest.Permission.AccessCoarseLocation}, 87);
+                    RequestPermissions(
+                        new String[] {Manifest.Permission.AccessCoarseLocation, Manifest.Permission.AccessFineLocation},
+                        87);
                 }
+
+                /*if(CheckCallingPermission(Manifest.Permission.AccessFineLocation) != (int)Permission.Granted)
+                {
+                    RequestPermissions(new String[]{Manifest.Permission.AccessFineLocation}, 88);
+                }*/
             }
         }
 
+        /*
         protected override void OnPause()
         {
             
@@ -123,18 +135,18 @@ namespace PPCAndroid
 
             base.OnPause();
         }
-
+        
+        
+*/
         private class WifiScanReceiver : BroadcastReceiver
         {
-
             public override void OnReceive(Context context, Intent intent)
             {
-
                 if (intent.Action.Equals(WifiManager.ScanResultsAvailableAction))
                 {
-                    _wifiList = (List<ScanResult>) _wifiManager.ScanResults;
+                    _wifiList = _wifiManager.ScanResults;
+                    var test = _wifiManager.ScanResults.ToDomainWifiNetworks();
                 }
-
             }
         }
     }
