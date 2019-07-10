@@ -1,5 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
+﻿using System.Collections.Generic;
 using System.Reactive.Disposables;
 using Android;
 using Android.App;
@@ -7,9 +6,7 @@ using Android.Content;
 using Android.Content.PM;
 using Android.Net.Wifi;
 using Android.OS;
-using Android.Support.V4.App;
 using Android.Support.V4.Content;
-using Android.Util;
 using Android.Widget;
 using PPCAndroid.Mappers;
 using PPCAndroid.Shared.Service;
@@ -49,6 +46,7 @@ namespace PPCAndroid
             RegisterReceiver(_receiverWifi, new IntentFilter(WifiManager.ScanResultsAvailableAction));
             var startedSuccess = _wifiManager.StartScan();
 
+            //TODO: Observable dać na listę wifi i ją wyświetlić
             /*if (_wifiList != null)
             {
                 foreach (var network in _wifiList)
@@ -119,19 +117,6 @@ namespace PPCAndroid
                     {
                         RequestPermissions(permissions, 87);
                     }
-
-                    /*if (CheckCallingPermission(Manifest.Permission.AccessCoarseLocation) != (int) Permission.Granted ||
-                        CheckCallingPermission(Manifest.Permission.AccessFineLocation) != (int) Permission.Granted)
-                    {
-                        RequestPermissions(
-                            new string[] {Manifest.Permission.AccessCoarseLocation, Manifest.Permission.AccessFineLocation},
-                            87);
-                    }*/
-
-                    /*if(CheckCallingPermission(Manifest.Permission.AccessFineLocation) != (int)Permission.Granted)
-                    {
-                        RequestPermissions(new String[]{Manifest.Permission.AccessFineLocation}, 88);
-                    }*/
                 }
                 
             }
