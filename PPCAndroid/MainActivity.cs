@@ -1,4 +1,5 @@
 ﻿using System.Collections.Generic;
+using System.Linq;
 using System.Reactive.Disposables;
 using Android;
 using Android.App;
@@ -7,6 +8,7 @@ using Android.Content.PM;
 using Android.Net.Wifi;
 using Android.OS;
 using Android.Support.V4.Content;
+using Android.Util;
 using Android.Widget;
 using PPCAndroid.Mappers;
 using PPCAndroid.Shared.Service;
@@ -22,7 +24,7 @@ namespace PPCAndroid
         private Button _logInButton;
         private EditText _usernameEditText;
         private EditText _passwordEditText;
-        static WifiManager _wifiManager;
+        private static WifiManager _wifiManager;
         private WifiScanReceiver _receiverWifi;
         private static IList<ScanResult> _wifiList;
         private bool _onResumeCalled;
@@ -47,13 +49,7 @@ namespace PPCAndroid
             var startedSuccess = _wifiManager.StartScan();
 
             //TODO: Observable dać na listę wifi i ją wyświetlić
-            /*if (_wifiList != null)
-            {
-                foreach (var network in _wifiList)
-                {
-                    Log.Info("sieci", network.Ssid);
-                }
-            }*/
+
         }
 
         protected override void BindCommands(CompositeDisposable disposables)
@@ -153,10 +149,12 @@ namespace PPCAndroid
         {
             public override void OnReceive(Context context, Intent intent)
             {
-                if (intent.Action.Equals(WifiManager.ScanResultsAvailableAction))
+                if (!intent.Action.Equals(WifiManager.ScanResultsAvailableAction)) return;
+                _wifiList = _wifiManager.ScanResults;
+                var test = _wifiManager.ScanResults.ToDomainWifiNetworks();
+                foreach (var network in test)
                 {
-                    _wifiList = _wifiManager.ScanResults;
-                    var test = _wifiManager.ScanResults.ToDomainWifiNetworks();
+                    Log.Info("network", network);
                 }
             }
         }

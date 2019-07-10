@@ -1,4 +1,5 @@
 using System;
+using System.Linq;
 using System.Reactive;
 using System.Reactive.Linq;
 using System.Threading.Tasks;
@@ -31,7 +32,16 @@ namespace Shared.ViewModels
             get => _password;
             set => this.RaiseAndSetIfChanged(ref _password, value);
         }
- 
+
+        private readonly ObservableAsPropertyHelper<string[]> wifiList;
+        public string[] WifiList => wifiList.Value;
+
+        public string[] WifiListString
+        {
+            get;
+            set;
+        }
+
         public ReactiveCommand<Unit,Unit> LoginCommand { get; private set; }
         
         public LoginViewModel(ILogin login)
@@ -39,6 +49,9 @@ namespace Shared.ViewModels
             _loginService = login;
             
             this._confirm = new Interaction<Unit, bool>();
+
+            //TODO: how to do it properly?
+            wifiList = this.WhenAnyValue(x => x.WifiListString.ToArray()).ToProperty(this, x => x.WifiList);
             
             var canLogin = this.WhenAnyValue(x => x.UserName, x => x.Password, LoginInputValidator.Validate);
             LoginCommand = ReactiveCommand.CreateFromTask(async () => { await Login();  }, canLogin);
