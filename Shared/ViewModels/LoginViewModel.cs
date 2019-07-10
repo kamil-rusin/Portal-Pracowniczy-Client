@@ -56,8 +56,7 @@ namespace Shared.ViewModels
 
                 if (confirmation)
                 {
-                    //TODO: przejście na inny ekran, tu jest błąd przy rejestracji interakcji  
-                     await GoToDashboard.Handle(Unit.Default);
+                    await GoToDashboard.Handle(Unit.Default);
                 }
             }
             
