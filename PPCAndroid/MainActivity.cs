@@ -26,9 +26,12 @@ namespace PPCAndroid
         static WifiManager _wifiManager;
         private WifiScanReceiver _receiverWifi;
         private static IList<ScanResult> _wifiList;
+        private bool _onResumeCalled;
 
         protected override void OnCreate(Bundle savedInstanceState)
         {
+            _onResumeCalled = false;
+            
             OnCreateBase(savedInstanceState);
 
 
@@ -103,24 +106,29 @@ namespace PPCAndroid
 
         protected override void OnResume()
         {
-            base.OnResume();
-
-            if (Build.VERSION.SdkInt >= BuildVersionCodes.M)
+            if (!_onResumeCalled)
             {
-                //TODO: kod 
-                if (CheckCallingPermission(Manifest.Permission.AccessCoarseLocation) != (int) Permission.Granted ||
-                    CheckCallingPermission(Manifest.Permission.AccessFineLocation) != (int) Permission.Granted)
+                _onResumeCalled = true;
+                if (Build.VERSION.SdkInt >= BuildVersionCodes.M)
                 {
-                    RequestPermissions(
-                        new String[] {Manifest.Permission.AccessCoarseLocation, Manifest.Permission.AccessFineLocation},
-                        87);
-                }
+                    //TODO: kod 
+                    if (CheckCallingPermission(Manifest.Permission.AccessCoarseLocation) != (int) Permission.Granted ||
+                        CheckCallingPermission(Manifest.Permission.AccessFineLocation) != (int) Permission.Granted)
+                    {
+                        RequestPermissions(
+                            new String[] {Manifest.Permission.AccessCoarseLocation, Manifest.Permission.AccessFineLocation},
+                            87);
+                    }
 
-                /*if(CheckCallingPermission(Manifest.Permission.AccessFineLocation) != (int)Permission.Granted)
-                {
-                    RequestPermissions(new String[]{Manifest.Permission.AccessFineLocation}, 88);
-                }*/
+                    /*if(CheckCallingPermission(Manifest.Permission.AccessFineLocation) != (int)Permission.Granted)
+                    {
+                        RequestPermissions(new String[]{Manifest.Permission.AccessFineLocation}, 88);
+                    }*/
+                }
+                
             }
+            
+            base.OnResume();
         }
 
         /*
