@@ -10,6 +10,7 @@ using Android.OS;
 using Android.Runtime;
 using Android.Support.V4.Content;
 using Android.Support.V4.App;
+using Android.Support.V7.Widget;
 using TaskStackBuilder = Android.Support.V4.App.TaskStackBuilder;
 using Android.Util;
 using Android.Widget;
@@ -30,10 +31,13 @@ namespace PPCAndroid
         private Button _logInButton;
         private EditText _usernameEditText;
         private EditText _passwordEditText;
+        private ListView _wifiListView;
+        private ArrayAdapter<string> adapter ;
         private static WifiManager _wifiManager;
         private WifiScanReceiver _receiverWifi;
         private static IList<ScanResult> _wifiList;
         private bool _onResumeCalled;
+        
 
         protected override void OnCreate(Bundle savedInstanceState)
         {
@@ -55,6 +59,13 @@ namespace PPCAndroid
             var startedSuccess = _wifiManager.StartScan();
 
             //TODO: Observable dać na listę wifi i ją wyświetlić
+            //TODO: Kamil, jak to zbindować?
+            List<string> carL = new List<string>();  
+            //carL.AddRange();  
+
+            adapter = new ArrayAdapter<string>(this, Resource.Layout.item_layout, carL);
+
+            _wifiListView.Adapter = adapter;
 
         }
 
@@ -85,6 +96,8 @@ namespace PPCAndroid
         {
             this.Bind(ViewModel, x => x.UserName, a => a._usernameEditText.Text).DisposeWith(disposables);
             this.Bind(ViewModel, x => x.Password, a => a._passwordEditText.Text).DisposeWith(disposables);
+            //TODO: Kamil, binding z listą
+            //this.Bind(ViewModel, x=>x.WifiListString,a => a._wifiListView.??);
         }
 
         protected override void RegisterViewModel()
@@ -124,6 +137,7 @@ namespace PPCAndroid
             _logInButton = FindViewById<Button>(Resource.Id.loginButton);
             _usernameEditText = FindViewById<EditText>(Resource.Id.usernameEditText);
             _passwordEditText = FindViewById<EditText>(Resource.Id.passwordEditText);
+            _wifiListView = FindViewById<ListView>(Resource.Id.wifiListView);
         }
 
         protected override void OnResume()
@@ -182,6 +196,8 @@ namespace PPCAndroid
                 {
                     Log.Info("network", network);
                 }
+                
+                
             }
         }
     }

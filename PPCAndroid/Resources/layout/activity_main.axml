@@ -4,6 +4,7 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent">
+    tools:context=".List" >
 
 
     <Button
@@ -34,6 +35,12 @@
             android:layout_centerHorizontal="true"
             android:textAppearance="@android:style/TextAppearance.DeviceDefault"
             android:textColor="?android:attr/colorAccent"/>
+    <ListView
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_alignParentTop="true"
+            android:layout_centerHorizontal="true"
+            android:id="@+id/wifiListView"/>
 
 
 </RelativeLayout>

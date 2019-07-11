@@ -33,6 +33,7 @@ namespace Shared.ViewModels
             set => this.RaiseAndSetIfChanged(ref _password, value);
         }
 
+        //TODO: Kamil, tu te pierdoły, dodatkowy properties bo coś próbowałem kombinować
         private readonly ObservableAsPropertyHelper<string[]> wifiList;
         public string[] WifiList => wifiList.Value;
 
@@ -50,7 +51,7 @@ namespace Shared.ViewModels
             
             this._confirm = new Interaction<Unit, bool>();
 
-            //TODO: how to do it properly?
+            //TODO: Kamil, no cóż xd
             wifiList = this.WhenAnyValue(x => x.WifiListString.ToArray()).ToProperty(this, x => x.WifiList);
             
             var canLogin = this.WhenAnyValue(x => x.UserName, x => x.Password, LoginInputValidator.Validate);
