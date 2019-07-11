@@ -86,6 +86,8 @@ namespace PPCAndroid
                     interaction.SetOutput(confirmation);
                 }));
             });
+            
+            
         }
 
         protected override void RegisterView()

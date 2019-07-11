@@ -14,9 +14,11 @@ namespace PPCAndroid.JobServices
     {
         private const string DesiredSsid = "CBR";
         private WifiScanReceiver _receiverWifi;
+        private bool alreadyWorking;
 
         public WifiJobService()
         {
+            alreadyWorking = false;
             _receiverWifi = new WifiScanReceiver();
         }
 
@@ -26,8 +28,8 @@ namespace PPCAndroid.JobServices
             Task.Run(() =>
             {
                 //TODO: work when wifi enabled 
-                var x = CheckWiFiConnection();
-                if (x)
+                var wifiEnabled = CheckWiFiConnection();
+                if (wifiEnabled)
                 {
                     //TODO: skanować sieć! osobny task najlepiej!
                     RegisterReceiver(_receiverWifi, new IntentFilter(WifiManager.ScanResultsAvailableAction));
@@ -35,6 +37,10 @@ namespace PPCAndroid.JobServices
                     if (_receiverWifi.WifiList.Contains(DesiredSsid))
                     {
                         //TODO: istnieje wifi rekordowe
+                        if (!CheckIfAtWork())
+                        {
+                            var working = AskIfAtWork();
+                        }
                     }
                 }
             });
@@ -53,6 +59,18 @@ namespace PPCAndroid.JobServices
         {
             _receiverWifi.WifiManager = (WifiManager) GetSystemService(Context.WifiService);
             return _receiverWifi.WifiManager.IsWifiEnabled;
+        }
+
+        private bool CheckIfAtWork()
+        {
+            return alreadyWorking;
+        }
+
+        private async Task<bool> AskIfAtWork() 
+        {
+            //TODO: powiadomienia 
+            
+            return true;
         }
     }
     
