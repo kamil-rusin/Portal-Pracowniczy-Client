@@ -58,9 +58,11 @@
         </Reference>
     </ItemGroup>
     <ItemGroup>
+        <Compile Include="AppConstant.cs" />
         <Compile Include="BaseActivity.cs" />
         <Compile Include="DashboardActivity.cs" />
         <Compile Include="JobServices\JobSchedulerHelpers.cs" />
+        <Compile Include="JobServices\NotificationReceiver.cs" />
         <Compile Include="JobServices\WifiJobService.cs" />
         <Compile Include="JobServices\WifiScanReceiver.cs" />
         <Compile Include="MainActivity.cs" />
@@ -84,6 +86,7 @@
         <AndroidResource Include="Resources\drawable\menu.png" />
         <AndroidResource Include="Resources\drawable\nav_item_color_state.xml" />
         <AndroidResource Include="Resources\drawable\personaldata.png" />
+        <AndroidResource Include="Resources\drawable\raports.png" />
         <AndroidResource Include="Resources\drawable\replacement.png" />
         <AndroidResource Include="Resources\layout\activity_dashboard.axml">
           <SubType>Designer</SubType>

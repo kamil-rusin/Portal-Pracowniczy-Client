@@ -6,25 +6,20 @@ using PPCAndroid.Mappers;
 
 namespace PPCAndroid.JobServices
 {
-    /*public class WifiScanReceiver2 : BroadcastReceiver
+    public class WifiScanReceiver : BroadcastReceiver
     {
-        public WifiManager _wifiManager;
-        public static IList<ScanResult> WifiList
-        {
-            get;
-            private set;
-        }
+        public WifiManager WifiManager;
+        public IEnumerable<string> WifiList { get; set; }
 
         public override void OnReceive(Context context, Intent intent)
         {
             if (!intent.Action.Equals(WifiManager.ScanResultsAvailableAction)) return;
-            WifiList = _wifiManager.ScanResults;
-            var test = _wifiManager.ScanResults.ToDomainWifiNetworks();
+            var test = WifiManager.ScanResults.ToDomainWifiNetworks();
             foreach (var network in test)
             {
+                //TODO:Usunąć po testach
                 Log.Info("network", network);
             }
         }
-        
-    }*/
+    }
 }

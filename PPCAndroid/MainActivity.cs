@@ -7,9 +7,13 @@ using Android.Content;
 using Android.Content.PM;
 using Android.Net.Wifi;
 using Android.OS;
+using Android.Runtime;
 using Android.Support.V4.Content;
+using Android.Support.V4.App;
+using TaskStackBuilder = Android.Support.V4.App.TaskStackBuilder;
 using Android.Util;
 using Android.Widget;
+using PPCAndroid.JobServices;
 using PPCAndroid.Mappers;
 using PPCAndroid.Shared.Service;
 using ReactiveUI;
@@ -21,6 +25,8 @@ namespace PPCAndroid
     [Activity(Label = "@string/app_name", Theme = "@style/Theme.AppCompat.Light.NoActionBar", MainLauncher = true)]
     public class MainActivity : BaseActivity<LoginViewModel>
     {
+        public static readonly int NotificationId = 1000;
+        public static readonly string ChannelId = "work_notification";
         private Button _logInButton;
         private EditText _usernameEditText;
         private EditText _passwordEditText;
@@ -32,9 +38,8 @@ namespace PPCAndroid
         protected override void OnCreate(Bundle savedInstanceState)
         {
             _onResumeCalled = false;
-            
             OnCreateBase(savedInstanceState);
-
+            CreateNotificationChannel();
 
             //workspace
             _wifiManager = (WifiManager) GetSystemService(Context.WifiService);
@@ -46,10 +51,29 @@ namespace PPCAndroid
 
             _receiverWifi = new WifiScanReceiver();
             RegisterReceiver(_receiverWifi, new IntentFilter(WifiManager.ScanResultsAvailableAction));
+            
             var startedSuccess = _wifiManager.StartScan();
 
             //TODO: Observable dać na listę wifi i ją wyświetlić
 
+        }
+
+        private void CreateNotificationChannel()
+        {
+            if (Build.VERSION.SdkInt < BuildVersionCodes.O)
+            {
+                return;
+            }
+
+            var name = Resources.GetString(Resource.String.channel_name);
+            var description = GetString(Resource.String.channel_description);
+            var channel = new NotificationChannel(ChannelId, name, NotificationImportance.High)
+            {
+                Description = description
+            };
+
+            var notificationManager = (NotificationManager) GetSystemService(NotificationService);
+            notificationManager.CreateNotificationChannel(channel);
         }
 
         protected override void BindCommands(CompositeDisposable disposables)

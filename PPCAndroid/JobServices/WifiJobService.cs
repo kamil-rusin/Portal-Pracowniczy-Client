@@ -1,9 +1,13 @@
 using System.Collections.Generic;
+using System.Drawing;
 using System.Linq;
 using System.Threading.Tasks;
+using Android.App;
 using Android.App.Job;
 using Android.Content;
 using Android.Net.Wifi;
+using Android.Renderscripts;
+using Android.Support.V4.App;
 using Android.Util;
 using Java.Lang;
 using PPCAndroid.Mappers;
@@ -14,33 +18,38 @@ namespace PPCAndroid.JobServices
     {
         private const string DesiredSsid = "CBR";
         private WifiScanReceiver _receiverWifi;
+        private NotificationReceiver _receiverNotification;
         private bool alreadyWorking;
 
         public WifiJobService()
         {
             alreadyWorking = false;
-            _receiverWifi = new WifiScanReceiver();
         }
 
         public override bool OnStartJob(JobParameters @params)
         {
-
             Task.Run(() =>
             {
-                //TODO: work when wifi enabled 
+                _receiverWifi = new WifiScanReceiver();
                 var wifiEnabled = CheckWiFiConnection();
                 if (wifiEnabled)
                 {
-                    //TODO: skanować sieć! osobny task najlepiej!
                     RegisterReceiver(_receiverWifi, new IntentFilter(WifiManager.ScanResultsAvailableAction));
                     var startedSuccess = _receiverWifi.WifiManager.StartScan();
+                    _receiverNotification = new NotificationReceiver();
+                    RegisterReceiver(_receiverNotification, new IntentFilter(AppConstant.ConfirmationAction));
+
                     if (_receiverWifi.WifiList.Contains(DesiredSsid))
                     {
                         //TODO: istnieje wifi rekordowe
                         if (!CheckIfAtWork())
                         {
-                            var working = AskIfAtWork();
+                            AskIfAtWork();
                         }
+                    }
+                    else
+                    {
+                        //TODO: nie istnieje wifi rekordowe
                     }
                 }
             });
@@ -52,6 +61,18 @@ namespace PPCAndroid.JobServices
 
         public override bool OnStopJob(JobParameters @params)
         {
+            if (_receiverWifi != null) 
+            {
+                UnregisterReceiver(_receiverWifi);
+                _receiverWifi = null;
+            }
+            
+            if (_receiverNotification != null) 
+            {
+                UnregisterReceiver(_receiverNotification);
+                _receiverNotification = null;
+            }
+            
             return true;
         }
 
@@ -66,28 +87,24 @@ namespace PPCAndroid.JobServices
             return alreadyWorking;
         }
 
-        private async Task<bool> AskIfAtWork() 
+        //TODO: czy to ma być async task czy jak?
+        private void AskIfAtWork() 
         {
-            //TODO: powiadomienia 
-            
-            return true;
-        }
-    }
-    
-    public class WifiScanReceiver : BroadcastReceiver
-    {
-        public WifiManager WifiManager;
-        public IEnumerable<string> WifiList { get; set; }
+            var notificationManager = NotificationManagerCompat.From(this);
+            Intent confirmationReceive = new Intent();
+            confirmationReceive.SetAction(AppConstant.ConfirmationAction);
+            PendingIntent pendingIntentConfirmation = PendingIntent.GetBroadcast(this, 12345, confirmationReceive, PendingIntentFlags.UpdateCurrent);
 
-        public override void OnReceive(Context context, Intent intent)
-        {
-            if (!intent.Action.Equals(WifiManager.ScanResultsAvailableAction)) return;
-            var test = WifiManager.ScanResults.ToDomainWifiNetworks();
-            foreach (var network in test)
-            {
-                Log.Info("network", network);
-            }
+
+            var builder = new NotificationCompat.Builder(this, MainActivity.ChannelId)
+                .SetContentTitle("Wi-Fi wykryte")
+                .SetPriority(1)
+                .SetSmallIcon(Resource.Drawable.raports)
+                .SetDefaults((int)NotificationDefaults.Sound | (int)NotificationDefaults.Vibrate)
+                .SetContentText("Kliknij w powiadomienie, aby potwierdzić, że jesteś pracy.")
+                .AddAction(Resource.Drawable.abc_list_selector_holo_light,"Potwierdź",pendingIntentConfirmation); 
+           
+            notificationManager.Notify(MainActivity.NotificationId, builder.Build());
         }
-        
     }
 }
