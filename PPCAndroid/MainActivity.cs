@@ -61,7 +61,8 @@ namespace PPCAndroid
             //TODO: Observable dać na listę wifi i ją wyświetlić
             //TODO: Kamil, jak to zbindować?
             List<string> carL = new List<string>();  
-            //carL.AddRange();  
+            carL.Add("rekord");
+            carL.Add("android");
 
             adapter = new ArrayAdapter<string>(this, Resource.Layout.item_layout, carL);
 

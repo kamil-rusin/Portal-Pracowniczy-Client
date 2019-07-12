@@ -52,7 +52,7 @@ namespace Shared.ViewModels
             this._confirm = new Interaction<Unit, bool>();
 
             //TODO: Kamil, no cóż xd
-            wifiList = this.WhenAnyValue(x => x.WifiListString.ToArray()).ToProperty(this, x => x.WifiList);
+            //wifiList = this.WhenAnyValue(x => x.WifiListString.ToArray()).ToProperty(this, x => x.WifiList);
             
             var canLogin = this.WhenAnyValue(x => x.UserName, x => x.Password, LoginInputValidator.Validate);
             LoginCommand = ReactiveCommand.CreateFromTask(async () => { await Login();  }, canLogin);
