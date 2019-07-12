@@ -30,6 +30,7 @@ namespace PPCAndroid.JobServices
         {
             Task.Run(() =>
             {
+                //TODO: Sprawdzić czy nowy dzień, albo czy wyszedł z pracy i jednak wrócił
                 _receiverWifi = new WifiScanReceiver();
                 var wifiEnabled = CheckWiFiConnection();
                 if (wifiEnabled)

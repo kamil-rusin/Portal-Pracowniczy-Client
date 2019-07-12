@@ -32,7 +32,7 @@ namespace PPCAndroid
         private EditText _usernameEditText;
         private EditText _passwordEditText;
         private ListView _wifiListView;
-        private ArrayAdapter<string> adapter ;
+        private ArrayAdapter<string> adapter;
         private static WifiManager _wifiManager;
         private WifiScanReceiver _receiverWifi;
         private static IList<ScanResult> _wifiList;
