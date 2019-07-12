@@ -1,9 +1,11 @@
 using System;
+using System.Collections.Generic;
 using System.Linq;
 using System.Reactive;
 using System.Reactive.Linq;
 using System.Threading.Tasks;
 using Android.Util;
+using PPCAndroid;
 using PPCAndroid.Shared.Service;
 using ReactiveUI;
 
@@ -34,25 +36,33 @@ namespace Shared.ViewModels
         }
 
         //TODO: Kamil, tu te pierdoły, dodatkowy properties bo coś próbowałem kombinować
-        private readonly ObservableAsPropertyHelper<string[]> wifiList;
-        public string[] WifiList => wifiList.Value;
+        private readonly ObservableAsPropertyHelper<IEnumerable<WifiNetwork>> _wifiList;
+        public IEnumerable<WifiNetwork> WifiList => _wifiList.Value;
 
-        public string[] WifiListString
+        private IEnumerable<WifiNetwork> _wifiNetworks;
+        public IEnumerable<WifiNetwork> WifiNetworks
         {
-            get;
-            set;
+            get { return _wifiNetworks; }
+            set => this.RaiseAndSetIfChanged(ref _wifiNetworks,value);
         }
+
 
         public ReactiveCommand<Unit,Unit> LoginCommand { get; private set; }
         
-        public LoginViewModel(ILogin login)
+        public LoginViewModel(ILogin login, IObservable<IEnumerable<WifiNetwork>> wifiNetworksObs)
         {
             _loginService = login;
             
             this._confirm = new Interaction<Unit, bool>();
-
+            _wifiList = this
+                .WhenAnyValue(x => x.WifiNetworks)
+                .ToProperty(this, x => x.WifiList);
+            
             //TODO: Kamil, no cóż xd
-            //wifiList = this.WhenAnyValue(x => x.WifiListString.ToArray()).ToProperty(this, x => x.WifiList);
+            wifiNetworksObs.Subscribe(Observer.Create<IEnumerable<WifiNetwork>>(n =>
+            {
+             //TODO: napisać nexta   
+            }));
             
             var canLogin = this.WhenAnyValue(x => x.UserName, x => x.Password, LoginInputValidator.Validate);
             LoginCommand = ReactiveCommand.CreateFromTask(async () => { await Login();  }, canLogin);

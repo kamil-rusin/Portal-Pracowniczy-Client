@@ -14,7 +14,7 @@ using PPCAndroid.Mappers;
 
 namespace PPCAndroid.JobServices
 {
-    public class WifiJobService: JobService
+   /* public class WifiJobService: JobService
     {
         private const string DesiredSsid = "CBR";
         private WifiScanReceiver _receiverWifi;
@@ -30,6 +30,7 @@ namespace PPCAndroid.JobServices
         {
             Task.Run(() =>
             {
+                
                 //TODO: Sprawdzić czy nowy dzień, albo czy wyszedł z pracy i jednak wrócił
                 _receiverWifi = new WifiScanReceiver();
                 var wifiEnabled = CheckWiFiConnection();
@@ -107,5 +108,5 @@ namespace PPCAndroid.JobServices
            
             notificationManager.Notify(MainActivity.NotificationId, builder.Build());
         }
-    }
+    }*/
 }

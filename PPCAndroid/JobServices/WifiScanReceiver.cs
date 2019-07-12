@@ -1,4 +1,7 @@
+using System;
 using System.Collections.Generic;
+using System.Linq;
+using System.Reactive.Subjects;
 using Android.Content;
 using Android.Net.Wifi;
 using Android.Util;
@@ -8,18 +11,21 @@ namespace PPCAndroid.JobServices
 {
     public class WifiScanReceiver : BroadcastReceiver
     {
-        public WifiManager WifiManager;
-        public IEnumerable<string> WifiList { get; set; }
+        private readonly WifiManager _wifiManager;
+        private readonly Subject<IEnumerable<WifiNetwork>> _wiFiNetworksSubject;
+        
+        public IObservable<IEnumerable<WifiNetwork>> WiFiNetworksObs => _wiFiNetworksSubject;
+        public WifiScanReceiver(WifiManager wifiManager)    
+        {
+            _wifiManager = wifiManager;
+            _wiFiNetworksSubject = new Subject<IEnumerable<WifiNetwork>>();
+        }
 
         public override void OnReceive(Context context, Intent intent)
         {
             if (!intent.Action.Equals(WifiManager.ScanResultsAvailableAction)) return;
-            var test = WifiManager.ScanResults.ToDomainWifiNetworks();
-            foreach (var network in test)
-            {
-                //TODO:Usunąć po testach
-                Log.Info("network", network);
-            }
+            var wifiNetworks = _wifiManager.ScanResults.ToDomainWifiNetworks().ToList();
+            _wiFiNetworksSubject.OnNext(wifiNetworks);
         }
     }
 }

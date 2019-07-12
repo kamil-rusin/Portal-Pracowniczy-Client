@@ -38,7 +38,8 @@ namespace PPCAndroid
         private static IList<ScanResult> _wifiList;
         private bool _onResumeCalled;
         
-
+        
+        
         protected override void OnCreate(Bundle savedInstanceState)
         {
             _onResumeCalled = false;
@@ -53,7 +54,7 @@ namespace PPCAndroid
                 _wifiManager.SetWifiEnabled(true);
             }
 
-            _receiverWifi = new WifiScanReceiver();
+            _receiverWifi = new WifiScanReceiver(_wifiManager);
             RegisterReceiver(_receiverWifi, new IntentFilter(WifiManager.ScanResultsAvailableAction));
             
             var startedSuccess = _wifiManager.StartScan();
@@ -98,12 +99,12 @@ namespace PPCAndroid
             this.Bind(ViewModel, x => x.UserName, a => a._usernameEditText.Text).DisposeWith(disposables);
             this.Bind(ViewModel, x => x.Password, a => a._passwordEditText.Text).DisposeWith(disposables);
             //TODO: Kamil, binding z listą
-            //this.Bind(ViewModel, x=>x.WifiListString,a => a._wifiListView.??);
         }
 
         protected override void RegisterViewModel()
         {
-            ViewModel = new LoginViewModel(new LoginService());
+            //TODO: dobrze dałem to _receiverWifi.WiFiNetworksObs?
+            ViewModel = new LoginViewModel(new LoginService(), _receiverWifi.WiFiNetworksObs);
         }
 
         protected override void RegisterInteractions()
@@ -163,14 +164,7 @@ namespace PPCAndroid
 
         private static bool HasPermissions(Context context, string[] permissions) {
             if (context == null || permissions == null) return true;
-            foreach (var permission in permissions)
-            {
-                if (ContextCompat.CheckSelfPermission(context, permission) != Permission.Granted)
-                {
-                    return false;
-                }
-            }
-            return true;
+            return permissions.All(permission => ContextCompat.CheckSelfPermission(context, permission) == Permission.Granted);
         }
 
         protected override void OnPause()
@@ -186,7 +180,7 @@ namespace PPCAndroid
         }
         
 
-        private class WifiScanReceiver : BroadcastReceiver
+        /*private class WifiScanReceiver : BroadcastReceiver
         {
             public override void OnReceive(Context context, Intent intent)
             {
@@ -195,11 +189,11 @@ namespace PPCAndroid
                 var test = _wifiManager.ScanResults.ToDomainWifiNetworks();
                 foreach (var network in test)
                 {
-                    Log.Info("network", network);
+                    Log.Info("network", network.Ssid);
                 }
                 
                 
             }
-        }
+        }*/
     }
 }

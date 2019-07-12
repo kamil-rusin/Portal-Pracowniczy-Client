@@ -6,9 +6,9 @@ namespace PPCAndroid.Mappers
 {
     public static class WifiNetworkMapper
     {
-        public static IEnumerable<string> ToDomainWifiNetworks(this IList<ScanResult> scanResults)
+        public static IEnumerable<WifiNetwork> ToDomainWifiNetworks(this IList<ScanResult> scanResults)
         {
-            return scanResults.Select(n => n.Ssid);
+            return scanResults.Select(n => new WifiNetwork(n.Ssid));
         }
     }
 }
