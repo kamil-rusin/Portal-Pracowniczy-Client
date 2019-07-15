@@ -4,19 +4,13 @@ using System.Reactive.Disposables;
 using Android;
 using Android.App;
 using Android.Content;
-using Android.Content;
 using Android.Content.PM;
-using Android.Net.Wifi;
 using Android.OS;
-using Android.Service.QuickSettings;
 using Android.Support.V4.Content;
 using Android.Widget;
-using Java.Util.Functions;
-using PPCAndroid.JobServices;
 using PPCAndroid.Shared.Service;
 using ReactiveUI;
 using Shared.ViewModels;
-using AlertDialog = Android.App.AlertDialog;
 
 namespace PPCAndroid
 {
@@ -56,7 +50,7 @@ namespace PPCAndroid
 
         protected override void RegisterInteractions()
         {
-            this.WhenActivated(d => { d(ViewModel.GoToDashboard.RegisterHandler(async interaction =>
+            this.WhenActivated(d => { d(ViewModel.GoToDashboard.RegisterHandler(interaction =>
                 {
                     var intent = new Intent(this, typeof(DashboardActivity));
                     StartActivity(intent);
@@ -67,7 +61,7 @@ namespace PPCAndroid
             
             this.WhenActivated(d =>
             {
-                d(ViewModel.Confirm.RegisterHandler(async interaction =>
+                d(ViewModel.Confirm.RegisterHandler(interaction =>
                 {
                     
                     var intent = new Intent(BaseContext, typeof(DashboardActivity));
@@ -121,18 +115,6 @@ namespace PPCAndroid
         private static bool HasPermissions(Context context, string[] permissions) {
             if (context == null || permissions == null) return true;
             return permissions.All(permission => ContextCompat.CheckSelfPermission(context, permission) == Permission.Granted);
-        }
-
-        protected override void OnPause()
-        {
-            //TODO: Jeżeli nie będzie receiveraWifi w mainActivity to usunąć to
-           /* if (_receiverWifi != null) 
-            {
-                UnregisterReceiver(_receiverWifi);
-                _receiverWifi = null;
-            }*/
-
-            base.OnPause();
         }
     }
 }

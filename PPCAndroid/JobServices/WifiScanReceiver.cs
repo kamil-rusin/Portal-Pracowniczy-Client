@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Reactive.Subjects;
 using System.Threading.Tasks;
+using Android.App;
 using Android.Content;
 using Android.Net.Wifi;
 using Android.Support.V4.App;
@@ -43,17 +44,16 @@ namespace PPCAndroid.JobServices
             foreach (var availableSsid in _availableSsids)
             {
                 var wifi = WifiNetworks.FirstOrDefault(n => n.Ssid == availableSsid);
-                if (wifi != null)
-                {
-                   var builder = new NotificationCompat.Builder(context, MainActivity.ChannelId)
-                        .SetContentTitle("Wykryto sieć")
-                        .SetContentText(wifi.Ssid)
-                        .SetSmallIcon(Resource.Drawable.raports)
-                        .SetPriority(NotificationCompat.PriorityHigh);
+                if (wifi == null) continue;
+                var builder = new NotificationCompat.Builder(context, MainActivity.ChannelId)
+                    .SetContentTitle("Wykryto sieć")
+                    .SetContentText(wifi.Ssid)
+                    .SetSmallIcon(Resource.Drawable.raports)
+                    .SetDefaults((int)NotificationDefaults.Sound | (int)NotificationDefaults.Vibrate)
+                    .SetPriority(NotificationCompat.PriorityHigh);
                     
-                    var notificationManager = NotificationManagerCompat.From(context);
-                    notificationManager.Notify(MainActivity.NotificationId, builder.Build() );
-                }
+                var notificationManager = NotificationManagerCompat.From(context);
+                notificationManager.Notify(MainActivity.NotificationId, builder.Build() );
             }
 
             Task.Run(() =>

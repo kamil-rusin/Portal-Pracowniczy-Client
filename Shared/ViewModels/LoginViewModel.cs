@@ -40,18 +40,6 @@ namespace Shared.ViewModels
         #endregion
         
         private ILogin _loginService;
-        
-
-        //TODO: Kamil, tu te pierdoły, dodatkowy properties bo coś próbowałem kombinować
-        private readonly ObservableAsPropertyHelper<IEnumerable<WifiNetwork>> _wifiList;
-        public IEnumerable<WifiNetwork> WifiList => _wifiList.Value;
-
-        /*private IEnumerable<WifiNetwork> _wifiNetworks;
-        public IEnumerable<WifiNetwork> WifiNetworks
-        {
-            get { return _wifiNetworks; }
-            set => this.RaiseAndSetIfChanged(ref _wifiNetworks,value);
-        }*/
 
 
         public ReactiveCommand<Unit,Unit> LoginCommand { get; private set; }
@@ -62,13 +50,7 @@ namespace Shared.ViewModels
             
             GoToDashboard= new Interaction<Unit, Unit>();
             Confirm = new Interaction<Unit, bool>();
-            
-            /*_wifiList = this
-                .WhenAnyValue(x => x.WifiNetworks)
-                .ToProperty(this, x => x.WifiList);*/
-            //this.WhenAnyValue(x => wifiNetworksObs).ToProperty<LoginViewModel,IEnumerable<WifiNetwork>>(this, x => x.WifiList, out _wifiList);
-            //TODO: Kamil, no cóż xd
-          
+
             var canLogin = this.WhenAnyValue(x => x.UserName, x => x.Password, LoginInputValidator.Validate);
             LoginCommand = ReactiveCommand.CreateFromTask(async () => { await Login();  }, canLogin);
         }
