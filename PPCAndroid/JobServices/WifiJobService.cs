@@ -11,6 +11,7 @@ using Android.Support.V4.App;
 using Android.Util;
 using Java.Lang;
 using PPCAndroid.Mappers;
+using PPCAndroid.Shared.Domain;
 
 namespace PPCAndroid.JobServices
 {
@@ -27,38 +28,25 @@ namespace PPCAndroid.JobServices
         {
             _desiredNetwork = new WifiNetwork(DesiredSsid);
             _alreadyWorking = false;
-            _wifiManager = (WifiManager) GetSystemService(Context.WifiService);
         }
 
         public override bool OnStartJob(JobParameters @params)
         {
-            Task.Run(() =>
-            {
-                
                 //TODO: Sprawdzić czy nowy dzień, albo czy wyszedł z pracy i jednak wrócił
                 _receiverWifi = new WifiScanReceiver(_wifiManager); //TODO: statyczny wifimanager z mainactivity??
                 var wifiEnabled = CheckWiFiConnection();
                 if (wifiEnabled)
                 {
                     RegisterReceiver(_receiverWifi, new IntentFilter(WifiManager.ScanResultsAvailableAction));
+                   
                     var startedSuccess = _wifiManager.StartScan();
+                    
                     _receiverNotification = new NotificationReceiver();
                     RegisterReceiver(_receiverNotification, new IntentFilter(AppConstant.ConfirmationAction));
 
-                    if (_receiverWifi.WifiNetworks.Contains(_desiredNetwork))
-                    {
-                        //TODO: istnieje wifi rekordowe
-                        if (!CheckIfAtWork())
-                        {
-                            AskIfAtWork();
-                        }
-                    }
-                    else
-                    {
-                        //TODO: nie istnieje wifi rekordowe
-                    }
+                 
                 }
-            });
+            
             
             JobFinished(@params,true);
 

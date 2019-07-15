@@ -1,4 +1,4 @@
-namespace PPCAndroid
+namespace PPCAndroid.Shared.Domain
 {
     public class WifiNetwork
     {

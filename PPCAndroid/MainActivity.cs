@@ -25,8 +25,6 @@ namespace PPCAndroid
         private Button _logInButton;
         private EditText _usernameEditText;
         private EditText _passwordEditText;
-        private static WifiManager _wifiManager;
-        private WifiScanReceiver _receiverWifi;
         private bool _onResumeCalled;
         
         
@@ -35,37 +33,9 @@ namespace PPCAndroid
         {
             _onResumeCalled = false;
             OnCreateBase(savedInstanceState);
-            CreateNotificationChannel();
-
-            
-            //TODO: usunąć po testach apki
-            //workspace
-            _wifiManager = (WifiManager) GetSystemService(Context.WifiService);
-            //RegisterReceiver(_receiverWifi);
-
-            if (_wifiManager.IsWifiEnabled == false)
-            {
-                _wifiManager.SetWifiEnabled(true);
-            }
+           
         }
-
-        private void CreateNotificationChannel()
-        {
-            if (Build.VERSION.SdkInt < BuildVersionCodes.O)
-            {
-                return;
-            }
-
-            var name = Resources.GetString(Resource.String.channel_name);
-            var description = GetString(Resource.String.channel_description);
-            var channel = new NotificationChannel(ChannelId, name, NotificationImportance.High)
-            {
-                Description = description
-            };
-
-            var notificationManager = (NotificationManager) GetSystemService(NotificationService);
-            notificationManager.CreateNotificationChannel(channel);
-        }
+      
 
         protected override void BindCommands(CompositeDisposable disposables)
         {
@@ -80,9 +50,7 @@ namespace PPCAndroid
 
         protected override void RegisterViewModel()
         {
-            //TODO: dobrze dałem to _receiverWifi.WiFiNetworksObs, ERROR: zmienić na receiverwifi z wifijobservice
-            _receiverWifi = new WifiScanReceiver(_wifiManager);
-            ViewModel = new LoginViewModel(new LoginService(), _receiverWifi.WiFiNetworksObs);
+            ViewModel = new LoginViewModel(new LoginService());
         }
 
         protected override void RegisterInteractions()
@@ -91,16 +59,19 @@ namespace PPCAndroid
             {
                 d(ViewModel.Confirm.RegisterHandler(async interaction =>
                 {
-                    var confirmation = false;
-                    var builder = new AlertDialog.Builder(this);
-                    var alert = builder.Create();
-                    alert.SetTitle("Potwierdzenie");
-                    alert.SetMessage("Na pewno chcesz się zalogować?");
-                    alert.SetButton("Tak", (sender, args) => confirmation = true);
-                    alert.SetButton2("Nie", (sender, args) => confirmation = false);
-                    alert.Show();
+                    
+                    var intent = new Intent(BaseContext, typeof(DashboardActivity));
+                    StartActivity(intent);
+//                    var confirmation = false;
+//                    var builder = new AlertDialog.Builder(this);
+//                    var alert = builder.Create();
+//                    alert.SetTitle("Potwierdzenie");
+//                    alert.SetMessage("Na pewno chcesz się zalogować?");
+//                    alert.SetButton("Tak", (sender, args) => confirmation = true);
+//                    alert.SetButton2("Nie", (sender, args) => confirmation = false);
+//                    alert.Show();
 
-                    interaction.SetOutput(confirmation);
+                    interaction.SetOutput(true);
                 }));
             });
         }

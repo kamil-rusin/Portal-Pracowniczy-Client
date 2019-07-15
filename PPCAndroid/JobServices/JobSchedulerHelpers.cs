@@ -7,11 +7,10 @@ using System;
 
 namespace PPCAndroid.JobServices
 {
-    [Service(Name = "PPCAndroid.FindingWiFiJob", Permission = "android.permission.BIND_JOB_SERVICE")]
+    [Service(Name = "PPCAndroid.JobServices.WifiJobService", Permission = "android.permission.BIND_JOB_SERVICE")]
     public static class JobSchedulerHelpers
     {
-        public static JobInfo.Builder CreateJobBuilderUsingJobId<T>(this Context context, int jobId)
-            where T : JobService
+        public static JobInfo.Builder CreateJobBuilderUsingJobId<T>(this Context context, int jobId) where T : JobService
         {
             var javaClass = Java.Lang.Class.FromType(typeof(T));
             var componentName = new ComponentName(context, javaClass);
@@ -19,6 +18,18 @@ namespace PPCAndroid.JobServices
                 .SetRequiredNetworkType(NetworkType.Any);
 
             return builder;
+        }
+
+        public static void SheduleJob<T>(Context context, int jobId)where T : JobService
+        {
+            var javaClass = Class.FromType(typeof(T));
+            var componentName = new ComponentName(context, javaClass);
+            var builder =  new JobInfo.Builder(jobId, componentName)
+                .SetPeriodic(60000)
+                .SetRequiredNetworkType(NetworkType.Any);
+            
+            var jobScheduler = (JobScheduler)context.GetSystemService(Context.JobSchedulerService);
+            jobScheduler.Schedule(builder.Build());
         }
         
         public static ComponentName GetComponentNameForJob<T>(this Context context) where T : JobService
