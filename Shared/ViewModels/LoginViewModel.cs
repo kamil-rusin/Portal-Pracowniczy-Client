@@ -39,12 +39,12 @@ namespace Shared.ViewModels
         private readonly ObservableAsPropertyHelper<IEnumerable<WifiNetwork>> _wifiList;
         public IEnumerable<WifiNetwork> WifiList => _wifiList.Value;
 
-        private IEnumerable<WifiNetwork> _wifiNetworks;
+        /*private IEnumerable<WifiNetwork> _wifiNetworks;
         public IEnumerable<WifiNetwork> WifiNetworks
         {
             get { return _wifiNetworks; }
             set => this.RaiseAndSetIfChanged(ref _wifiNetworks,value);
-        }
+        }*/
 
 
         public ReactiveCommand<Unit,Unit> LoginCommand { get; private set; }
@@ -52,16 +52,17 @@ namespace Shared.ViewModels
         public LoginViewModel(ILogin login, IObservable<IEnumerable<WifiNetwork>> wifiNetworksObs)
         {
             _loginService = login;
-            
             this._confirm = new Interaction<Unit, bool>();
-            _wifiList = this
-                .WhenAnyValue(x => x.WifiNetworks)
-                .ToProperty(this, x => x.WifiList);
             
+            /*_wifiList = this
+                .WhenAnyValue(x => x.WifiNetworks)
+                .ToProperty(this, x => x.WifiList);*/
+            this.WhenAnyValue(x => wifiNetworksObs).ToProperty<LoginViewModel,IEnumerable<WifiNetwork>>(this, x => x.WifiList, out _wifiList);
             //TODO: Kamil, no cóż xd
             wifiNetworksObs.Subscribe(Observer.Create<IEnumerable<WifiNetwork>>(n =>
             {
-             //TODO: napisać nexta   
+             //TODO: napisać nexta  
+             
             }));
             
             var canLogin = this.WhenAnyValue(x => x.UserName, x => x.Password, LoginInputValidator.Validate);
