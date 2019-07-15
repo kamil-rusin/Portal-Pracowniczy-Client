@@ -3,8 +3,8 @@
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
-    android:layout_height="match_parent">
-
+    android:layout_height="match_parent"
+    android:background="@drawable/gradient">
    
     
     <android.support.design.widget.BottomNavigationView
@@ -20,15 +20,29 @@
     />
     <TextView
             android:text="Jesteś w pracy od:"
-            android:layout_width="116dp"
-            android:layout_height="85dp"
-            android:layout_alignParentTop="true" android:layout_marginTop="84dp"
-            android:id="@+id/entryTextView" android:layout_centerHorizontal="true"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_gravity="center"
+            android:textStyle="bold"
+            android:textSize="24sp"
+            android:textColor="#ffffff"
+            android:layout_alignParentTop="true"
+            android:layout_marginTop="84dp"
+            android:id="@+id/entryTextView"
+            android:layout_centerHorizontal="true"
             android:theme="@style/MyCustomTheme"/>
     <TextView
             android:text="Dzisiaj pracujesz już:"
-            android:layout_width="116dp"
-            android:layout_height="94dp" android:layout_alignParentTop="true" android:layout_marginTop="226dp"
-            android:id="@+id/timeTextView" android:layout_centerHorizontal="true" android:theme="@style/MyCustomTheme"/>
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_gravity="center"
+            android:layout_alignParentTop="true"
+            android:layout_marginTop="226dp"
+            android:textStyle="bold"
+            android:textSize="24sp"
+            android:textColor="#ffffff"
+            android:id="@+id/timeTextView"
+            android:layout_centerHorizontal="true" 
+            android:theme="@style/MyCustomTheme"/>
 
 </RelativeLayout>

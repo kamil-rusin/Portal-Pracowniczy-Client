@@ -74,6 +74,7 @@
         <AndroidResource Include="Resources\drawable\clock.png" />
         <AndroidResource Include="Resources\drawable\desktop.png" />
         <AndroidResource Include="Resources\drawable\finance.png" />
+        <AndroidResource Include="Resources\drawable\gradient.xml" />
         <AndroidResource Include="Resources\drawable\home.png" />
         <AndroidResource Include="Resources\drawable\login.png" />
         <AndroidResource Include="Resources\drawable\logout.png" />
@@ -81,7 +82,7 @@
         <AndroidResource Include="Resources\drawable\nav_item_color_state.xml" />
         <AndroidResource Include="Resources\drawable\password.png" />
         <AndroidResource Include="Resources\drawable\personaldata.png" />
-        <AndroidResource Include="Resources\drawable\rekord_si.jpg" />
+        <AndroidResource Include="Resources\drawable\rekord_si.png" />
         <AndroidResource Include="Resources\drawable\replacement.png" />
         <AndroidResource Include="Resources\layout\activity_dashboard.axml">
           <SubType>Designer</SubType>
