@@ -35,14 +35,14 @@ namespace Shared.ViewModels
         #endregion
         
         private readonly ILogin _loginService;
-
+        private AppVariables _appVariables;
 
         public ReactiveCommand<Unit,Unit> LoginCommand { get; private set; }
         
         public LoginViewModel(ILogin login)
         {
             _loginService = login;
-            
+            _appVariables = new AppVariables();
             GoToDashboard= new Interaction<Unit, Unit>();
             
 
@@ -55,6 +55,9 @@ namespace Shared.ViewModels
             var lg = await _loginService.Login(_userName, _password);
             if (lg)
             {
+                _appVariables.UserName = UserName;
+                _appVariables.logDate = DateTime.Now;
+                _appVariables.isLogged = true;
                  await GoToDashboard.Handle(Unit.Default);
             }
             

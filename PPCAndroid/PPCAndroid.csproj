@@ -59,6 +59,7 @@
     </ItemGroup>
     <ItemGroup>
         <Compile Include="AppConstant.cs" />
+        <Compile Include="AppVariables.cs" />
         <Compile Include="BaseActivity.cs" />
         <Compile Include="DashboardActivity.cs" />
         <Compile Include="JobServices\JobSchedulerHelpers.cs" />
