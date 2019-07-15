@@ -15,14 +15,9 @@ namespace Shared.ViewModels
     public class LoginViewModel : ViewModelBase
     {
         #region Interactions
-        
-        #region Interactions
-
-        public Interaction<Unit, bool> Confirm { get; }
         public Interaction<Unit, Unit> GoToDashboard { get; }
         #endregion
-        #endregion
-        
+
         #region Properties
         private string _userName;
         public string UserName
@@ -39,7 +34,7 @@ namespace Shared.ViewModels
         }
         #endregion
         
-        private ILogin _loginService;
+        private readonly ILogin _loginService;
 
 
         public ReactiveCommand<Unit,Unit> LoginCommand { get; private set; }
@@ -49,24 +44,18 @@ namespace Shared.ViewModels
             _loginService = login;
             
             GoToDashboard= new Interaction<Unit, Unit>();
-            Confirm = new Interaction<Unit, bool>();
+            
 
             var canLogin = this.WhenAnyValue(x => x.UserName, x => x.Password, LoginInputValidator.Validate);
-            LoginCommand = ReactiveCommand.CreateFromTask(async () => { await Login();  }, canLogin);
+            LoginCommand = ReactiveCommand.CreateFromTask(async () => { await TryLogin();  }, canLogin);
         }
 
-        private async Task<IObservable<bool>> Login()
+        private async Task<IObservable<bool>> TryLogin()
         {
             var lg = await _loginService.Login(_userName, _password);
-            //TODO: refactor, druga funkcja Login a ta to TryLogin
             if (lg)
             {
-                var confirmation = await Confirm.Handle(Unit.Default);
-
-                if (confirmation)
-                {
-                    await GoToDashboard.Handle(Unit.Default);
-                }
+                 await GoToDashboard.Handle(Unit.Default);
             }
             
             return Observable.Return(lg);

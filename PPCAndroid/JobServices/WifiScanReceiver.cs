@@ -46,8 +46,8 @@ namespace PPCAndroid.JobServices
                 var wifi = WifiNetworks.FirstOrDefault(n => n.Ssid == availableSsid);
                 if (wifi == null) continue;
                 var builder = new NotificationCompat.Builder(context, MainActivity.ChannelId)
-                    .SetContentTitle("Wykryto sieć")
-                    .SetContentText(wifi.Ssid)
+                    .SetContentTitle("Wykryto sieć " + wifi.Ssid)
+                    .SetContentText("Kliknij, jeżeli jesteś w pracy.")
                     .SetSmallIcon(Resource.Drawable.raports)
                     .SetDefaults((int)NotificationDefaults.Sound | (int)NotificationDefaults.Vibrate)
                     .SetPriority(NotificationCompat.PriorityHigh);

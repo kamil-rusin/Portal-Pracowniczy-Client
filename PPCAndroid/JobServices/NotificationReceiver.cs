@@ -19,6 +19,7 @@ namespace PPCAndroid
                 Toast.MakeText(Application.Context, "Jesteś w pracy", ToastLength.Short);
                 //TODO: Ustawić datę przyjścia do pracy.
             } 
+            
             //TODO: nie jest w pracy
             
         }

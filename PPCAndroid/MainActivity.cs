@@ -57,27 +57,6 @@ namespace PPCAndroid
                     interaction.SetOutput(Unit.Default);
                 })); 
             });
-            
-            
-            this.WhenActivated(d =>
-            {
-                d(ViewModel.Confirm.RegisterHandler(interaction =>
-                {
-                    
-                    var intent = new Intent(BaseContext, typeof(DashboardActivity));
-                    StartActivity(intent);
-//                    var confirmation = false;
-//                    var builder = new AlertDialog.Builder(this);
-//                    var alert = builder.Create();
-//                    alert.SetTitle("Potwierdzenie");
-//                    alert.SetMessage("Na pewno chcesz się zalogować?");
-//                    alert.SetButton("Tak", (sender, args) => confirmation = true);
-//                    alert.SetButton2("Nie", (sender, args) => confirmation = false);
-//                    alert.Show();
-
-                    interaction.SetOutput(true);
-                }));
-            });
         }
 
         protected override void RegisterView()
