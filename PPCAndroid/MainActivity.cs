@@ -8,6 +8,7 @@ using Android.Net.Wifi;
 using Android.OS;
 using Android.Support.V4.Content;
 using Android.Widget;
+using Java.Util.Functions;
 using PPCAndroid.JobServices;
 using PPCAndroid.Shared.Service;
 using ReactiveUI;
@@ -24,7 +25,6 @@ namespace PPCAndroid
         private Button _logInButton;
         private EditText _usernameEditText;
         private EditText _passwordEditText;
-        private ListView _wifiListView;
         private static WifiManager _wifiManager;
         private WifiScanReceiver _receiverWifi;
         private bool _onResumeCalled;
@@ -37,9 +37,11 @@ namespace PPCAndroid
             OnCreateBase(savedInstanceState);
             CreateNotificationChannel();
 
+            
             //TODO: usunąć po testach apki
             //workspace
             _wifiManager = (WifiManager) GetSystemService(Context.WifiService);
+            //RegisterReceiver(_receiverWifi);
 
             if (_wifiManager.IsWifiEnabled == false)
             {
@@ -78,7 +80,8 @@ namespace PPCAndroid
 
         protected override void RegisterViewModel()
         {
-            //TODO: dobrze dałem to _receiverWifi.WiFiNetworksObs?
+            //TODO: dobrze dałem to _receiverWifi.WiFiNetworksObs, ERROR: zmienić na receiverwifi z wifijobservice
+            _receiverWifi = new WifiScanReceiver(_wifiManager);
             ViewModel = new LoginViewModel(new LoginService(), _receiverWifi.WiFiNetworksObs);
         }
 
@@ -141,12 +144,12 @@ namespace PPCAndroid
 
         protected override void OnPause()
         {
-            
-            if (_receiverWifi != null) 
+            //TODO: Jeżeli nie będzie receiveraWifi w mainActivity to usunąć to
+           /* if (_receiverWifi != null) 
             {
                 UnregisterReceiver(_receiverWifi);
                 _receiverWifi = null;
-            }
+            }*/
 
             base.OnPause();
         }

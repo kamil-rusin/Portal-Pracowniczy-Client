@@ -13,7 +13,9 @@ namespace PPCAndroid.JobServices
     {
         private readonly WifiManager _wifiManager;
         private readonly Subject<IEnumerable<WifiNetwork>> _wiFiNetworksSubject;
-        
+
+        public List<WifiNetwork> WifiNetworks { get; set; }
+
         public IObservable<IEnumerable<WifiNetwork>> WiFiNetworksObs => _wiFiNetworksSubject;
         public WifiScanReceiver(WifiManager wifiManager)    
         {
@@ -24,8 +26,8 @@ namespace PPCAndroid.JobServices
         public override void OnReceive(Context context, Intent intent)
         {
             if (!intent.Action.Equals(WifiManager.ScanResultsAvailableAction)) return;
-            var wifiNetworks = _wifiManager.ScanResults.ToDomainWifiNetworks().ToList();
-            _wiFiNetworksSubject.OnNext(wifiNetworks);
+            WifiNetworks = _wifiManager.ScanResults.ToDomainWifiNetworks().ToList();
+            _wiFiNetworksSubject.OnNext(WifiNetworks);
         }
     }
 }

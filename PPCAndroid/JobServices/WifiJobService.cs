@@ -18,12 +18,16 @@ namespace PPCAndroid.JobServices
     {
         private const string DesiredSsid = "CBR";
         private WifiScanReceiver _receiverWifi;
+        private static WifiManager _wifiManager;
         private NotificationReceiver _receiverNotification;
-        private bool alreadyWorking;
+        private bool _alreadyWorking;
+        private readonly WifiNetwork _desiredNetwork;
 
         public WifiJobService()
         {
-            alreadyWorking = false;
+            _desiredNetwork = new WifiNetwork(DesiredSsid);
+            _alreadyWorking = false;
+            _wifiManager = (WifiManager) GetSystemService(Context.WifiService);
         }
 
         public override bool OnStartJob(JobParameters @params)
@@ -32,16 +36,16 @@ namespace PPCAndroid.JobServices
             {
                 
                 //TODO: Sprawdzić czy nowy dzień, albo czy wyszedł z pracy i jednak wrócił
-                _receiverWifi = new WifiScanReceiver(); //TODO: statyczny wifimanager z mainactivity??
+                _receiverWifi = new WifiScanReceiver(_wifiManager); //TODO: statyczny wifimanager z mainactivity??
                 var wifiEnabled = CheckWiFiConnection();
                 if (wifiEnabled)
                 {
                     RegisterReceiver(_receiverWifi, new IntentFilter(WifiManager.ScanResultsAvailableAction));
-                    var startedSuccess = _receiverWifi.WifiManager.StartScan();
+                    var startedSuccess = _wifiManager.StartScan();
                     _receiverNotification = new NotificationReceiver();
                     RegisterReceiver(_receiverNotification, new IntentFilter(AppConstant.ConfirmationAction));
 
-                    if (_receiverWifi.WifiList.Contains(DesiredSsid))
+                    if (_receiverWifi.WifiNetworks.Contains(_desiredNetwork))
                     {
                         //TODO: istnieje wifi rekordowe
                         if (!CheckIfAtWork())
@@ -80,13 +84,13 @@ namespace PPCAndroid.JobServices
 
         private bool CheckWiFiConnection()
         {
-            _receiverWifi.WifiManager = (WifiManager) GetSystemService(Context.WifiService);
-            return _receiverWifi.WifiManager.IsWifiEnabled;
+            _wifiManager = (WifiManager) GetSystemService(Context.WifiService);
+            return _wifiManager.IsWifiEnabled;
         }
 
         private bool CheckIfAtWork()
         {
-            return alreadyWorking;
+            return _alreadyWorking;
         }
 
         //TODO: czy to ma być async task czy jak?
