@@ -1,5 +1,4 @@
-﻿using System.Collections.Generic;
-using System.Linq;
+﻿using System.Linq;
 using System.Reactive.Disposables;
 using Android;
 using Android.App;
@@ -7,15 +6,9 @@ using Android.Content;
 using Android.Content.PM;
 using Android.Net.Wifi;
 using Android.OS;
-using Android.Runtime;
 using Android.Support.V4.Content;
-using Android.Support.V4.App;
-using Android.Support.V7.Widget;
-using TaskStackBuilder = Android.Support.V4.App.TaskStackBuilder;
-using Android.Util;
 using Android.Widget;
 using PPCAndroid.JobServices;
-using PPCAndroid.Mappers;
 using PPCAndroid.Shared.Service;
 using ReactiveUI;
 using Shared.ViewModels;
@@ -32,10 +25,8 @@ namespace PPCAndroid
         private EditText _usernameEditText;
         private EditText _passwordEditText;
         private ListView _wifiListView;
-        private ArrayAdapter<string> adapter;
         private static WifiManager _wifiManager;
         private WifiScanReceiver _receiverWifi;
-        private static IList<ScanResult> _wifiList;
         private bool _onResumeCalled;
         
         
@@ -46,6 +37,7 @@ namespace PPCAndroid
             OnCreateBase(savedInstanceState);
             CreateNotificationChannel();
 
+            //TODO: usunąć po testach apki
             //workspace
             _wifiManager = (WifiManager) GetSystemService(Context.WifiService);
 
@@ -53,22 +45,6 @@ namespace PPCAndroid
             {
                 _wifiManager.SetWifiEnabled(true);
             }
-
-            _receiverWifi = new WifiScanReceiver(_wifiManager);
-            RegisterReceiver(_receiverWifi, new IntentFilter(WifiManager.ScanResultsAvailableAction));
-            
-            var startedSuccess = _wifiManager.StartScan();
-
-            //TODO: Observable dać na listę wifi i ją wyświetlić
-            //TODO: Kamil, jak to zbindować?
-            List<string> carL = new List<string>();  
-            carL.Add("rekord");
-            carL.Add("android");
-
-            adapter = new ArrayAdapter<string>(this, Resource.Layout.item_layout, carL);
-
-            _wifiListView.Adapter = adapter;
-
         }
 
         private void CreateNotificationChannel()
@@ -98,7 +74,6 @@ namespace PPCAndroid
         {
             this.Bind(ViewModel, x => x.UserName, a => a._usernameEditText.Text).DisposeWith(disposables);
             this.Bind(ViewModel, x => x.Password, a => a._passwordEditText.Text).DisposeWith(disposables);
-            //TODO: Kamil, binding z listą
         }
 
         protected override void RegisterViewModel()
@@ -125,8 +100,6 @@ namespace PPCAndroid
                     interaction.SetOutput(confirmation);
                 }));
             });
-            
-            
         }
 
         protected override void RegisterView()
@@ -139,7 +112,6 @@ namespace PPCAndroid
             _logInButton = FindViewById<Button>(Resource.Id.loginButton);
             _usernameEditText = FindViewById<EditText>(Resource.Id.usernameEditText);
             _passwordEditText = FindViewById<EditText>(Resource.Id.passwordEditText);
-            _wifiListView = FindViewById<ListView>(Resource.Id.wifiListView);
         }
 
         protected override void OnResume()
@@ -178,22 +150,5 @@ namespace PPCAndroid
 
             base.OnPause();
         }
-        
-
-        /*private class WifiScanReceiver : BroadcastReceiver
-        {
-            public override void OnReceive(Context context, Intent intent)
-            {
-                if (!intent.Action.Equals(WifiManager.ScanResultsAvailableAction)) return;
-                _wifiList = _wifiManager.ScanResults;
-                var test = _wifiManager.ScanResults.ToDomainWifiNetworks();
-                foreach (var network in test)
-                {
-                    Log.Info("network", network.Ssid);
-                }
-                
-                
-            }
-        }*/
     }
 }

@@ -16,7 +16,6 @@ namespace Shared.ViewModels
         private readonly Interaction<Unit, bool> _confirm;
         public Interaction<Unit, bool> Confirm => this._confirm;
         
-        
         private ILogin _loginService;
         
         private string _userName;
@@ -27,13 +26,13 @@ namespace Shared.ViewModels
             set => this.RaiseAndSetIfChanged(ref _userName, value);
         }
 
-
         private string _password;
         public string Password
         {
             get => _password;
             set => this.RaiseAndSetIfChanged(ref _password, value);
         }
+        
 
         //TODO: Kamil, tu te pierdoły, dodatkowy properties bo coś próbowałem kombinować
         private readonly ObservableAsPropertyHelper<IEnumerable<WifiNetwork>> _wifiList;
@@ -57,7 +56,7 @@ namespace Shared.ViewModels
             /*_wifiList = this
                 .WhenAnyValue(x => x.WifiNetworks)
                 .ToProperty(this, x => x.WifiList);*/
-            this.WhenAnyValue(x => wifiNetworksObs).ToProperty<LoginViewModel,IEnumerable<WifiNetwork>>(this, x => x.WifiList, out _wifiList);
+            //this.WhenAnyValue(x => wifiNetworksObs).ToProperty<LoginViewModel,IEnumerable<WifiNetwork>>(this, x => x.WifiList, out _wifiList);
             //TODO: Kamil, no cóż xd
             wifiNetworksObs.Subscribe(Observer.Create<IEnumerable<WifiNetwork>>(n =>
             {
