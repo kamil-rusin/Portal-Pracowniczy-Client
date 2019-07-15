@@ -1,7 +1,12 @@
 using System;
+using System.Collections.Generic;
+using System.Linq;
 using System.Reactive;
 using System.Reactive.Linq;
 using System.Threading.Tasks;
+using Android.Util;
+using PPCAndroid;
+using PPCAndroid.Shared.Domain;
 using PPCAndroid.Shared.Service;
 using ReactiveUI;
 
@@ -10,9 +15,12 @@ namespace Shared.ViewModels
     public class LoginViewModel : ViewModelBase
     {
         #region Interactions
+        
+        #region Interactions
 
         public Interaction<Unit, bool> Confirm { get; }
         public Interaction<Unit, Unit> GoToDashboard { get; }
+        #endregion
         #endregion
         
         #region Properties
@@ -20,10 +28,9 @@ namespace Shared.ViewModels
         public string UserName
         {
             get => _userName;
-
             set => this.RaiseAndSetIfChanged(ref _userName, value);
         }
-
+        
         private string _password;
         public string Password
         {
@@ -33,6 +40,20 @@ namespace Shared.ViewModels
         #endregion
         
         private ILogin _loginService;
+        
+
+        //TODO: Kamil, tu te pierdoły, dodatkowy properties bo coś próbowałem kombinować
+        private readonly ObservableAsPropertyHelper<IEnumerable<WifiNetwork>> _wifiList;
+        public IEnumerable<WifiNetwork> WifiList => _wifiList.Value;
+
+        /*private IEnumerable<WifiNetwork> _wifiNetworks;
+        public IEnumerable<WifiNetwork> WifiNetworks
+        {
+            get { return _wifiNetworks; }
+            set => this.RaiseAndSetIfChanged(ref _wifiNetworks,value);
+        }*/
+
+
         public ReactiveCommand<Unit,Unit> LoginCommand { get; private set; }
         
         public LoginViewModel(ILogin login)
@@ -42,6 +63,12 @@ namespace Shared.ViewModels
             GoToDashboard= new Interaction<Unit, Unit>();
             Confirm = new Interaction<Unit, bool>();
             
+            /*_wifiList = this
+                .WhenAnyValue(x => x.WifiNetworks)
+                .ToProperty(this, x => x.WifiList);*/
+            //this.WhenAnyValue(x => wifiNetworksObs).ToProperty<LoginViewModel,IEnumerable<WifiNetwork>>(this, x => x.WifiList, out _wifiList);
+            //TODO: Kamil, no cóż xd
+          
             var canLogin = this.WhenAnyValue(x => x.UserName, x => x.Password, LoginInputValidator.Validate);
             LoginCommand = ReactiveCommand.CreateFromTask(async () => { await Login();  }, canLogin);
         }

@@ -58,9 +58,15 @@
         </Reference>
     </ItemGroup>
     <ItemGroup>
+        <Compile Include="AppConstant.cs" />
         <Compile Include="BaseActivity.cs" />
         <Compile Include="DashboardActivity.cs" />
+        <Compile Include="JobServices\JobSchedulerHelpers.cs" />
+        <Compile Include="JobServices\NotificationReceiver.cs" />
+        <Compile Include="JobServices\WifiJobService.cs" />
+        <Compile Include="JobServices\WifiScanReceiver.cs" />
         <Compile Include="MainActivity.cs" />
+        <Compile Include="Mappers\WifiNetworkMapper.cs" />
         <Compile Include="Resources\Resource.Designer.cs" />
         <Compile Include="Properties\AssemblyInfo.cs" />
     </ItemGroup>
@@ -82,6 +88,7 @@
         <AndroidResource Include="Resources\drawable\nav_item_color_state.xml" />
         <AndroidResource Include="Resources\drawable\password.png" />
         <AndroidResource Include="Resources\drawable\personaldata.png" />
+        <AndroidResource Include="Resources\drawable\raports.png" />
         <AndroidResource Include="Resources\drawable\rekord_si.png" />
         <AndroidResource Include="Resources\drawable\replacement.png" />
         <AndroidResource Include="Resources\layout\activity_dashboard.axml">
@@ -91,6 +98,7 @@
         <AndroidResource Include="Resources\layout\activity_main.axml">
             <SubType>Designer</SubType>
         </AndroidResource>
+        <AndroidResource Include="Resources\layout\item_layout.xml" />
         <AndroidResource Include="Resources\menu\bottom_navigation_main.axml" />
         <AndroidResource Include="Resources\values-v21\styles.xml" />
         <AndroidResource Include="Resources\values\colors_old.xml" />

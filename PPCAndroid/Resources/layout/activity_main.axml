@@ -6,6 +6,7 @@
     android:layout_height="match_parent"
     android:background="@drawable/gradient">
 
+    
     <Button
             android:text="Zaloguj"
             android:layout_width="139dp"

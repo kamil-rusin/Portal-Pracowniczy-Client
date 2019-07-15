@@ -9,6 +9,9 @@
     <Import_RootNamespace>Shared</Import_RootNamespace>
   </PropertyGroup>
   <ItemGroup>
+    <Compile Include="$(MSBuildThisFileDirectory)Domain\WifiNetwork.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)Service\IWifi.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)Service\WifiService.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)View\ContentPageBase.cs" />
     <Folder Include="$(MSBuildThisFileDirectory)Model" />
     <Compile Include="$(MSBuildThisFileDirectory)Service\ILogin.cs" />
