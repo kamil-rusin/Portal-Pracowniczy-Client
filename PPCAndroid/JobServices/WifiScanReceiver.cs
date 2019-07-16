@@ -39,18 +39,19 @@ namespace PPCAndroid.JobServices
 
         public override void OnReceive(Context context, Intent intent)
         {
-            if (_appVariables.AtWork) return;
+            var wifiFound = false;
             if (!intent.Action.Equals(WifiManager.ScanResultsAvailableAction)) return;
             WifiNetworks = WifiManager.ScanResults.ToDomainWifiNetworks().ToList();
             _wiFiNetworksSubject.OnNext(WifiNetworks);
-
-            var notificationIntent = new Intent(context, typeof(AtWorkIntentService));
-            var pendingIntent = PendingIntent.GetForegroundService(context, 0, notificationIntent, 0);
 
             foreach (var availableSsid in _availableSsids)
             {
                 var wifi = WifiNetworks.FirstOrDefault(n => n.Ssid == availableSsid);
                 if (wifi == null) continue;
+                if (_appVariables.AtWork) continue;
+                wifiFound = true;
+                var notificationIntent = new Intent(context, typeof(AtWorkIntentService));
+                var pendingIntent = PendingIntent.GetForegroundService(context, 0, notificationIntent, 0);
                 var builder = new NotificationCompat.Builder(context, MainActivity.ChannelId)
                     .SetContentTitle("Wykryto sieć " + wifi.Ssid)
                     .SetContentText("Kliknij, jeżeli jesteś w pracy.")
@@ -61,6 +62,25 @@ namespace PPCAndroid.JobServices
 
                 var notificationManager = NotificationManagerCompat.From(context);
                 notificationManager.Notify(MainActivity.NotificationId, builder.Build());
+            }
+
+            if (!wifiFound)
+            {
+                if (_appVariables.AtWork)
+                {
+                    var notificationIntent = new Intent(context, typeof(LeftWorkIntentService));
+                    var pendingIntent = PendingIntent.GetForegroundService(context, 0, notificationIntent, 0);
+                    var builder = new NotificationCompat.Builder(context, MainActivity.ChannelId)
+                        .SetContentTitle("Utracono firmową sieć")
+                        .SetContentText("Kliknij, jeżeli wyszedłeś z pracy.")
+                        .SetSmallIcon(Resource.Drawable.raports)
+                        .SetContentIntent(pendingIntent)
+                        .SetDefaults((int) NotificationDefaults.Sound | (int) NotificationDefaults.Vibrate)
+                        .SetPriority(NotificationCompat.PriorityHigh);
+
+                    var notificationManager = NotificationManagerCompat.From(context);
+                    notificationManager.Notify(MainActivity.NotificationId, builder.Build());
+                }
             }
 
             Task.Run(() =>
