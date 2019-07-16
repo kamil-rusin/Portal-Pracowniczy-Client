@@ -11,18 +11,20 @@ using Android.Util;
 using Java.Lang;
 using PPCAndroid.Mappers;
 using PPCAndroid.Shared.Domain;
+using Android.Content;
+
 
 namespace PPCAndroid.JobServices
 {
     public class WifiScanReceiver : BroadcastReceiver
     {
-        
+        private AppVariables _appVariables;
         private readonly List<string> _availableSsids = new List<string>
         {
             "AndroidWifi"
         };
-        
-        private readonly WifiManager _wifiManager;
+
+        public WifiManager WifiManager { get; private set; }
         private readonly Subject<IEnumerable<WifiNetwork>> _wiFiNetworksSubject;
 
         public List<WifiNetwork> WifiNetworks { get; set; }
@@ -30,16 +32,20 @@ namespace PPCAndroid.JobServices
         
         public WifiScanReceiver(WifiManager wifiManager)    
         {
-            _wifiManager = wifiManager;
+            _appVariables = new AppVariables();
+            WifiManager = wifiManager;
             _wiFiNetworksSubject = new Subject<IEnumerable<WifiNetwork>>();
         }
 
         public override void OnReceive(Context context, Intent intent)
-        {  
-            
+        {
+            if (_appVariables.AtWork) return;
             if (!intent.Action.Equals(WifiManager.ScanResultsAvailableAction)) return;
-            WifiNetworks = _wifiManager.ScanResults.ToDomainWifiNetworks().ToList();
+            WifiNetworks = WifiManager.ScanResults.ToDomainWifiNetworks().ToList();
             _wiFiNetworksSubject.OnNext(WifiNetworks);
+
+            var notificationIntent = new Intent(context, typeof(AtWorkIntentService));
+            var pendingIntent = PendingIntent.GetForegroundService(context, 0, notificationIntent, 0);
 
             foreach (var availableSsid in _availableSsids)
             {
@@ -49,18 +55,20 @@ namespace PPCAndroid.JobServices
                     .SetContentTitle("Wykryto sieć " + wifi.Ssid)
                     .SetContentText("Kliknij, jeżeli jesteś w pracy.")
                     .SetSmallIcon(Resource.Drawable.raports)
-                    .SetDefaults((int)NotificationDefaults.Sound | (int)NotificationDefaults.Vibrate)
+                    .SetContentIntent(pendingIntent)
+                    .SetDefaults((int) NotificationDefaults.Sound | (int) NotificationDefaults.Vibrate)
                     .SetPriority(NotificationCompat.PriorityHigh);
-                    
+
                 var notificationManager = NotificationManagerCompat.From(context);
-                notificationManager.Notify(MainActivity.NotificationId, builder.Build() );
+                notificationManager.Notify(MainActivity.NotificationId, builder.Build());
             }
 
             Task.Run(() =>
             {
                 Thread.Sleep((long) TimeSpan.FromMinutes(1).TotalMilliseconds);
-                _wifiManager.StartScan();
+                WifiManager.StartScan();
             });
+
         }
     }
 }

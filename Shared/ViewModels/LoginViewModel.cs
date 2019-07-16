@@ -56,8 +56,7 @@ namespace Shared.ViewModels
             if (lg)
             {
                 _appVariables.UserName = UserName;
-                _appVariables.logDate = DateTime.Now;
-                _appVariables.isLogged = true;
+                _appVariables.IsLogged = true;
                  await GoToDashboard.Handle(Unit.Default);
             }
             

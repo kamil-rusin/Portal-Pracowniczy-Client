@@ -62,6 +62,7 @@
         <Compile Include="AppVariables.cs" />
         <Compile Include="BaseActivity.cs" />
         <Compile Include="DashboardActivity.cs" />
+        <Compile Include="JobServices\AtWorkIntentService.cs" />
         <Compile Include="JobServices\JobSchedulerHelpers.cs" />
         <Compile Include="JobServices\NotificationReceiver.cs" />
         <Compile Include="JobServices\WifiJobService.cs" />
