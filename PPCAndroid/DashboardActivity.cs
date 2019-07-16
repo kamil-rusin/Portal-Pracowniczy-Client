@@ -1,10 +1,13 @@
+using System.Reactive;
 using System.Reactive.Disposables;
 using Android.App;
 using Android.Content;
 using Android.Net.Wifi;
 using Android.OS;
+using Android.Support.Design.Widget;
 using Android.Widget;
 using PPCAndroid.JobServices;
+using ReactiveUI;
 using Shared.ViewModels;
 
 namespace PPCAndroid
@@ -14,6 +17,7 @@ namespace PPCAndroid
     {
         private TextView _entryTextView;
         private TextView _timeTextView;
+        private BottomNavigationView _bottomNavigation;
         
         private WifiManager _wifiManager;
         private WifiScanReceiver _receiverWifi; 
@@ -56,8 +60,10 @@ namespace PPCAndroid
 
         protected override void BindCommands(CompositeDisposable disposables)
         {
-
+            //TODO: Bind a command to logout bottomnavigation item
+            //this.BindCommand(ViewModel, x => x.LogOutCommand, v => _bottomNavigation);
         }
+        
 
         protected override void BindProperties(CompositeDisposable disposables)
         {
@@ -71,7 +77,7 @@ namespace PPCAndroid
 
         protected override void RegisterInteractions()
         {
-
+            this.WhenActivated(d => { d(ViewModel.GoToMainActivity.RegisterHandler(interaction => { Finish(); })); });
         }
 
         protected override void RegisterView()
@@ -83,6 +89,7 @@ namespace PPCAndroid
         {
             _entryTextView = FindViewById<TextView>(Resource.Id.entryTextView);
             _timeTextView = FindViewById<TextView>(Resource.Id.timeTextView);
+            _bottomNavigation = FindViewById<BottomNavigationView>(Resource.Id.bottom_navigation);
         }
     }
 }

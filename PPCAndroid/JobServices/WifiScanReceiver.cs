@@ -7,17 +7,16 @@ using Android.App;
 using Android.Content;
 using Android.Net.Wifi;
 using Android.Support.V4.App;
-using Android.Util;
 using Java.Lang;
 using PPCAndroid.Mappers;
 using PPCAndroid.Shared.Domain;
-using Android.Content;
 
 
 namespace PPCAndroid.JobServices
 {
     public class WifiScanReceiver : BroadcastReceiver
     {
+        //TODO: Session reference
         private AppVariables _appVariables;
         private readonly List<string> _availableSsids = new List<string>
         {
@@ -32,6 +31,7 @@ namespace PPCAndroid.JobServices
         
         public WifiScanReceiver(WifiManager wifiManager)    
         {
+            //TODO: Session reference
             _appVariables = new AppVariables();
             WifiManager = wifiManager;
             _wiFiNetworksSubject = new Subject<IEnumerable<WifiNetwork>>();
@@ -48,10 +48,11 @@ namespace PPCAndroid.JobServices
             {
                 var wifi = WifiNetworks.FirstOrDefault(n => n.Ssid == availableSsid);
                 if (wifi == null) continue;
+                //TODO: Session reference
                 if (_appVariables.AtWork) continue;
                 wifiFound = true;
                 var notificationIntent = new Intent(context, typeof(AtWorkIntentService));
-                var pendingIntent = PendingIntent.GetForegroundService(context, 0, notificationIntent, 0);
+                var pendingIntent = PendingIntent.GetService(context, 0, notificationIntent, 0);
                 var builder = new NotificationCompat.Builder(context, MainActivity.ChannelId)
                     .SetContentTitle("Wykryto sieć " + wifi.Ssid)
                     .SetContentText("Kliknij, jeżeli jesteś w pracy.")
@@ -66,10 +67,11 @@ namespace PPCAndroid.JobServices
 
             if (!wifiFound)
             {
+                //TODO: Session reference
                 if (_appVariables.AtWork)
                 {
                     var notificationIntent = new Intent(context, typeof(LeftWorkIntentService));
-                    var pendingIntent = PendingIntent.GetForegroundService(context, 0, notificationIntent, 0);
+                    var pendingIntent = PendingIntent.GetService(context, 0, notificationIntent, 0);
                     var builder = new NotificationCompat.Builder(context, MainActivity.ChannelId)
                         .SetContentTitle("Utracono firmową sieć")
                         .SetContentText("Kliknij, jeżeli wyszedłeś z pracy.")

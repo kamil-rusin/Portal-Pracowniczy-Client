@@ -35,6 +35,7 @@ namespace Shared.ViewModels
         #endregion
         
         private readonly ILogin _loginService;
+        //TODO: Session reference
         private AppVariables _appVariables;
 
         public ReactiveCommand<Unit,Unit> LoginCommand { get; private set; }
@@ -42,6 +43,7 @@ namespace Shared.ViewModels
         public LoginViewModel(ILogin login)
         {
             _loginService = login;
+            //TODO: Session reference
             _appVariables = new AppVariables();
             GoToDashboard= new Interaction<Unit, Unit>();
             
@@ -55,6 +57,7 @@ namespace Shared.ViewModels
             var lg = await _loginService.Login(_userName, _password);
             if (lg)
             {
+                //TODO: Session reference
                 _appVariables.UserName = UserName;
                 _appVariables.IsLogged = true;
                  await GoToDashboard.Handle(Unit.Default);
