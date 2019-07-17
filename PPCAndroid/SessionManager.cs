@@ -11,7 +11,6 @@ namespace PPCAndroid
     {
         private ISharedPreferences pref;
         private ISharedPreferencesEditor editor;
-        private Context _context;
 
         private int _privateMode = 0;
         private static string _prefName = "PPCAndroidPref";
@@ -21,8 +20,8 @@ namespace PPCAndroid
         private static string KeyIsLoggedIn = "isLoggedIn";
         private static string KeyIsAtWork = "isAtWork";
         
-        public SessionManager(Context context){
-            //_context = context;
+        public SessionManager(Context context)
+        {
             pref = PreferenceManager.GetDefaultSharedPreferences(context);
             editor = pref.Edit();
         }
@@ -112,7 +111,6 @@ namespace PPCAndroid
         {
             pref?.Dispose();
             editor?.Dispose();
-            _context?.Dispose();
         }
     }
 }

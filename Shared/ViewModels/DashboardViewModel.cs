@@ -24,6 +24,7 @@ namespace Shared.ViewModels
         {
             GoToMainActivity= new Interaction<Unit, Unit>();
             _sessionManager = sessionManager;
+            
             LogOutCommand = ReactiveCommand.CreateFromTask(async () => { await LogOut();  });
         }
         

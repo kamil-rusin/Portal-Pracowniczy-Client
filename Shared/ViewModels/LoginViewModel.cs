@@ -57,9 +57,10 @@ namespace Shared.ViewModels
             var lg = await _loginService.Login(_userName, _password);
             if (lg)
             {
+                _sessionManager.LogOut();
                 _sessionManager.SaveUsername(UserName);
                 _sessionManager.SaveIsLogged(true);
-                _sessionManager.Dispose();
+                //_sessionManager.Dispose();
                 await GoToDashboard.Handle(Unit.Default);
             }
             

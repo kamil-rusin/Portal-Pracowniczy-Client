@@ -16,7 +16,7 @@ namespace PPCAndroid.JobServices
 {
     public class WifiScanReceiver : BroadcastReceiver
     {
-        private readonly SessionManager _sessionManager;
+        private SessionManager _sessionManager;
         private readonly List<string> _availableSsids = new List<string>
         {
             "AndroidWifi"
@@ -30,13 +30,13 @@ namespace PPCAndroid.JobServices
         
         public WifiScanReceiver(WifiManager wifiManager)    
         {
-            _sessionManager = new SessionManager(Application.Context);
             WifiManager = wifiManager;
             _wiFiNetworksSubject = new Subject<IEnumerable<WifiNetwork>>();
         }
 
         public override void OnReceive(Context context, Intent intent)
         {
+            _sessionManager = new SessionManager(context);
             var wifiFound = false;
             if (!intent.Action.Equals(WifiManager.ScanResultsAvailableAction)) return;
             WifiNetworks = WifiManager.ScanResults.ToDomainWifiNetworks().ToList();
