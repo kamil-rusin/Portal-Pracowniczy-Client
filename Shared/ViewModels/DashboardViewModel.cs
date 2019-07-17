@@ -12,8 +12,7 @@ namespace Shared.ViewModels
 {
     public class DashboardViewModel : ViewModelBase
     {
-        //TODO: Session reference
-        private AppVariables _appVariables;
+        private readonly ISessionManager _sessionManager;
         
         #region Interactions
         public Interaction<Unit, Unit> GoToMainActivity { get; }
@@ -21,21 +20,16 @@ namespace Shared.ViewModels
         
         public ReactiveCommand<Unit,Unit> LogOutCommand { get; private set; }
         
-        public DashboardViewModel()    
+        public DashboardViewModel(ISessionManager sessionManager)    
         {
             GoToMainActivity= new Interaction<Unit, Unit>();
-            _appVariables = new AppVariables();
+            _sessionManager = sessionManager;
             LogOutCommand = ReactiveCommand.CreateFromTask(async () => { await LogOut();  });
         }
         
         private async Task LogOut()
         {
-            //TODO: Session reference
-            _appVariables.UserName = null;
-            _appVariables.IsLogged = false;
-            _appVariables.OffDate = DateTime.Now;
-            _appVariables.AtWork = false;
-            
+            _sessionManager.LogOut();
             await GoToMainActivity.Handle(Unit.Default);
         }
     }

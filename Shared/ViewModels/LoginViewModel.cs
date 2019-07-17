@@ -2,8 +2,10 @@ using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Reactive;
+using System.Reactive.Disposables;
 using System.Reactive.Linq;
 using System.Threading.Tasks;
+using Android.App;
 using Android.Util;
 using PPCAndroid;
 using PPCAndroid.Shared.Domain;
@@ -35,16 +37,14 @@ namespace Shared.ViewModels
         #endregion
         
         private readonly ILogin _loginService;
-        //TODO: Session reference
-        private AppVariables _appVariables;
+        private readonly ISessionManager _sessionManager;
 
         public ReactiveCommand<Unit,Unit> LoginCommand { get; private set; }
         
-        public LoginViewModel(ILogin login)
+        public LoginViewModel(ILogin login, ISessionManager sessionManager)
         {
             _loginService = login;
-            //TODO: Session reference
-            _appVariables = new AppVariables();
+            _sessionManager = sessionManager;
             GoToDashboard= new Interaction<Unit, Unit>();
             
 
@@ -57,10 +57,10 @@ namespace Shared.ViewModels
             var lg = await _loginService.Login(_userName, _password);
             if (lg)
             {
-                //TODO: Session reference
-                _appVariables.UserName = UserName;
-                _appVariables.IsLogged = true;
-                 await GoToDashboard.Handle(Unit.Default);
+                _sessionManager.SaveUsername(UserName);
+                _sessionManager.SaveIsLogged(true);
+                _sessionManager.Dispose();
+                await GoToDashboard.Handle(Unit.Default);
             }
             
             return Observable.Return(lg);

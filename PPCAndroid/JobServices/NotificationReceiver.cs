@@ -4,7 +4,7 @@ using Android.Widget;
 
 namespace PPCAndroid
 {
-    public class NotificationReceiver : BroadcastReceiver
+    /*public class NotificationReceiver : BroadcastReceiver
     {
         public NotificationReceiver()
         {
@@ -23,5 +23,5 @@ namespace PPCAndroid
             //TODO: nie jest w pracy
             
         }
-    }
+    }*/
 }

@@ -7,18 +7,19 @@ namespace PPCAndroid.JobServices
     [Service]
     public class LeftWorkIntentService : IntentService
     {
-        private AppVariables _appVariables;
+        private SessionManager _sessionManager;
 
         public LeftWorkIntentService() : base("LeftWorkIntentService")
         {
-            _appVariables = new AppVariables();
+            _sessionManager = new SessionManager(Application.Context);
         }
 
         protected override void OnHandleIntent(Intent intent)
         {
-            if (!(_appVariables.IsLogged & _appVariables.AtWork)) return;
-            _appVariables.OffDate = DateTime.Now;
-            _appVariables.AtWork = false;
+            if (!(_sessionManager.GetIsLoggedIn()) & _sessionManager.GetIsAtWork()) return;
+            _sessionManager.SaveLogOutDate(DateTime.Now);
+            _sessionManager.SaveAtWork(false);
+            _sessionManager.Dispose();
         }
     }
 }

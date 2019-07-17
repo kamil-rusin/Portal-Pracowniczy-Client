@@ -49,7 +49,7 @@ namespace PPCAndroid
 
             var name = Resources.GetString(Resource.String.channel_name);
             var description = GetString(Resource.String.channel_description);
-            var channel = new NotificationChannel(MainActivity.ChannelId, name, NotificationImportance.High)
+            var channel = new NotificationChannel(AppConstant.ChannelId, name, NotificationImportance.High)
             {
                 Description = description
             };
@@ -72,7 +72,7 @@ namespace PPCAndroid
 
         protected override void RegisterViewModel()
         {
-            ViewModel = new DashboardViewModel();
+            ViewModel = new DashboardViewModel(new SessionManager(Application.Context));
         }
 
         protected override void RegisterInteractions()

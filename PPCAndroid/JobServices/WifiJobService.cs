@@ -4,7 +4,7 @@ using Android.Net.Wifi;
 
 namespace PPCAndroid.JobServices
 {
-    public class WifiJobService: JobService
+    /*public class WifiJobService: JobService
     {
         private WifiScanReceiver _receiverWifi;
         private static WifiManager _wifiManager;
@@ -50,5 +50,5 @@ namespace PPCAndroid.JobServices
             _wifiManager = (WifiManager) GetSystemService(Context.WifiService);
             return _wifiManager.IsWifiEnabled;
         }
-    }
+    }*/
 }

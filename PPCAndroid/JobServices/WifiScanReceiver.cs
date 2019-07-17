@@ -16,23 +16,21 @@ namespace PPCAndroid.JobServices
 {
     public class WifiScanReceiver : BroadcastReceiver
     {
-        //TODO: Session reference
-        private AppVariables _appVariables;
+        private readonly SessionManager _sessionManager;
         private readonly List<string> _availableSsids = new List<string>
         {
             "AndroidWifi"
         };
 
-        public WifiManager WifiManager { get; private set; }
+        private WifiManager WifiManager { get; set; }
         private readonly Subject<IEnumerable<WifiNetwork>> _wiFiNetworksSubject;
 
-        public List<WifiNetwork> WifiNetworks { get; set; }
+        private List<WifiNetwork> WifiNetworks { get; set; }
         public IObservable<IEnumerable<WifiNetwork>> WiFiNetworksObs => _wiFiNetworksSubject;
         
         public WifiScanReceiver(WifiManager wifiManager)    
         {
-            //TODO: Session reference
-            _appVariables = new AppVariables();
+            _sessionManager = new SessionManager(Application.Context);
             WifiManager = wifiManager;
             _wiFiNetworksSubject = new Subject<IEnumerable<WifiNetwork>>();
         }
@@ -48,40 +46,40 @@ namespace PPCAndroid.JobServices
             {
                 var wifi = WifiNetworks.FirstOrDefault(n => n.Ssid == availableSsid);
                 if (wifi == null) continue;
-                //TODO: Session reference
-                if (_appVariables.AtWork) continue;
+                if (_sessionManager.GetIsAtWork()) continue;
                 wifiFound = true;
                 var notificationIntent = new Intent(context, typeof(AtWorkIntentService));
                 var pendingIntent = PendingIntent.GetService(context, 0, notificationIntent, 0);
-                var builder = new NotificationCompat.Builder(context, MainActivity.ChannelId)
+                var builder = new NotificationCompat.Builder(context, AppConstant.ChannelId)
                     .SetContentTitle("Wykryto sieć " + wifi.Ssid)
                     .SetContentText("Kliknij, jeżeli jesteś w pracy.")
                     .SetSmallIcon(Resource.Drawable.raports)
                     .SetContentIntent(pendingIntent)
+                    .SetAutoCancel(true)
                     .SetDefaults((int) NotificationDefaults.Sound | (int) NotificationDefaults.Vibrate)
                     .SetPriority(NotificationCompat.PriorityHigh);
 
                 var notificationManager = NotificationManagerCompat.From(context);
-                notificationManager.Notify(MainActivity.NotificationId, builder.Build());
+                notificationManager.Notify(AppConstant.NotificationId, builder.Build());
             }
 
             if (!wifiFound)
             {
-                //TODO: Session reference
-                if (_appVariables.AtWork)
+                if (_sessionManager.GetIsAtWork())
                 {
                     var notificationIntent = new Intent(context, typeof(LeftWorkIntentService));
                     var pendingIntent = PendingIntent.GetService(context, 0, notificationIntent, 0);
-                    var builder = new NotificationCompat.Builder(context, MainActivity.ChannelId)
+                    var builder = new NotificationCompat.Builder(context, AppConstant.ChannelId)
                         .SetContentTitle("Utracono firmową sieć")
                         .SetContentText("Kliknij, jeżeli wyszedłeś z pracy.")
                         .SetSmallIcon(Resource.Drawable.raports)
                         .SetContentIntent(pendingIntent)
+                        .SetAutoCancel(true)
                         .SetDefaults((int) NotificationDefaults.Sound | (int) NotificationDefaults.Vibrate)
                         .SetPriority(NotificationCompat.PriorityHigh);
 
                     var notificationManager = NotificationManagerCompat.From(context);
-                    notificationManager.Notify(MainActivity.NotificationId, builder.Build());
+                    notificationManager.Notify(AppConstant.NotificationId, builder.Build());
                 }
             }
 
@@ -90,7 +88,6 @@ namespace PPCAndroid.JobServices
                 Thread.Sleep((long) TimeSpan.FromMinutes(1).TotalMilliseconds);
                 WifiManager.StartScan();
             });
-
         }
     }
 }

@@ -17,14 +17,10 @@ namespace PPCAndroid
     [Activity(Label = "@string/app_name", Theme = "@style/Theme.AppCompat.Light.NoActionBar", MainLauncher = true)]
     public class MainActivity : BaseActivity<LoginViewModel>
     {
-        public static readonly int NotificationId = 1000;
-        public static readonly string ChannelId = "work_notification";
         private Button _logInButton;
         private EditText _usernameEditText;
         private EditText _passwordEditText;
         private bool _onResumeCalled;
-        
-        
         
         protected override void OnCreate(Bundle savedInstanceState)
         {
@@ -45,7 +41,7 @@ namespace PPCAndroid
 
         protected override void RegisterViewModel()
         {
-            ViewModel = new LoginViewModel(new LoginService());
+            ViewModel = new LoginViewModel(new LoginService(), new SessionManager(Application.Context));
         }
 
         protected override void RegisterInteractions()

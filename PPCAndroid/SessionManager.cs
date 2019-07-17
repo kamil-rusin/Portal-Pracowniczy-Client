@@ -2,12 +2,13 @@ using System;
 using System.Globalization;
 using Android.Content;
 using Android.Preferences;
+using Android.Util;
+using PPCAndroid.Shared.Domain;
 
 namespace PPCAndroid
 {
-    public class SessionManager
+    public class SessionManager: ISessionManager
     {
-        //TODO: remember to dispose variables in functions
         private ISharedPreferences pref;
         private ISharedPreferencesEditor editor;
         private Context _context;
@@ -21,15 +22,16 @@ namespace PPCAndroid
         private static string KeyIsAtWork = "isAtWork";
         
         public SessionManager(Context context){
-            _context = context;
-            pref = PreferenceManager.GetDefaultSharedPreferences(_context);
+            //_context = context;
+            pref = PreferenceManager.GetDefaultSharedPreferences(context);
             editor = pref.Edit();
         }
-
+        
         public void SaveUsername(string username)
         {
             editor.Remove(KeyUsername);
             editor.PutString(KeyUsername, username);
+            Log.Info(KeyUsername, username);
             editor.Commit();
         }
         
@@ -37,6 +39,7 @@ namespace PPCAndroid
         {
             editor.Remove(KeyLogInDate);
             editor.PutString(KeyLogInDate, entryDate.ToString(CultureInfo.InvariantCulture));
+            Log.Info(KeyLogInDate, entryDate.ToString(CultureInfo.InvariantCulture));
             editor.Commit();
         }
         
@@ -44,6 +47,7 @@ namespace PPCAndroid
         {
             editor.Remove(KeyLogOutDate);
             editor.PutString(KeyLogOutDate, leavingDate.ToString(CultureInfo.InvariantCulture));
+            Log.Info(KeyLogOutDate, leavingDate.ToString(CultureInfo.InvariantCulture));
             editor.Commit();
         }
         
@@ -51,6 +55,7 @@ namespace PPCAndroid
         {
             editor.Remove(KeyIsLoggedIn);
             editor.PutBoolean(KeyIsLoggedIn, isLogged);
+            Log.Info(KeyIsLoggedIn, isLogged.ToString());
             editor.Commit();
         }
         
@@ -58,40 +63,56 @@ namespace PPCAndroid
         {
             editor.Remove(KeyIsAtWork);
             editor.PutBoolean(KeyIsAtWork, atWork);
+            Log.Info(KeyIsAtWork, atWork.ToString());
             editor.Commit();
         }
 
         public string GetUsername()
         {
-            return pref.GetString(KeyUsername, "not_valid_user");
+            var x = pref.GetString(KeyUsername, "not_valid_user");
+            Log.Info(KeyUsername, x);
+            return x;
         }
         
         public DateTime GetLogInDate()
         {
             var dateInString = pref.GetString(KeyLogInDate, "");
+            Log.Info(KeyLogInDate, dateInString);
             return DateTime.Parse(dateInString);
         }
         
         public DateTime GetLogOutDate()
         {
             var dateInString = pref.GetString(KeyLogOutDate, "");
+            Log.Info(KeyLogOutDate, dateInString);
             return DateTime.Parse(dateInString);
         }
 
         public bool GetIsLoggedIn()
         {
-            return pref.GetBoolean(KeyIsLoggedIn, false);
+            var x = pref.GetBoolean(KeyIsLoggedIn, false);
+            Log.Info(KeyIsLoggedIn, x.ToString());
+            return x;
         }
         
         public bool GetIsAtWork()
         {
-            return pref.GetBoolean(KeyIsAtWork, false);
+            var x = pref.GetBoolean(KeyIsAtWork, false);
+            Log.Info(KeyIsAtWork, x.ToString());
+            return x;
         }
 
         public void LogOut()
         {
             editor.Clear();
             editor.Commit();
+        }
+
+        public void Dispose()
+        {
+            pref?.Dispose();
+            editor?.Dispose();
+            _context?.Dispose();
         }
     }
 }
