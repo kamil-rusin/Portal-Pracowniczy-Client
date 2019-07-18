@@ -61,9 +61,10 @@
         <Compile Include="AppConstant.cs" />
         <Compile Include="BaseActivity.cs" />
         <Compile Include="DashboardActivity.cs" />
-        <Compile Include="JobServices\AtWorkIntentService.cs" />
+        <Compile Include="JobServices\StartWorkIntentService.cs" />
+        <Compile Include="JobServices\StartWorkReceiver.cs" />
         <Compile Include="JobServices\JobSchedulerHelpers.cs" />
-        <Compile Include="JobServices\LeftWorkIntentService.cs" />
+        <Compile Include="JobServices\LeftWorkReceiver.cs" />
         <Compile Include="JobServices\NotificationReceiver.cs" />
         <Compile Include="JobServices\WifiJobService.cs" />
         <Compile Include="JobServices\WifiScanReceiver.cs" />

@@ -20,7 +20,7 @@ namespace PPCAndroid
         private BottomNavigationView _bottomNavigation;
         
         private WifiManager _wifiManager;
-        private WifiScanReceiver _receiverWifi; 
+        private WifiScanReceiver _receiverWifi;
 
         protected override void OnCreate(Bundle savedInstanceState)
         {

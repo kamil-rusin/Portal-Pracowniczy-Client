@@ -8,6 +8,7 @@ using Android.Content.PM;
 using Android.OS;
 using Android.Support.V4.Content;
 using Android.Widget;
+using PPCAndroid.JobServices;
 using PPCAndroid.Shared.Service;
 using ReactiveUI;
 using Shared.ViewModels;
