@@ -1,6 +1,7 @@
 using System;
 using Android.App;
 using Android.Content;
+using Android.Support.V4.App;
 
 namespace PPCAndroid.JobServices
 {
@@ -11,7 +12,12 @@ namespace PPCAndroid.JobServices
         
         public StartWorkIntentService() : base("StartWorkIntentService")
         {
-            SetIntentRedelivery(true);
+            NotificationCompat.Builder builder = new NotificationCompat.Builder(this, AppConstant.ChannelId)
+                .SetSmallIcon(Resource.Drawable.raports)
+                .SetContentTitle("Aktualizuję dane")
+                .SetContentText("Jesteś w pracy")
+                .SetPriority(NotificationCompat.PriorityDefault);
+            StartForeground(1337,builder.Build());
         }
         
         protected override void OnHandleIntent(Intent intent)

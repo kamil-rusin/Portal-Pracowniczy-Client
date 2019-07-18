@@ -5,7 +5,7 @@ using PPCAndroid;
 
 namespace PPCAndroid.JobServices
 {
-
+    [BroadcastReceiver]
     public class StartWorkReceiver : BroadcastReceiver
     {
         private SessionManager _sessionManager;

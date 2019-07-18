@@ -4,7 +4,7 @@ using Android.Content;
 
 namespace PPCAndroid.JobServices
 {
-    
+    [BroadcastReceiver]
     public class LeftWorkReceiver : BroadcastReceiver
     {
         private SessionManager _sessionManager;

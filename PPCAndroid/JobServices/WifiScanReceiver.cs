@@ -18,9 +18,8 @@ namespace PPCAndroid.JobServices
     public class WifiScanReceiver : BroadcastReceiver
     {
         private SessionManager _sessionManager;
-        private LeftWorkReceiver _leftWorkReceiver;
-        
-        
+
+
         private readonly List<string> _availableSsids = new List<string>
         {
             "AndroidWifi"
@@ -54,10 +53,10 @@ namespace PPCAndroid.JobServices
                 wifiFound = true;
                 //var startWorkReceiver = new StartWorkReceiver();
                 //context.RegisterReceiver(startWorkReceiver, new IntentFilter());
-                var startWorkIntentService = new Intent(context, typeof(StartWorkIntentService));
+                var startWorkReceiverIntent = new Intent(context, typeof(StartWorkReceiver));
                 //
                 //var notificationIntent = new Intent(context,typeof(StartWorkReceiver));
-                var pendingIntent = PendingIntent.GetService(context, 0, startWorkIntentService, 0);
+                var pendingIntent = PendingIntent.GetBroadcast(context, 0, startWorkReceiverIntent, 0);
                 var builder = new NotificationCompat.Builder(context, AppConstant.ChannelId)
                     .SetContentTitle("Wykryto sieć " + wifi.Ssid)
                     .SetContentText("Kliknij, jeżeli jesteś w pracy.")
