@@ -9,108 +9,106 @@ namespace PPCAndroid
 {
     public class SessionManager: ISessionManager
     {
-        private ISharedPreferences pref;
-        private ISharedPreferencesEditor editor;
+        private readonly ISharedPreferences _pref;
+        private readonly ISharedPreferencesEditor _editor;
 
-        private int _privateMode = 0;
-        private static string _prefName = "PPCAndroidPref";
-        private static string KeyUsername = "username";
-        private static string KeyLogInDate = "logInDate";
-        private static string KeyLogOutDate = "logOutDate";
-        private static string KeyIsLoggedIn = "isLoggedIn";
-        private static string KeyIsAtWork = "isAtWork";
-        
+        private const string KeyUsername = "username";
+        private const string KeyLogInDate = "logInDate";
+        private const string KeyLogOutDate = "logOutDate";
+        private const string KeyIsLoggedIn = "isLoggedIn";
+        private const string KeyIsAtWork = "isAtWork";
+
         public SessionManager(Context context)
         {
-            pref = PreferenceManager.GetDefaultSharedPreferences(context);
-            editor = pref.Edit();
+            _pref = PreferenceManager.GetDefaultSharedPreferences(context);
+            _editor = _pref.Edit();
         }
         
         public void SaveUsername(string username)
         {
-            editor.Remove(KeyUsername);
-            editor.PutString(KeyUsername, username);
+            _editor.Remove(KeyUsername);
+            _editor.PutString(KeyUsername, username);
             Log.Info(KeyUsername, username);
-            editor.Commit();
+            _editor.Commit();
         }
         
         public void SaveLogInDate(DateTime entryDate)
         {
-            editor.Remove(KeyLogInDate);
-            editor.PutString(KeyLogInDate, entryDate.ToString(CultureInfo.InvariantCulture));
+            _editor.Remove(KeyLogInDate);
+            _editor.PutString(KeyLogInDate, entryDate.ToString(CultureInfo.InvariantCulture));
             Log.Info(KeyLogInDate, entryDate.ToString(CultureInfo.InvariantCulture));
-            editor.Commit();
+            _editor.Commit();
         }
         
         public void SaveLogOutDate(DateTime leavingDate)
         {
-            editor.Remove(KeyLogOutDate);
-            editor.PutString(KeyLogOutDate, leavingDate.ToString(CultureInfo.InvariantCulture));
+            _editor.Remove(KeyLogOutDate);
+            _editor.PutString(KeyLogOutDate, leavingDate.ToString(CultureInfo.InvariantCulture));
             Log.Info(KeyLogOutDate, leavingDate.ToString(CultureInfo.InvariantCulture));
-            editor.Commit();
+            _editor.Commit();
         }
         
         public void SaveIsLogged(bool isLogged)
         {
-            editor.Remove(KeyIsLoggedIn);
-            editor.PutBoolean(KeyIsLoggedIn, isLogged);
+            _editor.Remove(KeyIsLoggedIn);
+            _editor.PutBoolean(KeyIsLoggedIn, isLogged);
             Log.Info(KeyIsLoggedIn, isLogged.ToString());
-            editor.Commit();
+            _editor.Commit();
         }
         
         public void SaveAtWork(bool atWork)
         {
-            editor.Remove(KeyIsAtWork);
-            editor.PutBoolean(KeyIsAtWork, atWork);
+            _editor.Remove(KeyIsAtWork);
+            _editor.PutBoolean(KeyIsAtWork, atWork);
             Log.Info(KeyIsAtWork, atWork.ToString());
-            editor.Commit();
+            _editor.Commit();
         }
 
         public string GetUsername()
         {
-            var x = pref.GetString(KeyUsername, "not_valid_user");
+            var x = _pref.GetString(KeyUsername, "not_valid_user");
             Log.Info(KeyUsername, x);
             return x;
         }
         
-        public DateTime GetLogInDate()
+        public DateTime GetEnteredWorkDate()
         {
-            var dateInString = pref.GetString(KeyLogInDate, "");
+            var dateInString = _pref.GetString(KeyLogInDate, "");
             Log.Info(KeyLogInDate, dateInString);
             return DateTime.Parse(dateInString);
         }
         
-        public DateTime GetLogOutDate()
+        public DateTime GetLeftWorkDate()
         {
-            var dateInString = pref.GetString(KeyLogOutDate, "");
+            var dateInString = _pref.GetString(KeyLogOutDate, "");
             Log.Info(KeyLogOutDate, dateInString);
             return DateTime.Parse(dateInString);
         }
 
         public bool GetIsLoggedIn()
         {
-            var x = pref.GetBoolean(KeyIsLoggedIn, false);
+            var x = _pref.GetBoolean(KeyIsLoggedIn, false);
             Log.Info(KeyIsLoggedIn, x.ToString());
             return x;
         }
         
         public bool GetIsAtWork()
         {
-            var x = pref.GetBoolean(KeyIsAtWork, false);
+            var x = _pref.GetBoolean(KeyIsAtWork, false);
             Log.Info(KeyIsAtWork, x.ToString());
             return x;
         }
 
         public void LogOut()
         {
-            editor.Clear();
-            editor.Commit();
+            _editor.Clear();
+            _editor.Commit();
         }
 
         public void Dispose()
         {
-            pref?.Dispose();
-            editor?.Dispose();
+            _pref?.Dispose();
+            _editor?.Dispose();
         }
     }
 }

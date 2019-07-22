@@ -13,8 +13,8 @@ namespace PPCAndroid.Shared.Domain
         void SaveIsLogged(bool isLogged);
         void SaveAtWork(bool atWork);
         string GetUsername();
-        DateTime GetLogInDate();
-        DateTime GetLogOutDate();
+        DateTime GetEnteredWorkDate();
+        DateTime GetLeftWorkDate();
         bool GetIsLoggedIn();
         bool GetIsAtWork();
         void LogOut();

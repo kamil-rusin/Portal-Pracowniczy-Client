@@ -12,7 +12,7 @@ namespace PPCAndroid.JobServices
         
         public StartWorkIntentService() : base("StartWorkIntentService")
         {
-            NotificationCompat.Builder builder = new NotificationCompat.Builder(this, AppConstant.ChannelId)
+            NotificationCompat.Builder builder = new NotificationCompat.Builder(this, AppConstants.ChannelId)
                 .SetSmallIcon(Resource.Drawable.raports)
                 .SetContentTitle("Aktualizuję dane")
                 .SetContentText("Jesteś w pracy")

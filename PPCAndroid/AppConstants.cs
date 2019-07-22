@@ -2,7 +2,7 @@ using Android.Runtime;
 
 namespace PPCAndroid
 {
-    public static class AppConstant
+    public static class AppConstants
     {
         public const string ConfirmationAction = "PPCAndroid.PPCAndroid.CONFIRMATION_ACTION";
         public const  int NotificationIdStartedWork = 1000;

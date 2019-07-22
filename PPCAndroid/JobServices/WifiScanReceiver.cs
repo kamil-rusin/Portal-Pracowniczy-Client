@@ -51,13 +51,9 @@ namespace PPCAndroid.JobServices
                 if (wifi == null) continue;
                 if (_sessionManager.GetIsAtWork()) continue;
                 wifiFound = true;
-                //var startWorkReceiver = new StartWorkReceiver();
-                //context.RegisterReceiver(startWorkReceiver, new IntentFilter());
-                var startWorkReceiverIntent = new Intent(context, typeof(StartWorkReceiver));
-                //
-                //var notificationIntent = new Intent(context,typeof(StartWorkReceiver));
+                var startWorkReceiverIntent = new Intent(context, typeof(EnteredWorkReceiver));
                 var pendingIntent = PendingIntent.GetBroadcast(context, 0, startWorkReceiverIntent, 0);
-                var builder = new NotificationCompat.Builder(context, AppConstant.ChannelId)
+                var builder = new NotificationCompat.Builder(context, AppConstants.ChannelId)
                     .SetContentTitle("Wykryto sieć " + wifi.Ssid)
                     .SetContentText("Kliknij, jeżeli jesteś w pracy.")
                     .SetSmallIcon(Resource.Drawable.raports)
@@ -67,9 +63,7 @@ namespace PPCAndroid.JobServices
                     .SetPriority(NotificationCompat.PriorityHigh);
 
                 var notificationManager = NotificationManagerCompat.From(context);
-                notificationManager.Notify(AppConstant.NotificationIdStartedWork, builder.Build());
-                //Dla testów
-                //context.StartForegroundService(startWorkIntentService);
+                notificationManager.Notify(AppConstants.NotificationIdStartedWork, builder.Build());
             }
 
             if (!wifiFound)
@@ -78,7 +72,7 @@ namespace PPCAndroid.JobServices
                 {
                     var notificationIntent = new Intent(context, typeof(LeftWorkReceiver));
                     var pendingIntent = PendingIntent.GetBroadcast(context, 0, notificationIntent, 0);
-                    var builder = new NotificationCompat.Builder(context, AppConstant.ChannelId)
+                    var builder = new NotificationCompat.Builder(context, AppConstants.ChannelId)
                         .SetContentTitle("Utracono firmową sieć")
                         .SetContentText("Kliknij, jeżeli wyszedłeś z pracy.")
                         .SetSmallIcon(Resource.Drawable.raports)
@@ -88,7 +82,7 @@ namespace PPCAndroid.JobServices
                         .SetPriority(NotificationCompat.PriorityHigh);
 
                     var notificationManager = NotificationManagerCompat.From(context);
-                    notificationManager.Notify(AppConstant.NotificationIdLeftWork, builder.Build());
+                    notificationManager.Notify(AppConstants.NotificationIdLeftWork, builder.Build());
                 }
             }
 
