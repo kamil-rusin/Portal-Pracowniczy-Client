@@ -41,13 +41,6 @@ namespace PPCAndroid
             
             _wifiManager.StartScan();
         }
-
-        protected override void OnResume()
-        {
-            base.OnResume();
-            
-        }
-
         private void CreateNotificationChannel()
         {
             if (Build.VERSION.SdkInt < BuildVersionCodes.O)

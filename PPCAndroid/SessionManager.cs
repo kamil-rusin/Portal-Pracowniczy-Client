@@ -75,14 +75,14 @@ namespace PPCAndroid
         {
             var dateInString = _pref.GetString(KeyLogInDate, "00:00:00");
             Log.Info(KeyLogInDate, dateInString);
-            return DateTime.Parse(dateInString);
+            return DateTime.Parse(dateInString,CultureInfo.InvariantCulture);
         }
         
         public DateTime GetLeftWorkDate()
         {
             var dateInString = _pref.GetString(KeyLogOutDate, "");
             Log.Info(KeyLogOutDate, dateInString);
-            return DateTime.Parse(dateInString);
+            return DateTime.Parse(dateInString,CultureInfo.InvariantCulture);
         }
 
         public bool GetIsLoggedIn()
