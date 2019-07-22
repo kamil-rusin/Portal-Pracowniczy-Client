@@ -115,6 +115,7 @@
         <PackageReference Include="ReactiveUI" Version="9.18.2" />
         <PackageReference Include="ReactiveUI.AndroidSupport" Version="9.18.2" />
         <PackageReference Include="ReactiveUI.Events" Version="9.18.2" />
+        <PackageReference Include="timer" Version="2.1.0" />
         <PackageReference Include="Xamarin.Android.Support.Annotations" Version="27.0.2.1" />
         <PackageReference Include="Xamarin.Android.Support.Compat" Version="27.0.2.1" />
         <PackageReference Include="Xamarin.Android.Support.Design" Version="27.0.2.1" />

@@ -5,10 +5,13 @@ using System.Reactive;
 using System.Reactive.Linq;
 using System.Threading.Tasks;
 using Android.Util;
+using Android.Widget;
+using Java.Util;
 using PPCAndroid;
 using PPCAndroid.Shared.Domain;
 using PPCAndroid.Shared.Service;
 using ReactiveUI;
+using Observable = System.Reactive.Linq.Observable;
 
 namespace Shared.ViewModels
 {
@@ -36,6 +39,10 @@ namespace Shared.ViewModels
         
         private readonly ILogin _loginService;
         private AppVariables _appVariables;
+        public static string logging;
+        public static DateTime logged;
+        public static bool beginning = false;
+
 
         public ReactiveCommand<Unit,Unit> LoginCommand { get; private set; }
         
@@ -59,6 +66,10 @@ namespace Shared.ViewModels
                 _appVariables.logDate = DateTime.Now;
                 _appVariables.isLogged = true;
                  await GoToDashboard.Handle(Unit.Default);
+                 logging = _appVariables.logDate.ToShortTimeString();
+                 logged = _appVariables.logDate;
+                 beginning = true;
+
             }
             
             return Observable.Return(lg);
