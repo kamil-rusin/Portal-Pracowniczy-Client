@@ -73,7 +73,7 @@ namespace PPCAndroid
         
         public DateTime GetEnteredWorkDate()
         {
-            var dateInString = _pref.GetString(KeyLogInDate, "");
+            var dateInString = _pref.GetString(KeyLogInDate, "00:00:00");
             Log.Info(KeyLogInDate, dateInString);
             return DateTime.Parse(dateInString);
         }

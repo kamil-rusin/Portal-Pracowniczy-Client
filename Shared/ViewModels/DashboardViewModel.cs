@@ -18,6 +18,40 @@ namespace Shared.ViewModels
         public Interaction<Unit, Unit> GoToMainActivity { get; }
         #endregion
         
+        #region Properties
+        private string _entryDate;
+        public string EntryDate
+        {
+            get => _sessionManager.GetEnteredWorkDate().ToString(@"HH:mm");
+            set => this.RaiseAndSetIfChanged(ref _entryDate, value);
+        }
+        
+        private string _workDate;
+        public string WorkDate
+        {
+            get
+            {
+                try
+                {
+                    var d = _sessionManager.GetEnteredWorkDate();
+                    if (d.ToString(@"HH:mm").Equals("00:00"))
+                    {
+                        throw new Exception();
+                    }
+                    var x = DateTime.Now - _sessionManager.GetEnteredWorkDate();
+                    var s = $"{x.Hours:D2}:{x.Minutes:D2}:{x.Seconds:D2}";
+                    return s;
+                }
+                catch (Exception e)
+                {
+                    return "--:--";
+                }
+            }
+            
+            set => this.RaiseAndSetIfChanged(ref _workDate, value);
+        }
+        #endregion
+        
         public ReactiveCommand<Unit,Unit> LogOutCommand { get; private set; }
         
         

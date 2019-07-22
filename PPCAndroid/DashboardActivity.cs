@@ -17,6 +17,8 @@ namespace PPCAndroid
     {
         private TextView _entryTextView;
         private TextView _timeTextView;
+        private TextView _entryDateTextView;
+        private TextView _workDateTextView;
         private BottomNavigationView _bottomNavigation;
         
         private WifiManager _wifiManager;
@@ -39,7 +41,13 @@ namespace PPCAndroid
             
             _wifiManager.StartScan();
         }
-        
+
+        protected override void OnResume()
+        {
+            base.OnResume();
+            
+        }
+
         private void CreateNotificationChannel()
         {
             if (Build.VERSION.SdkInt < BuildVersionCodes.O)
@@ -67,7 +75,8 @@ namespace PPCAndroid
 
         protected override void BindProperties(CompositeDisposable disposables)
         {
-
+            this.Bind(ViewModel, x => x.EntryDate, a => a._entryDateTextView.Text).DisposeWith(disposables);
+            this.Bind(ViewModel, x => x.WorkDate, a => a._workDateTextView.Text).DisposeWith(disposables);
         }
 
         protected override void RegisterViewModel()
@@ -90,6 +99,8 @@ namespace PPCAndroid
             _entryTextView = FindViewById<TextView>(Resource.Id.entryTextView);
             _timeTextView = FindViewById<TextView>(Resource.Id.timeTextView);
             _bottomNavigation = FindViewById<BottomNavigationView>(Resource.Id.bottom_navigation);
+            _entryDateTextView = FindViewById<TextView>(Resource.Id.entryDateTextView);
+            _workDateTextView = FindViewById<TextView>(Resource.Id.workDateTextView);
         }
     }
 }
