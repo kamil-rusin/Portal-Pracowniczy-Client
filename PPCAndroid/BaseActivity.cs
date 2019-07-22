@@ -1,4 +1,3 @@
-using System.Diagnostics.CodeAnalysis;
 using System.Reactive.Disposables;
 using Android.OS;
 using ReactiveUI;

@@ -23,7 +23,7 @@ namespace PPCAndroid.JobServices
 
         private readonly List<string> _availableSsids = new List<string>
         {
-            "CBR"
+            "Android"
         };
 
         private WifiManager WifiManager { get; set; }

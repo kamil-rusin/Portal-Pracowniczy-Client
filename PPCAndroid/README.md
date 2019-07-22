@@ -18,4 +18,5 @@ Docelowe SDK:27
 
 #Uwagi
 
+Aby program działał w należyty sposób, konieczne jest posiadanie włączonej funkcji Wi-Fi oraz program należy przetrzymywać "w tle".
 W przypadku zmiany zakładowego wifi, należy w pliku WifiScanReceiver.cs zmienić nazwę użytą w kodzie w zmiennej _availableSsids na właściwą.

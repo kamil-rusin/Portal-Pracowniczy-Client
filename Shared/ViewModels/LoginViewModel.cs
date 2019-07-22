@@ -43,9 +43,11 @@ namespace Shared.ViewModels
         
         public LoginViewModel(ILogin login, ISessionManager sessionManager)
         {
+            
             _loginService = login;
             _sessionManager = sessionManager;
             GoToDashboard= new Interaction<Unit, Unit>();
+            
             
 
             var canLogin = this.WhenAnyValue(x => x.UserName, x => x.Password, LoginInputValidator.Validate);

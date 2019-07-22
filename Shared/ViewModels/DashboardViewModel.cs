@@ -36,7 +36,7 @@ namespace Shared.ViewModels
                     var d = _sessionManager.GetEnteredWorkDate();
                     if (d.ToString(@"HH:mm").Equals("00:00"))
                     {
-                        throw new Exception();
+                        return "--:--";
                     }
                     var x = DateTime.Now - _sessionManager.GetEnteredWorkDate();
                     var s = $"{x.Hours:D2}:{x.Minutes:D2}:{x.Seconds:D2}";
