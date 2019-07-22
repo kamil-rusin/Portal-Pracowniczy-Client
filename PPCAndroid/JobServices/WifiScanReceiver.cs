@@ -18,6 +18,7 @@ namespace PPCAndroid.JobServices
     public class WifiScanReceiver : BroadcastReceiver
     {
         private SessionManager _sessionManager;
+        private bool _wifiLost;
 
 
         private readonly List<string> _availableSsids = new List<string>
@@ -31,8 +32,9 @@ namespace PPCAndroid.JobServices
         private List<WifiNetwork> WifiNetworks { get; set; }
         public IObservable<IEnumerable<WifiNetwork>> WiFiNetworksObs => _wiFiNetworksSubject;
         
-        public WifiScanReceiver(WifiManager wifiManager)    
+        public WifiScanReceiver(WifiManager wifiManager)
         {
+            _wifiLost = false;
             WifiManager = wifiManager;
             _wiFiNetworksSubject = new Subject<IEnumerable<WifiNetwork>>();
         }
@@ -48,7 +50,13 @@ namespace PPCAndroid.JobServices
             foreach (var availableSsid in _availableSsids)
             {
                 var wifi = WifiNetworks.FirstOrDefault(n => n.Ssid == availableSsid);
-                if (wifi == null) continue;
+                if (wifi == null)
+                {
+                    _wifiLost = true;
+                    continue;
+                }
+
+                _wifiLost = false;
                 if (_sessionManager.GetIsAtWork()) continue;
                 wifiFound = true;
                 var startWorkReceiverIntent = new Intent(context, typeof(EnteredWorkReceiver));
@@ -66,7 +74,7 @@ namespace PPCAndroid.JobServices
                 notificationManager.Notify(AppConstants.NotificationIdStartedWork, builder.Build());
             }
 
-            if (!wifiFound)
+            if (!wifiFound & _wifiLost)
             {
                 if (_sessionManager.GetIsAtWork())
                 {
