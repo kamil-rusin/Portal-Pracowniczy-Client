@@ -8,8 +8,8 @@ namespace PPCAndroid.Shared.Domain
     public interface ISessionManager : IDisposable
     {
         void SaveUsername(string username);
-        void SaveLogInDate(DateTime entryDate);
-        void SaveLogOutDate(DateTime leavingDate);
+        void SaveEntryDate(DateTime entryDate);
+        void SaveLeavingDate(DateTime leavingDate);
         void SaveIsLogged(bool isLogged);
         void SaveAtWork(bool atWork);
         string GetUsername();

@@ -14,7 +14,7 @@ namespace PPCAndroid.JobServices
        {
             _sessionManager = new SessionManager(context);
             if (!(_sessionManager.GetIsLoggedIn() & (!_sessionManager.GetIsAtWork()))) return;
-            _sessionManager.SaveLogInDate(DateTime.Now);
+            _sessionManager.SaveEntryDate(DateTime.Now);
             _sessionManager.SaveAtWork(true);
             //_sessionManager.Dispose();
        }

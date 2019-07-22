@@ -32,7 +32,7 @@ namespace PPCAndroid
             _editor.Commit();
         }
         
-        public void SaveLogInDate(DateTime entryDate)
+        public void SaveEntryDate(DateTime entryDate)
         {
             _editor.Remove(KeyLogInDate);
             _editor.PutString(KeyLogInDate, entryDate.ToString(CultureInfo.InvariantCulture));
@@ -40,7 +40,7 @@ namespace PPCAndroid
             _editor.Commit();
         }
         
-        public void SaveLogOutDate(DateTime leavingDate)
+        public void SaveLeavingDate(DateTime leavingDate)
         {
             _editor.Remove(KeyLogOutDate);
             _editor.PutString(KeyLogOutDate, leavingDate.ToString(CultureInfo.InvariantCulture));

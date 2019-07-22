@@ -20,6 +20,7 @@ namespace Shared.ViewModels
         
         public ReactiveCommand<Unit,Unit> LogOutCommand { get; private set; }
         
+        
         public DashboardViewModel(ISessionManager sessionManager)    
         {
             GoToMainActivity= new Interaction<Unit, Unit>();
