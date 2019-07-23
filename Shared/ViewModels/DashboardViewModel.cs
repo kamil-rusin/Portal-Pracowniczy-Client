@@ -57,7 +57,7 @@ namespace Shared.ViewModels
         
         public DashboardViewModel(ISessionManager sessionManager)    
         {
-            GoToMainActivity= new Interaction<Unit, Unit>();
+            GoToMainActivity = new Interaction<Unit, Unit>();
             _sessionManager = sessionManager;
             
             LogOutCommand = ReactiveCommand.CreateFromTask(async () => { await LogOut();  });

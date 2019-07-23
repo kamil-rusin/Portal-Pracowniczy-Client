@@ -5,6 +5,8 @@ using Android.Content;
 using Android.Net.Wifi;
 using Android.OS;
 using Android.Support.Design.Widget;
+using Android.Util;
+using Android.Views;
 using Android.Widget;
 using PPCAndroid.JobServices;
 using ReactiveUI;
@@ -20,9 +22,9 @@ namespace PPCAndroid
         private TextView _entryDateTextView;
         private TextView _workDateTextView;
         private BottomNavigationView _bottomNavigation;
-        
         private WifiManager _wifiManager;
         private WifiScanReceiver _receiverWifi;
+        private View _logOutItem;
 
         protected override void OnCreate(Bundle savedInstanceState)
         {
@@ -62,7 +64,14 @@ namespace PPCAndroid
         protected override void BindCommands(CompositeDisposable disposables)
         {
             //TODO: Bind a command to logout bottomnavigation item
-            //this.BindCommand(ViewModel, x => x.LogOutCommand, v => _bottomNavigation);
+            this.BindCommand(ViewModel, x => x.LogOutCommand, v=>v._logOutItem).DisposeWith(disposables);
+            /*_bottomNavigation.NavigationItemSelected += (sender, args) =>
+            {
+                if (args.Item.ItemId == Resource.Id.action_logout)
+                {
+                    
+                }
+            };*/
         }
         
 
@@ -94,6 +103,12 @@ namespace PPCAndroid
             _bottomNavigation = FindViewById<BottomNavigationView>(Resource.Id.bottom_navigation);
             _entryDateTextView = FindViewById<TextView>(Resource.Id.entryDateTextView);
             _workDateTextView = FindViewById<TextView>(Resource.Id.workDateTextView);
+            _logOutItem = FindViewById(Resource.Id.action_logout);
         }
+        
+        /*public void LogOut(View view)
+        {
+            ViewModel.LogOutCommand.Execute();
+        }*/
     }
 }
