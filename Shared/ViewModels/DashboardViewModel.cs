@@ -26,34 +26,11 @@ namespace Shared.ViewModels
             set => this.RaiseAndSetIfChanged(ref _entryDate, value);
         }
         
-        private string _workDate;
-        public string WorkDate
-        {
-            get
-            {
-                try
-                {
-                    var d = _sessionManager.GetEnteredWorkDate();
-                    if (d.ToString(@"HH:mm").Equals("00:00"))
-                    {
-                        return "--:--";
-                    }
-                    var x = DateTime.Now - _sessionManager.GetEnteredWorkDate();
-                    var s = $"{x.Hours:D2}:{x.Minutes:D2}:{x.Seconds:D2}";
-                    return s;
-                }
-                catch (Exception e)
-                {
-                    return "--:--";
-                }
-            }
-            
-            set => this.RaiseAndSetIfChanged(ref _workDate, value);
-        }
+        private ObservableAsPropertyHelper<string> _workTime;
+        public string WorkTime => _workTime.Value;
         #endregion
         
         public ReactiveCommand<Unit,Unit> LogOutCommand { get; private set; }
-        
         
         public DashboardViewModel(ISessionManager sessionManager)    
         {
@@ -61,8 +38,28 @@ namespace Shared.ViewModels
             _sessionManager = sessionManager;
             
             LogOutCommand = ReactiveCommand.CreateFromTask(async () => { await LogOut();  });
+            
+            var interval = TimeSpan.FromMinutes(5);
+            _workTime = Observable.Timer(interval, interval)
+                .Select(unit => this.UpdateWorkingTime())
+                .ToProperty(this, n=> n.WorkTime);
         }
         
+        
+        
+
+        private string UpdateWorkingTime()
+        {
+            var d = _sessionManager.GetEnteredWorkDate();
+            if (d.ToString(@"HH:mm").Equals("00:00"))
+            {
+                return "--:--";
+            }
+            var x = DateTime.Now - _sessionManager.GetEnteredWorkDate();
+            var s = $"{x.Hours:D2}:{x.Minutes:D2}:{x.Seconds:D2}";
+            return s;
+        }
+
         private async Task LogOut()
         {
             _sessionManager.LogOut();

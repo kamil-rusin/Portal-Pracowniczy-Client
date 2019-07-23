@@ -49,7 +49,7 @@ namespace Shared.ViewModels
             GoToDashboard= new Interaction<Unit, Unit>();
             
             
-
+            
             var canLogin = this.WhenAnyValue(x => x.UserName, x => x.Password, LoginInputValidator.Validate);
             LoginCommand = ReactiveCommand.CreateFromTask(async () => { await TryLogin();  }, canLogin);
         }

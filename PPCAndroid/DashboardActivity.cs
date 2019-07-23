@@ -1,7 +1,10 @@
+using System;
 using System.Reactive;
 using System.Reactive.Disposables;
+using System.Reactive.Linq;
 using Android.App;
 using Android.Content;
+using Android.Database;
 using Android.Net.Wifi;
 using Android.OS;
 using Android.Support.Design.Widget;
@@ -9,6 +12,7 @@ using Android.Widget;
 using PPCAndroid.JobServices;
 using ReactiveUI;
 using Shared.ViewModels;
+using Observable = System.Reactive.Linq.Observable;
 
 namespace PPCAndroid
 {
@@ -63,13 +67,14 @@ namespace PPCAndroid
         {
             //TODO: Bind a command to logout bottomnavigation item
             //this.BindCommand(ViewModel, x => x.LogOutCommand, v => _bottomNavigation);
+          
         }
         
 
         protected override void BindProperties(CompositeDisposable disposables)
         {
             this.Bind(ViewModel, x => x.EntryDate, a => a._entryDateTextView.Text).DisposeWith(disposables);
-            this.Bind(ViewModel, x => x.WorkDate, a => a._workDateTextView.Text).DisposeWith(disposables);
+            this.Bind(ViewModel, x => x.WorkTime, a => a._workDateTextView.Text).DisposeWith(disposables);
         }
 
         protected override void RegisterViewModel()
