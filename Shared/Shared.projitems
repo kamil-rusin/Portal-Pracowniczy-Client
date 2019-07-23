@@ -9,7 +9,8 @@
     <Import_RootNamespace>Shared</Import_RootNamespace>
   </PropertyGroup>
   <ItemGroup>
-    <Compile Include="$(MSBuildThisFileDirectory)Domain\IStorage.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)Domain\IWorkStorage.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)Domain\IUserStorage.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)Domain\WifiNetwork.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)View\ContentPageBase.cs" />
     <Folder Include="$(MSBuildThisFileDirectory)Model" />

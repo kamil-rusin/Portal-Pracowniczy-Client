@@ -42,7 +42,7 @@ namespace PPCAndroid
 
         protected override void RegisterViewModel()
         {
-            ViewModel = new LoginViewModel(new LoginService(), new SessionManagerStorage(Application.Context));
+            ViewModel = new LoginViewModel(new LoginService(), AndroidObjectFactory.GetWorkStorage(Application.Context),AndroidObjectFactory.GetUserStorage(Application.Context));
         }
 
         protected override void RegisterInteractions()

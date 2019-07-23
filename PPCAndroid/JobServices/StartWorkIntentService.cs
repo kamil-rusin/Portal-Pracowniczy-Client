@@ -4,11 +4,11 @@ using Android.Content;
 using Android.Support.V4.App;
 
 namespace PPCAndroid.JobServices
-{
+{/*
     [Service]
     public class StartWorkIntentService : IntentService
     {
-        private SessionManagerStorage _sessionManagerStorage;
+        private WorkSessionManager _workSessionManager;
         
         public StartWorkIntentService() : base("StartWorkIntentService")
         {
@@ -23,10 +23,10 @@ namespace PPCAndroid.JobServices
         protected override void OnHandleIntent(Intent intent)
         {
             //TODO: change context
-            _sessionManagerStorage = new SessionManagerStorage(ApplicationContext);
-            if (!(_sessionManagerStorage.GetIsLoggedIn() & (!_sessionManagerStorage.GetIsAtWork()))) return;
-            _sessionManagerStorage.SaveEntryDate(DateTime.Now);
-            _sessionManagerStorage.SaveAtWork(true);
-        }
-    }
+            _workSessionManager = new WorkSessionManager(ApplicationContext);
+            if (!(_workSessionManager.GetIsLoggedIn() & (!_workSessionManager.GetIsAtWork()))) return;
+            _workSessionManager.SaveEntryDate(DateTime.Now);
+            _workSessionManager.SaveAtWork(true);
+        
+    }*/
 }

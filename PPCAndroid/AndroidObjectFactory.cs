@@ -5,9 +5,14 @@ namespace PPCAndroid
 {
     public static class AndroidObjectFactory
     {
-        public static IStorage GetStorage(Context context)
+        public static IWorkStorage GetWorkStorage(Context context)
         {
-            return new SessionManagerStorage(context);
+            return new WorkSessionManager(context);
+        }
+
+        public static IUserStorage GetUserStorage(Context context)
+        {
+            return new UserSessionManager(context);   
         }
     }
 }

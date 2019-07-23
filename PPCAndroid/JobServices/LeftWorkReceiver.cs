@@ -8,14 +8,14 @@ namespace PPCAndroid.JobServices
     [BroadcastReceiver]
     public class LeftWorkReceiver : BroadcastReceiver
     {
-        private IStorage _sessionManagerStorage;
+        private IWorkStorage _sessionManagerWorkStorage;
         
         public override void OnReceive(Context context, Intent intent)
         {
-            _sessionManagerStorage = AndroidObjectFactory.GetStorage(context);
-            if (!(_sessionManagerStorage.GetIsLoggedIn()) & _sessionManagerStorage.GetIsAtWork()) return;
-            _sessionManagerStorage.SaveLeavingDate(DateTime.Now);
-            _sessionManagerStorage.SaveAtWork(false);
+            _sessionManagerWorkStorage = AndroidObjectFactory.GetWorkStorage(context);
+            if (!(_sessionManagerWorkStorage.GetIsLoggedIn()) & _sessionManagerWorkStorage.GetIsAtWork()) return;
+            _sessionManagerWorkStorage.SaveLeavingDate(DateTime.Now);
+            _sessionManagerWorkStorage.SaveAtWork(false);
             //_sessionManager.Dispose();
         }
     }

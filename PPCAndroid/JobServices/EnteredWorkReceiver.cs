@@ -9,14 +9,14 @@ namespace PPCAndroid.JobServices
     [BroadcastReceiver]
     public class EnteredWorkReceiver : BroadcastReceiver
     {
-        private IStorage _storage;
+        private IWorkStorage _workStorage;
 
         public override void OnReceive(Context context, Intent intent)
        {
-            _storage = AndroidObjectFactory.GetStorage(context);
-            if (!(_storage.GetIsLoggedIn() & (!_storage.GetIsAtWork()))) return;
-            _storage.SaveEntryDate(DateTime.Now);
-            _storage.SaveAtWork(true);
+            _workStorage = AndroidObjectFactory.GetWorkStorage(context);
+            if (!(_workStorage.GetIsLoggedIn() & (!_workStorage.GetIsAtWork()))) return;
+            _workStorage.SaveEntryDate(DateTime.Now);
+            _workStorage.SaveAtWork(true);
        }
     }
 }

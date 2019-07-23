@@ -37,18 +37,18 @@ namespace Shared.ViewModels
         #endregion
         
         private readonly ILogin _loginService;
-        private readonly IStorage _storage;
+        private readonly IWorkStorage _workStorage;
+        private readonly IUserStorage _userStorage;
 
         public ReactiveCommand<Unit,Unit> LoginCommand { get; private set; }
         
-        public LoginViewModel(ILogin login, IStorage storage)
+        public LoginViewModel(ILogin login, IWorkStorage workStorage, IUserStorage userStorage)
         {
             
             _loginService = login;
-            _storage = storage;
+            _workStorage = workStorage;
+            _userStorage = userStorage;
             GoToDashboard= new Interaction<Unit, Unit>();
-            
-            
 
             var canLogin = this.WhenAnyValue(x => x.UserName, x => x.Password, LoginInputValidator.Validate);
             LoginCommand = ReactiveCommand.CreateFromTask(async () => { await TryLogin();  }, canLogin);
@@ -59,10 +59,10 @@ namespace Shared.ViewModels
             var lg = await _loginService.Login(_userName, _password);
             if (lg)
             {
-                _storage.LogOut();
-                _storage.SaveUsername(UserName);
-                _storage.SaveIsLogged(true);
-                //_sessionManager.Dispose();
+                _workStorage.RemoveWorkData();
+                _userStorage.ClearUsernameAndIsLoggedIn();
+                _userStorage.SaveUsername(UserName);
+                _userStorage.SaveIsLogged(true);
                 await GoToDashboard.Handle(Unit.Default);
             }
             
