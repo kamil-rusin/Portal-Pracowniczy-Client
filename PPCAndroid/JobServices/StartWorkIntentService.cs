@@ -8,7 +8,7 @@ namespace PPCAndroid.JobServices
     [Service]
     public class StartWorkIntentService : IntentService
     {
-        private SessionManager _sessionManager;
+        private SessionManagerStorage _sessionManagerStorage;
         
         public StartWorkIntentService() : base("StartWorkIntentService")
         {
@@ -23,10 +23,10 @@ namespace PPCAndroid.JobServices
         protected override void OnHandleIntent(Intent intent)
         {
             //TODO: change context
-            _sessionManager = new SessionManager(ApplicationContext);
-            if (!(_sessionManager.GetIsLoggedIn() & (!_sessionManager.GetIsAtWork()))) return;
-            _sessionManager.SaveEntryDate(DateTime.Now);
-            _sessionManager.SaveAtWork(true);
+            _sessionManagerStorage = new SessionManagerStorage(ApplicationContext);
+            if (!(_sessionManagerStorage.GetIsLoggedIn() & (!_sessionManagerStorage.GetIsAtWork()))) return;
+            _sessionManagerStorage.SaveEntryDate(DateTime.Now);
+            _sessionManagerStorage.SaveAtWork(true);
         }
     }
 }

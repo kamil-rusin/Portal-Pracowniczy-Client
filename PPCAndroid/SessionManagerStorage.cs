@@ -3,11 +3,12 @@ using System.Globalization;
 using Android.Content;
 using Android.Preferences;
 using Android.Util;
+using Newtonsoft.Json;
 using PPCAndroid.Shared.Domain;
 
 namespace PPCAndroid
 {
-    public class SessionManager: ISessionManager
+    public class SessionManagerStorage: IStorage
     {
         private readonly ISharedPreferences _pref;
         private readonly ISharedPreferencesEditor _editor;
@@ -18,7 +19,7 @@ namespace PPCAndroid
         private const string KeyIsLoggedIn = "isLoggedIn";
         private const string KeyIsAtWork = "isAtWork";
 
-        public SessionManager(Context context)
+        public SessionManagerStorage(Context context)
         {
             _pref = PreferenceManager.GetDefaultSharedPreferences(context);
             _editor = _pref.Edit();
@@ -85,6 +86,12 @@ namespace PPCAndroid
             return DateTime.Parse(dateInString,CultureInfo.InvariantCulture);
         }
 
+
+        public WifiNetwork AddSomething(WifiNetwork wifi)
+        {
+            var serialized = JsonConvert.SerializeObject(wifi);
+            return JsonConvert.DeserializeObject<WifiNetwork>(serialized);
+        }
         public bool GetIsLoggedIn()
         {
             var x = _pref.GetBoolean(KeyIsLoggedIn, false);

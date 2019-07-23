@@ -74,7 +74,7 @@ namespace PPCAndroid
 
         protected override void RegisterViewModel()
         {
-            ViewModel = new DashboardViewModel(new SessionManager(Application.Context));
+            ViewModel = new DashboardViewModel(new SessionManagerStorage(Application.Context));
         }
 
         protected override void RegisterInteractions()

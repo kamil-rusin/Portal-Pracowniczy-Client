@@ -2,21 +2,21 @@ using System;
 using Android.App;
 using Android.Content;
 using PPCAndroid;
+using PPCAndroid.Shared.Domain;
 
 namespace PPCAndroid.JobServices
 {
     [BroadcastReceiver]
     public class EnteredWorkReceiver : BroadcastReceiver
     {
-        private SessionManager _sessionManager;
-        
-       public override void OnReceive(Context context, Intent intent)
+        private IStorage _storage;
+
+        public override void OnReceive(Context context, Intent intent)
        {
-            _sessionManager = new SessionManager(context);
-            if (!(_sessionManager.GetIsLoggedIn() & (!_sessionManager.GetIsAtWork()))) return;
-            _sessionManager.SaveEntryDate(DateTime.Now);
-            _sessionManager.SaveAtWork(true);
-            //_sessionManager.Dispose();
+            _storage = AndroidObjectFactory.GetStorage(context);
+            if (!(_storage.GetIsLoggedIn() & (!_storage.GetIsAtWork()))) return;
+            _storage.SaveEntryDate(DateTime.Now);
+            _storage.SaveAtWork(true);
        }
     }
 }

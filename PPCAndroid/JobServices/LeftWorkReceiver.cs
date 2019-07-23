@@ -1,20 +1,21 @@
 using System;
 using Android.App;
 using Android.Content;
+using PPCAndroid.Shared.Domain;
 
 namespace PPCAndroid.JobServices
 {
     [BroadcastReceiver]
     public class LeftWorkReceiver : BroadcastReceiver
     {
-        private SessionManager _sessionManager;
-
+        private IStorage _sessionManagerStorage;
+        
         public override void OnReceive(Context context, Intent intent)
         {
-            _sessionManager = new SessionManager(Application.Context);
-            if (!(_sessionManager.GetIsLoggedIn()) & _sessionManager.GetIsAtWork()) return;
-            _sessionManager.SaveLeavingDate(DateTime.Now);
-            _sessionManager.SaveAtWork(false);
+            _sessionManagerStorage = AndroidObjectFactory.GetStorage(context);
+            if (!(_sessionManagerStorage.GetIsLoggedIn()) & _sessionManagerStorage.GetIsAtWork()) return;
+            _sessionManagerStorage.SaveLeavingDate(DateTime.Now);
+            _sessionManagerStorage.SaveAtWork(false);
             //_sessionManager.Dispose();
         }
     }

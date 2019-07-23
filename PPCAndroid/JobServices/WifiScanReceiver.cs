@@ -17,7 +17,7 @@ namespace PPCAndroid.JobServices
 {
     public class WifiScanReceiver : BroadcastReceiver
     {
-        private SessionManager _sessionManager;
+        private IStorage _sessionManagerStorage;
         private bool _wifiLost;
 
 
@@ -41,7 +41,7 @@ namespace PPCAndroid.JobServices
 
         public override void OnReceive(Context context, Intent intent)
         {
-            _sessionManager = new SessionManager(context);
+            _sessionManagerStorage = new SessionManagerStorage(context);
             var wifiFound = false;
             if (!intent.Action.Equals(WifiManager.ScanResultsAvailableAction)) return;
             WifiNetworks = WifiManager.ScanResults.ToDomainWifiNetworks().ToList();
@@ -57,7 +57,7 @@ namespace PPCAndroid.JobServices
                 }
 
                 _wifiLost = false;
-                if (_sessionManager.GetIsAtWork()) continue;
+                if (_sessionManagerStorage.GetIsAtWork()) continue;
                 wifiFound = true;
                 var startWorkReceiverIntent = new Intent(context, typeof(EnteredWorkReceiver));
                 var pendingIntent = PendingIntent.GetBroadcast(context, 0, startWorkReceiverIntent, 0);
@@ -76,7 +76,7 @@ namespace PPCAndroid.JobServices
 
             if (!wifiFound & _wifiLost)
             {
-                if (_sessionManager.GetIsAtWork())
+                if (_sessionManagerStorage.GetIsAtWork())
                 {
                     var notificationIntent = new Intent(context, typeof(LeftWorkReceiver));
                     var pendingIntent = PendingIntent.GetBroadcast(context, 0, notificationIntent, 0);

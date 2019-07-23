@@ -37,15 +37,15 @@ namespace Shared.ViewModels
         #endregion
         
         private readonly ILogin _loginService;
-        private readonly ISessionManager _sessionManager;
+        private readonly IStorage _storage;
 
         public ReactiveCommand<Unit,Unit> LoginCommand { get; private set; }
         
-        public LoginViewModel(ILogin login, ISessionManager sessionManager)
+        public LoginViewModel(ILogin login, IStorage storage)
         {
             
             _loginService = login;
-            _sessionManager = sessionManager;
+            _storage = storage;
             GoToDashboard= new Interaction<Unit, Unit>();
             
             
@@ -59,9 +59,9 @@ namespace Shared.ViewModels
             var lg = await _loginService.Login(_userName, _password);
             if (lg)
             {
-                _sessionManager.LogOut();
-                _sessionManager.SaveUsername(UserName);
-                _sessionManager.SaveIsLogged(true);
+                _storage.LogOut();
+                _storage.SaveUsername(UserName);
+                _storage.SaveIsLogged(true);
                 //_sessionManager.Dispose();
                 await GoToDashboard.Handle(Unit.Default);
             }
