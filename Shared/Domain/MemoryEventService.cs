@@ -5,14 +5,10 @@ using Java.Util;
 
 namespace PPCAndroid.Shared.Domain
 {
-    public class MemoryEventStore : IEventStore
+    public class MemoryEventService : IEventService
     {
-        private IList<EventBase> _events;
+        private IList<EventBase> _events = new List<EventBase>();
 
-        public MemoryEventStore(IList<EventBase> events)
-        {
-            _events = events;
-        }
 
         public void Add(EventBase eventBase)
         {

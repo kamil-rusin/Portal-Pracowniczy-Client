@@ -15,6 +15,10 @@ namespace PPCAndroid
         {
             return new UserSessionManager(context);   
         }
-        
+
+        public static IEventService GetEventService()
+        {
+            return new MemoryEventService();
+        }
     }
 }

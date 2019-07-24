@@ -11,10 +11,10 @@
   <ItemGroup>
     <Compile Include="$(MSBuildThisFileDirectory)Domain\EndWorkEvent.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)Domain\EventBase.cs" />
-    <Compile Include="$(MSBuildThisFileDirectory)Domain\IEventStore.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)Domain\IEventService.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)Domain\IWorkStorage.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)Domain\IUserStorage.cs" />
-    <Compile Include="$(MSBuildThisFileDirectory)Domain\MemoryEventStore.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)Domain\MemoryEventService.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)Domain\StartWorkEvent.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)Domain\WifiNetwork.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)View\ContentPageBase.cs" />

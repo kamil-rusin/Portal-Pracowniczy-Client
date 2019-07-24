@@ -15,6 +15,7 @@ namespace Shared.ViewModels
     {
         private readonly IWorkStorage _workStorage;
         private readonly IUserStorage _userStorage;
+        private IEventService _eventService;
         
         #region Interactions
         public Interaction<Unit, Unit> GoToMainActivity { get; }
@@ -52,6 +53,8 @@ namespace Shared.ViewModels
         
         private string UpdateWorkingTime()
         {
+            IEnumerable<EventBase> eventBases = _eventService.GetEventsFromDay(DateTime.Now);
+
             var d = _workStorage.GetEnteredWorkDate();
             if (d.ToString(@"HH:mm").Equals("00:00"))
             {
