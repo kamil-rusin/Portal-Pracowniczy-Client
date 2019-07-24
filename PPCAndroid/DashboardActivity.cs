@@ -69,8 +69,7 @@ namespace PPCAndroid
         protected override void BindProperties(CompositeDisposable disposables)
         {
             this.Bind(ViewModel, x => x.EntryDate, a => a._entryDateTextView.Text).DisposeWith(disposables);
-            this.Bind(ViewModel, x => x.WorkDate, a => a._workDateTextView.Text).DisposeWith(disposables);
-        }
+            this.OneWayBind(ViewModel, x => x.WorkTime, a => a._workDateTextView.Text).DisposeWith(disposables);        }
 
         protected override void RegisterViewModel()
         {

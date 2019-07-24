@@ -27,33 +27,10 @@ namespace Shared.ViewModels
             get => _workStorage.GetEnteredWorkDate().ToString(@"HH:mm");
             set => this.RaiseAndSetIfChanged(ref _entryDate, value);
         }
-        
-        private string _workDate;
-        public string WorkDate
-        {
-            get
-            {
-                try
-                {
-                    var d = _workStorage.GetEnteredWorkDate();
-                    if (d.ToString(@"HH:mm").Equals("00:00"))
-                    {
-                        return "--:--";
-                    }
-                    var x = DateTime.Now - _workStorage.GetEnteredWorkDate();
-                    var s = $"{x.Hours:D2}:{x.Minutes:D2}:{x.Seconds:D2}";
-                    return s;
-                }
-                catch (Exception e)
-                {
-                    return "--:--";
-                }
-            }
-            
-            set => this.RaiseAndSetIfChanged(ref _workDate, value);
-        }
         #endregion
         
+        private ObservableAsPropertyHelper<string> _workTime;
+        public string WorkTime => _workTime.Value;
         public ReactiveCommand<Unit,Unit> LogOutCommand { get; private set; }
         
         
@@ -64,7 +41,27 @@ namespace Shared.ViewModels
             _userStorage = userStorage;
             
             LogOutCommand = ReactiveCommand.CreateFromTask(async () => { await LogOut();  });
+            
+            var interval = TimeSpan.FromSeconds(1);
+            
+            _workTime = Observable.Timer(TimeSpan.FromSeconds(20), interval)
+                .Select(unit => this.UpdateWorkingTime())
+                .ObserveOn(RxApp.MainThreadScheduler)
+                .ToProperty(this, n => n.WorkTime);
         }
+        
+        private string UpdateWorkingTime()
+        {
+            var d = _workStorage.GetEnteredWorkDate();
+            if (d.ToString(@"HH:mm").Equals("00:00"))
+            {
+                return "--:--";
+            }
+            var x = DateTime.Now - _workStorage.GetEnteredWorkDate();
+            var s = $"{x.Hours:D2}:{x.Minutes:D2}:{x.Seconds:D2}";
+            return s;
+        }
+
         
         private async Task LogOut()
         {
