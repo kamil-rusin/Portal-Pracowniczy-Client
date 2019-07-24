@@ -42,6 +42,9 @@ namespace PPCAndroid.JobServices
 
         public override void OnReceive(Context context, Intent intent)
         {
+            var wifiInfo = WifiManager.ConnectionInfo.SSID.Equals(_availableSsids[0]);
+            //if(wifiInfo)
+            //TODO: ify
             _sessionManagerWorkStorage = new WorkSessionManager(context);
             var wifiFound = false;
             if (!intent.Action.Equals(WifiManager.ScanResultsAvailableAction)) return;
