@@ -9,6 +9,11 @@ namespace PPCAndroid.Shared.Domain
     {
         private IList<EventBase> _events;
 
+        public MemoryEventStore(IList<EventBase> events)
+        {
+            _events = events;
+        }
+
         public void Add(EventBase eventBase)
         {
             if (eventBase.EventType == nameof(StartWorkEvent))
@@ -22,7 +27,7 @@ namespace PPCAndroid.Shared.Domain
             return  _events;
         }
 
-        public EventBase[] GetEventsFromDay(DateTime day)
+        public IEnumerable<EventBase> GetEventsFromDay(DateTime day)
         {
             return _events.Where(n => n.When.Date == day.Date).OrderBy(n => n.When).ToArray();
         }
@@ -39,7 +44,7 @@ namespace PPCAndroid.Shared.Domain
                 _events.Add(new EndWorkEvent(DateTime.Now));
         }
         
-        private TimeSpan CountWorkTime(DateTime day)
+        /*private TimeSpan CountWorkTime(DateTime day)
         {
             var dayEvents = _events.Where(n => n.When.Date == day.Date).OrderBy(n=>n.When).ToArray();
             var workTime = TimeSpan.Zero;
@@ -48,6 +53,6 @@ namespace PPCAndroid.Shared.Domain
                 workTime += dayEvents[i + 1].When - dayEvents[i].When;
             }
             return workTime;
-        }
+        }*/
     }
 }

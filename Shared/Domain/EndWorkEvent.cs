@@ -6,7 +6,7 @@ namespace PPCAndroid.Shared.Domain
     {
         public EndWorkEvent(DateTime when) : base(when)
         {
-            EventType = nameof(StartWorkEvent);
+            EventType = nameof(EndWorkEvent);
         }
     }
 }
