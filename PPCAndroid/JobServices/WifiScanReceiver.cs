@@ -23,7 +23,8 @@ namespace PPCAndroid.JobServices
 
         private readonly List<string> _availableSsids = new List<string>
         {
-            "AndroidWifi"
+            //"AndroidWifi"
+            "Xperia Z2_bf43"
         };
 
         private WifiManager WifiManager { get; set; }
@@ -96,7 +97,7 @@ namespace PPCAndroid.JobServices
 
             Task.Run(() =>
             {
-                Thread.Sleep((long) TimeSpan.FromMinutes(1).TotalMilliseconds);
+                Thread.Sleep((long) TimeSpan.FromSeconds(20).TotalMilliseconds);
                 WifiManager.StartScan();
             });
             

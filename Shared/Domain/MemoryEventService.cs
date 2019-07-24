@@ -50,5 +50,12 @@ namespace PPCAndroid.Shared.Domain
 
             return workTime;
         }
+
+        public int CountWorkExits(DateTime day)
+        {
+            var events = GetEventsFromDay(day);
+            //if only 2 kind of events Start and End
+            return (events.Count() / 2) - 1;
+        }
     }
 }

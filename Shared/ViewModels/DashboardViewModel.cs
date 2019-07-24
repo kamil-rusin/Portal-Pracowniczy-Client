@@ -4,8 +4,6 @@ using System.Linq;
 using System.Reactive;
 using System.Reactive.Linq;
 using System.Threading.Tasks;
-using Android.Content;
-using PPCAndroid;
 using PPCAndroid.Shared.Domain;
 using ReactiveUI;
 

@@ -14,7 +14,8 @@ namespace PPCAndroid.Shared.Service
             {
                 {"admin1", "admin1"}, 
                 {"quest", "iamquest"}, 
-                {"wojciech", "wojciech"}
+                {"wojciech", "wojciech"},
+                {"a", "a"}
             };
         }
 
