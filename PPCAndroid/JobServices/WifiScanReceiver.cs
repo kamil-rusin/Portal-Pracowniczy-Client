@@ -17,13 +17,14 @@ namespace PPCAndroid.JobServices
 {
     public class WifiScanReceiver : BroadcastReceiver
     {
-        private SessionManager _sessionManager;
+        private IWorkStorage _sessionManagerWorkStorage;
         private bool _wifiLost;
 
 
         private readonly List<string> _availableSsids = new List<string>
         {
-            "AndroidWifi"
+            //"AndroidWifi"
+            "Xperia Z2_bf43"
         };
 
         private WifiManager WifiManager { get; set; }
@@ -41,7 +42,7 @@ namespace PPCAndroid.JobServices
 
         public override void OnReceive(Context context, Intent intent)
         {
-            _sessionManager = new SessionManager(context);
+            _sessionManagerWorkStorage = new WorkSessionManager(context);
             var wifiFound = false;
             if (!intent.Action.Equals(WifiManager.ScanResultsAvailableAction)) return;
             WifiNetworks = WifiManager.ScanResults.ToDomainWifiNetworks().ToList();
@@ -57,7 +58,7 @@ namespace PPCAndroid.JobServices
                 }
 
                 _wifiLost = false;
-                if (_sessionManager.GetIsAtWork()) continue;
+                if (_sessionManagerWorkStorage.GetIsAtWork()) continue;
                 wifiFound = true;
                 var startWorkReceiverIntent = new Intent(context, typeof(EnteredWorkReceiver));
                 var pendingIntent = PendingIntent.GetBroadcast(context, 0, startWorkReceiverIntent, 0);
@@ -76,7 +77,7 @@ namespace PPCAndroid.JobServices
 
             if (!wifiFound & _wifiLost)
             {
-                if (_sessionManager.GetIsAtWork())
+                if (_sessionManagerWorkStorage.GetIsAtWork())
                 {
                     var notificationIntent = new Intent(context, typeof(LeftWorkReceiver));
                     var pendingIntent = PendingIntent.GetBroadcast(context, 0, notificationIntent, 0);
@@ -96,7 +97,7 @@ namespace PPCAndroid.JobServices
 
             Task.Run(() =>
             {
-                Thread.Sleep((long) TimeSpan.FromMinutes(1).TotalMilliseconds);
+                Thread.Sleep((long) TimeSpan.FromSeconds(20).TotalMilliseconds);
                 WifiManager.StartScan();
             });
             

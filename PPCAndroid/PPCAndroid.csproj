@@ -58,6 +58,7 @@
         </Reference>
     </ItemGroup>
     <ItemGroup>
+        <Compile Include="AndroidObjectFactory.cs" />
         <Compile Include="AppConstants.cs" />
         <Compile Include="BaseActivity.cs" />
         <Compile Include="DashboardActivity.cs" />
@@ -72,7 +73,8 @@
         <Compile Include="Mappers\WifiNetworkMapper.cs" />
         <Compile Include="Resources\Resource.Designer.cs" />
         <Compile Include="Properties\AssemblyInfo.cs" />
-        <Compile Include="SessionManager.cs" />
+        <Compile Include="WorkSessionManager.cs" />
+        <Compile Include="UserSessionManager.cs" />
     </ItemGroup>
     <ItemGroup>
         <None Include="Resources\AboutResources.txt" />

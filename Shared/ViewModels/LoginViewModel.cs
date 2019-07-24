@@ -37,19 +37,19 @@ namespace Shared.ViewModels
         #endregion
         
         private readonly ILogin _loginService;
-        private readonly ISessionManager _sessionManager;
+        private readonly IWorkStorage _workStorage;
+        private readonly IUserStorage _userStorage;
 
         public ReactiveCommand<Unit,Unit> LoginCommand { get; private set; }
         
-        public LoginViewModel(ILogin login, ISessionManager sessionManager)
+        public LoginViewModel(ILogin login, IWorkStorage workStorage, IUserStorage userStorage)
         {
             
             _loginService = login;
-            _sessionManager = sessionManager;
+            _workStorage = workStorage;
+            _userStorage = userStorage;
             GoToDashboard= new Interaction<Unit, Unit>();
-            
-            
-            
+
             var canLogin = this.WhenAnyValue(x => x.UserName, x => x.Password, LoginInputValidator.Validate);
             LoginCommand = ReactiveCommand.CreateFromTask(async () => { await TryLogin();  }, canLogin);
         }
@@ -59,10 +59,10 @@ namespace Shared.ViewModels
             var lg = await _loginService.Login(_userName, _password);
             if (lg)
             {
-                _sessionManager.LogOut();
-                _sessionManager.SaveUsername(UserName);
-                _sessionManager.SaveIsLogged(true);
-                //_sessionManager.Dispose();
+                _workStorage.RemoveWorkData();
+                _userStorage.ClearUsernameAndIsLoggedIn();
+                _userStorage.SaveUsername(UserName);
+                _userStorage.SaveIsLogged(true);
                 await GoToDashboard.Handle(Unit.Default);
             }
             
@@ -72,7 +72,7 @@ namespace Shared.ViewModels
 
     public static class LoginInputValidator
     {
-        private const int MinimumPasswordLength = 5;
+        private const int MinimumPasswordLength = 1;
         public static bool Validate(string username, string password)
         {
             return !string.IsNullOrEmpty(password) && password.Length > MinimumPasswordLength && !string.IsNullOrEmpty(username);

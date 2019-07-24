@@ -6,7 +6,7 @@ using System;
 
 
 namespace PPCAndroid.JobServices
-{
+{/*
     [Service(Name = "PPCAndroid.JobServices.WifiJobService", Permission = "android.permission.BIND_JOB_SERVICE")]
     public static class JobSchedulerHelpers
     {
@@ -38,5 +38,5 @@ namespace PPCAndroid.JobServices
             Class javaClass = Class.FromType(t);
             return new ComponentName(context, javaClass);
         }
-    }
+    }*/
 }
