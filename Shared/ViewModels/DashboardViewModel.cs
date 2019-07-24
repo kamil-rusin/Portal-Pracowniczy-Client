@@ -4,6 +4,9 @@ using System.Linq;
 using System.Reactive;
 using System.Reactive.Linq;
 using System.Threading.Tasks;
+using Android.App;
+using Android.Support.Annotation;
+using Java.Lang;
 using PPCAndroid;
 using PPCAndroid.Shared.Domain;
 using ReactiveUI;
@@ -39,15 +42,13 @@ namespace Shared.ViewModels
             
             LogOutCommand = ReactiveCommand.CreateFromTask(async () => { await LogOut();  });
             
-            var interval = TimeSpan.FromMinutes(5);
-            _workTime = Observable.Timer(interval, interval)
+            var interval = TimeSpan.FromSeconds(1);
+            _workTime = Observable.Timer(TimeSpan.FromSeconds(20), interval)
                 .Select(unit => this.UpdateWorkingTime())
-                .ToProperty(this, n=> n.WorkTime);
+                .ObserveOn(RxApp.MainThreadScheduler)
+                .ToProperty(this, n => n.WorkTime);
         }
         
-        
-        
-
         private string UpdateWorkingTime()
         {
             var d = _sessionManager.GetEnteredWorkDate();
