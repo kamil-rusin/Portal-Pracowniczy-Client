@@ -13,10 +13,11 @@ namespace PPCAndroid.JobServices
 
         public override void OnReceive(Context context, Intent intent)
        {
-            _workStorage = AndroidObjectFactory.GetWorkStorage(context);
+           //TODO: poprawić na eventy
+            /*_workStorage = AndroidObjectFactory.GetWorkStorage(context);
             if (!(_workStorage.GetIsLoggedIn() & (!_workStorage.GetIsAtWork()))) return;
             _workStorage.SaveEntryDate(DateTime.Now);
-            _workStorage.SaveAtWork(true);
+            _workStorage.SaveAtWork(true);*/
        }
     }
 }
