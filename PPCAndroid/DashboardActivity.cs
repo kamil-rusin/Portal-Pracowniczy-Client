@@ -73,7 +73,11 @@ namespace PPCAndroid
 
         protected override void RegisterViewModel()
         {
-            ViewModel = new DashboardViewModel(AndroidObjectFactory.GetUserStorage(Application.Context),AndroidObjectFactory.GetWorkStorage(Application.Context));
+            ViewModel = new DashboardViewModel(
+                AndroidObjectFactory.GetUserStorage(Application.Context),
+                AndroidObjectFactory.GetWorkStorage(Application.Context),
+                AndroidObjectFactory.GetEventService()
+                );
         }
 
         protected override void RegisterInteractions()

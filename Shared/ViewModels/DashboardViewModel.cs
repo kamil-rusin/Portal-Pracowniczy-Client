@@ -35,17 +35,18 @@ namespace Shared.ViewModels
         public ReactiveCommand<Unit,Unit> LogOutCommand { get; private set; }
         
         
-        public DashboardViewModel(IUserStorage userStorage, IWorkStorage workStorage)    
+        public DashboardViewModel(IUserStorage userStorage, IWorkStorage workStorage, IEventService eventService)    
         {
             GoToMainActivity= new Interaction<Unit, Unit>();
             _workStorage = workStorage;
             _userStorage = userStorage;
+            _eventService = eventService;
             
             LogOutCommand = ReactiveCommand.CreateFromTask(async () => { await LogOut();  });
             
-            var interval = TimeSpan.FromSeconds(1);
+            var interval = TimeSpan.FromSeconds(5);
             
-            _workTime = Observable.Timer(TimeSpan.FromSeconds(20), interval)
+            _workTime = Observable.Timer(TimeSpan.FromSeconds(15), interval)
                 .Select(unit => this.UpdateWorkingTime())
                 .ObserveOn(RxApp.MainThreadScheduler)
                 .ToProperty(this, n => n.WorkTime);
@@ -54,14 +55,33 @@ namespace Shared.ViewModels
         private string UpdateWorkingTime()
         {
             IEnumerable<EventBase> eventBases = _eventService.GetEventsFromDay(DateTime.Now);
+            var baseTimeSpan = TimeSpan.Zero;
+            var enumerable = eventBases as EventBase[] ?? eventBases.ToArray();
+            if (enumerable.Last().EventType == nameof(EndWorkEvent))
+            {
+                baseTimeSpan = _eventService.CountWorkTime(DateTime.Now);
+            }
+            else if (enumerable.Last().EventType == nameof(StartWorkEvent))
+            {
+                for (var i = 0; i < enumerable.Count(); i++)
+                {
+                    if (i == enumerable.Length - 1)
+                        baseTimeSpan += DateTime.Now - enumerable[i].When;
+                    else if (enumerable[i].EventType == nameof(EndWorkEvent))
+                        continue;
+                    else
+                    {
+                        baseTimeSpan += enumerable[i + 1].When - enumerable[i].When;
+                    }
+                }
+            }
 
-            var d = _workStorage.GetEnteredWorkDate();
-            if (d.ToString(@"HH:mm").Equals("00:00"))
+            if (baseTimeSpan.ToString(@"hh\:mm\:ss").Equals("00:00:00"))
             {
                 return "--:--";
             }
-            var x = DateTime.Now - _workStorage.GetEnteredWorkDate();
-            var s = $"{x.Hours:D2}:{x.Minutes:D2}:{x.Seconds:D2}";
+            
+            var s = $"{baseTimeSpan.Hours:D2}:{baseTimeSpan.Minutes:D2}:{baseTimeSpan.Seconds:D2}";
             return s;
         }
 
