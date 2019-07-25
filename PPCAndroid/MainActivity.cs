@@ -82,10 +82,8 @@ namespace PPCAndroid
                     {
                         RequestPermissions(permissions, 87);
                     }
-                }
-                
+                }   
             }
-            
             base.OnResume();
         }
 

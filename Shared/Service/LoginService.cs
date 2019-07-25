@@ -6,7 +6,7 @@ namespace PPCAndroid.Shared.Service
 {
     public class LoginService: ILogin
     {
-        readonly Dictionary<string, string> _userCredentials;
+        private readonly Dictionary<string, string> _userCredentials;
 
         public LoginService()
         {

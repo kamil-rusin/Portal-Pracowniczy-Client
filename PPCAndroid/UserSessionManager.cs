@@ -10,10 +10,7 @@ namespace PPCAndroid
         private readonly ISharedPreferencesEditor _editor;
 
         private const string KeyUsername = "username";
-        private const string KeyLogInDate = "logInDate";
-        private const string KeyLogOutDate = "logOutDate";
         private const string KeyIsLoggedIn = "isLoggedIn";
-        private const string KeyIsAtWork = "isAtWork";
 
         public UserSessionManager(Context context)
         {

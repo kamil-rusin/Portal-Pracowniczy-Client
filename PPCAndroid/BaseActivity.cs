@@ -6,9 +6,6 @@ namespace PPCAndroid
 {
     public abstract class BaseActivity<TViewModel> : ReactiveActivity<TViewModel> where TViewModel : class
     {
-        protected BaseActivity()
-        { }
-
         protected void OnCreateBase(Bundle savedInstanceState)
         {
             base.OnCreate(savedInstanceState);

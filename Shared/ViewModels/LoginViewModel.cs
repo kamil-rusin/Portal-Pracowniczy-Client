@@ -65,17 +65,7 @@ namespace Shared.ViewModels
                 _userStorage.SaveIsLogged(true);
                 await GoToDashboard.Handle(Unit.Default);
             }
-            
             return Observable.Return(lg);
-        }
-    }
-
-    public static class LoginInputValidator
-    {
-        private const int MinimumPasswordLength = 0;
-        public static bool Validate(string username, string password)
-        {
-            return !string.IsNullOrEmpty(password) && password.Length > MinimumPasswordLength && !string.IsNullOrEmpty(username);
         }
     }
 }

@@ -5,7 +5,6 @@ namespace PPCAndroid
 {
     public static class AndroidObjectFactory
     {
-
         public static IWorkStorage GetWorkStorage(Context context)
         {
             return new WorkSessionManager(context);

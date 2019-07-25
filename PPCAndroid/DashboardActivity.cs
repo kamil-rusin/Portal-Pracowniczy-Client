@@ -36,11 +36,9 @@ namespace PPCAndroid
             {
                 _wifiManager.SetWifiEnabled(true);
             }
-
+            
             _receiverWifi = new WifiScanReceiver(_wifiManager);
-            
             RegisterReceiver(_receiverWifi, new IntentFilter(WifiManager.ScanResultsAvailableAction));
-            
             _wifiManager.StartScan();
         }
         private void CreateNotificationChannel()

@@ -22,8 +22,8 @@ namespace PPCAndroid.JobServices
 
         private readonly List<string> _availableSsids = new List<string>
         {
-            "AndroidWifi"
-            //"Xperia Z2_bf43"
+            //"AndroidWifi"
+            "Xperia Z2_bf43"
         };
 
         private WifiManager WifiManager { get; set; }
@@ -50,42 +50,17 @@ namespace PPCAndroid.JobServices
                     _wifiLost = true;
                     continue;
                 }
-
                 _wifiLost = false;
                 if (_sessionManagerWorkStorage.GetIsAtWork()) continue;
                 wifiFound = true;
-                var startWorkReceiverIntent = new Intent(context, typeof(EnteredWorkReceiver));
-                var pendingIntent = PendingIntent.GetBroadcast(context, 0, startWorkReceiverIntent, 0);
-                var builder = new NotificationCompat.Builder(context, AppConstants.ChannelId)
-                    .SetContentTitle("Wykryto sieć " + wifi.Ssid)
-                    .SetContentText("Kliknij, jeżeli jesteś w pracy.")
-                    .SetSmallIcon(Resource.Drawable.raports)
-                    .SetContentIntent(pendingIntent)
-                    .SetAutoCancel(true)
-                    .SetDefaults((int) NotificationDefaults.Sound | (int) NotificationDefaults.Vibrate)
-                    .SetPriority(NotificationCompat.PriorityHigh);
-
-                var notificationManager = NotificationManagerCompat.From(context);
-                notificationManager.Notify(AppConstants.NotificationIdStartedWork, builder.Build());
+                FoundNetworkNotify(context, wifi);
             }
 
             if (!wifiFound & _wifiLost)
             {
                 if (_sessionManagerWorkStorage.GetIsAtWork())
                 {
-                    var notificationIntent = new Intent(context, typeof(LeftWorkReceiver));
-                    var pendingIntent = PendingIntent.GetBroadcast(context, 0, notificationIntent, 0);
-                    var builder = new NotificationCompat.Builder(context, AppConstants.ChannelId)
-                        .SetContentTitle("Utracono firmową sieć")
-                        .SetContentText("Kliknij, jeżeli wyszedłeś z pracy.")
-                        .SetSmallIcon(Resource.Drawable.raports)
-                        .SetContentIntent(pendingIntent)
-                        .SetAutoCancel(true)
-                        .SetDefaults((int) NotificationDefaults.Sound | (int) NotificationDefaults.Vibrate)
-                        .SetPriority(NotificationCompat.PriorityHigh);
-
-                    var notificationManager = NotificationManagerCompat.From(context);
-                    notificationManager.Notify(AppConstants.NotificationIdLeftWork, builder.Build());
+                    LostNetworkNotify(context);
                 }
             }
 
@@ -95,6 +70,40 @@ namespace PPCAndroid.JobServices
                 WifiManager.StartScan();
             });
             
+        }
+
+        private static void LostNetworkNotify(Context context)
+        {
+            var notificationIntent = new Intent(context, typeof(LeftWorkReceiver));
+            var pendingIntent = PendingIntent.GetBroadcast(context, 0, notificationIntent, 0);
+            var builder = new NotificationCompat.Builder(context, AppConstants.ChannelId)
+                .SetContentTitle("Utracono firmową sieć")
+                .SetContentText("Kliknij, jeżeli wyszedłeś z pracy.")
+                .SetSmallIcon(Resource.Drawable.raports)
+                .SetContentIntent(pendingIntent)
+                .SetAutoCancel(true)
+                .SetDefaults((int) NotificationDefaults.Sound | (int) NotificationDefaults.Vibrate)
+                .SetPriority(NotificationCompat.PriorityHigh);
+
+            var notificationManager = NotificationManagerCompat.From(context);
+            notificationManager.Notify(AppConstants.NotificationIdLeftWork, builder.Build());
+        }
+
+        private static void FoundNetworkNotify(Context context, WifiNetwork wifi)
+        {
+            var startWorkReceiverIntent = new Intent(context, typeof(EnteredWorkReceiver));
+            var pendingIntent = PendingIntent.GetBroadcast(context, 0, startWorkReceiverIntent, 0);
+            var builder = new NotificationCompat.Builder(context, AppConstants.ChannelId)
+                .SetContentTitle("Wykryto sieć " + wifi.Ssid)
+                .SetContentText("Kliknij, jeżeli jesteś w pracy.")
+                .SetSmallIcon(Resource.Drawable.raports)
+                .SetContentIntent(pendingIntent)
+                .SetAutoCancel(true)
+                .SetDefaults((int) NotificationDefaults.Sound | (int) NotificationDefaults.Vibrate)
+                .SetPriority(NotificationCompat.PriorityHigh);
+
+            var notificationManager = NotificationManagerCompat.From(context);
+            notificationManager.Notify(AppConstants.NotificationIdStartedWork, builder.Build());
         }
     }
 }

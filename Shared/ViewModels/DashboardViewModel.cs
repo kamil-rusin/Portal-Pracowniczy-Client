@@ -13,28 +13,26 @@ namespace Shared.ViewModels
     {
         private readonly IWorkStorage _workStorage;
         private readonly IUserStorage _userStorage;
-        private IEventService _eventService;
+        private readonly IEventService _eventService;
         
         #region Interactions
         public Interaction<Unit, Unit> GoToMainActivity { get; }
         #endregion
 
-        private ObservableAsPropertyHelper<string> _entryTimeObservable;
-        public string EntryTimeObservable => _entryTimeObservable.Value;
-
-        private string _entryTime;
+        private readonly ObservableAsPropertyHelper<string> _entryTimeObservable;
+        private readonly ObservableAsPropertyHelper<string> _workTime;
         
-        public string EntryTime
+        public string EntryTimeObservable => _entryTimeObservable.Value;
+        public string WorkTime => _workTime.Value;
+        private string _entryTime;
+
+        private string EntryTime
         {
             get => _entryTime;
             set => this.RaiseAndSetIfChanged(ref _entryTime, value);
         }
-        
-        private ObservableAsPropertyHelper<string> _workTime;
-        public string WorkTime => _workTime.Value;
         public ReactiveCommand<Unit,Unit> LogOutCommand { get; private set; }
-        
-        
+
         public DashboardViewModel(IUserStorage userStorage, IWorkStorage workStorage, IEventService eventService)    
         {
             GoToMainActivity= new Interaction<Unit, Unit>();
@@ -58,7 +56,7 @@ namespace Shared.ViewModels
         
         private string UpdateWorkingTime()
         {
-            IEnumerable<EventBase> eventBases = _eventService.GetEventsFromDay(DateTime.Now);
+            var eventBases = _eventService.GetEventsFromDay(DateTime.Now);
             var baseTimeSpan = TimeSpan.Zero;
             if (eventBases != null)
             {
@@ -83,7 +81,6 @@ namespace Shared.ViewModels
                     }
                 }
             }
-
 
             if (baseTimeSpan.ToString(@"hh\:mm\:ss").Equals("00:00:00"))
             {
