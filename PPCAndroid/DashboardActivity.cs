@@ -88,7 +88,13 @@ namespace PPCAndroid
 
         protected override void RegisterInteractions()
         {
-            this.WhenActivated(d => { d(ViewModel.GoToMainActivity.RegisterHandler(interaction => { Finish(); })); });
+            this.WhenActivated(d => { d(ViewModel.GoToMainActivity.RegisterHandler(interaction =>
+            {
+                var intent = new Intent(this, typeof(MainActivity));
+                StartActivity(intent);
+                Finish();
+                interaction.SetOutput(Unit.Default);
+            })); });
         }
 
         protected override void RegisterView()
