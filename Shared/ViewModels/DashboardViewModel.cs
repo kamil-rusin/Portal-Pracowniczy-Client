@@ -95,15 +95,11 @@ namespace Shared.ViewModels
             return s;
         }
 
-        private void UpdateEntryTime()
-        {
-            
-        }
-
         private async Task LogOut()
         {
             _workStorage.RemoveWorkData();
             _userStorage.ClearUsernameAndIsLoggedIn();
+            _eventService.ClearAllEvents();
             await GoToMainActivity.Handle(Unit.Default);
         }
     }

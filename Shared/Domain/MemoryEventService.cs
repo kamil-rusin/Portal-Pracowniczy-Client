@@ -17,6 +17,11 @@ namespace PPCAndroid.Shared.Domain
                 CreateEndWorkEvent();
         }
 
+        public void ClearAllEvents()
+        {
+            _events.Clear();
+        }
+
         public IList<EventBase> GetAll()
         {
             return _events;
