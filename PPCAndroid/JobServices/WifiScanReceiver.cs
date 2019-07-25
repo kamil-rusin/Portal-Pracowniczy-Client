@@ -97,7 +97,7 @@ namespace PPCAndroid.JobServices
 
             Task.Run(() =>
             {
-                Thread.Sleep((long) TimeSpan.FromSeconds(20).TotalMilliseconds);
+                Thread.Sleep((long) TimeSpan.FromSeconds(5).TotalMilliseconds);
                 WifiManager.StartScan();
             });
             

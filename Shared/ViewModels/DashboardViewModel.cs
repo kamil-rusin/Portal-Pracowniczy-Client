@@ -18,15 +18,17 @@ namespace Shared.ViewModels
         #region Interactions
         public Interaction<Unit, Unit> GoToMainActivity { get; }
         #endregion
+
+        private ObservableAsPropertyHelper<string> _entryTimeObservable;
+        public string EntryTimeObservable => _entryTimeObservable.Value;
+
+        private string _entryTime;
         
-        #region Properties
-        private string _entryDate;
-        public string EntryDate
+        public string EntryTime
         {
-            get => _workStorage.GetEnteredWorkDate().ToString(@"HH:mm");
-            set => this.RaiseAndSetIfChanged(ref _entryDate, value);
+            get => _entryTime;
+            set => this.RaiseAndSetIfChanged(ref _entryTime, value);
         }
-        #endregion
         
         private ObservableAsPropertyHelper<string> _workTime;
         public string WorkTime => _workTime.Value;
@@ -42,9 +44,13 @@ namespace Shared.ViewModels
             
             LogOutCommand = ReactiveCommand.CreateFromTask(async () => { await LogOut();  });
             
-            var interval = TimeSpan.FromSeconds(5);
+            _entryTimeObservable = this
+                .WhenAnyValue(x => x.EntryTime)
+                .ObserveOn(RxApp.MainThreadScheduler)
+                .ToProperty(this,n => n.EntryTimeObservable);
             
-            _workTime = Observable.Timer(TimeSpan.FromSeconds(15), interval)
+            var interval = TimeSpan.FromSeconds(1);
+            _workTime = Observable.Timer(TimeSpan.FromSeconds(5), interval)
                 .Select(unit => this.UpdateWorkingTime())
                 .ObserveOn(RxApp.MainThreadScheduler)
                 .ToProperty(this, n => n.WorkTime);
@@ -54,28 +60,34 @@ namespace Shared.ViewModels
         {
             IEnumerable<EventBase> eventBases = _eventService.GetEventsFromDay(DateTime.Now);
             var baseTimeSpan = TimeSpan.Zero;
-            var enumerable = eventBases as EventBase[] ?? eventBases.ToArray();
-            if (enumerable.Last().EventType == nameof(EndWorkEvent))
+            if (eventBases != null)
             {
-                baseTimeSpan = _eventService.CountWorkTime(DateTime.Now);
-            }
-            else if (enumerable.Last().EventType == nameof(StartWorkEvent))
-            {
-                for (var i = 0; i < enumerable.Count(); i++)
+                var enumerable = eventBases as EventBase[] ?? eventBases.ToArray();
+                EntryTime = enumerable.First().When.ToString(@"hh\:mm\:ss");
+                if (enumerable.Last().EventType == nameof(EndWorkEvent))
                 {
-                    if (i == enumerable.Length - 1)
-                        baseTimeSpan += DateTime.Now - enumerable[i].When;
-                    else if (enumerable[i].EventType == nameof(EndWorkEvent))
-                        continue;
-                    else
+                    baseTimeSpan = _eventService.CountWorkTime(DateTime.Now);
+                }
+                else if (enumerable.Last().EventType == nameof(StartWorkEvent))
+                {
+                    for (var i = 0; i < enumerable.Count(); i++)
                     {
-                        baseTimeSpan += enumerable[i + 1].When - enumerable[i].When;
+                        if (i == enumerable.Length - 1)
+                            baseTimeSpan += DateTime.Now - enumerable[i].When;
+                        else if (enumerable[i].EventType == nameof(EndWorkEvent))
+                            continue;
+                        else
+                        {
+                            baseTimeSpan += enumerable[i + 1].When - enumerable[i].When;
+                        }
                     }
                 }
             }
 
+
             if (baseTimeSpan.ToString(@"hh\:mm\:ss").Equals("00:00:00"))
             {
+                EntryTime = "--:--";
                 return "--:--";
             }
             
@@ -83,7 +95,11 @@ namespace Shared.ViewModels
             return s;
         }
 
-        
+        private void UpdateEntryTime()
+        {
+            
+        }
+
         private async Task LogOut()
         {
             _workStorage.RemoveWorkData();

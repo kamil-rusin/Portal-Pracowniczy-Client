@@ -24,7 +24,7 @@ namespace PPCAndroid.Shared.Domain
 
         public IEnumerable<EventBase> GetEventsFromDay(DateTime day)
         {
-            return _events.Where(n => n.When.Date == day.Date).OrderBy(n => n.When).ToArray();
+            return !_events.Any() ? null : _events.Where(n => n.When.Date == day.Date).OrderBy(n => n.When).ToArray();
         }
 
         private void CreateStartWorkEvent()
