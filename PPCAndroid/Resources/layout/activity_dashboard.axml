@@ -19,7 +19,7 @@
         
     />
     <TextView
-            android:text="Jesteś w pracy od:"
+            android:text="Przyszedłeś do pracy o:"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_gravity="center"
@@ -60,7 +60,7 @@
             android:layout_centerHorizontal="true"
             android:theme="@style/MyCustomTheme"/>
     <TextView
-            android:text="Dzisiaj pracujesz już:"
+            android:text="Pracujesz już:"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_gravity="center"
@@ -70,7 +70,7 @@
             android:textSize="24sp"
             android:textColor="#ffffff"
             android:id="@+id/timeTextView"
-            android:layout_centerHorizontal="true" 
+            android:layout_centerHorizontal="true"
             android:theme="@style/MyCustomTheme"/>
 
 </RelativeLayout>

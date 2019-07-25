@@ -2666,8 +2666,8 @@ namespace PPCAndroid
 			// aapt resource value: 0x7f070061
 			public const int list_item = 2131165281;
 			
-			// aapt resource value: 0x7f070090
-			public const int loginButton = 2131165328;
+			// aapt resource value: 0x7f070092
+			public const int loginButton = 2131165330;
 			
 			// aapt resource value: 0x7f070095
 			public const int logoImageView = 2131165333;
@@ -2933,8 +2933,8 @@ namespace PPCAndroid
 			// aapt resource value: 0x7f070026
 			public const int useLogo = 2131165222;
 			
-			// aapt resource value: 0x7f070092
-			public const int usernameEditText = 2131165330;
+			// aapt resource value: 0x7f070090
+			public const int usernameEditText = 2131165328;
 			
 			// aapt resource value: 0x7f070093
 			public const int usernameImageView = 2131165331;

@@ -52,6 +52,7 @@ namespace PPCAndroid
                     var intent = new Intent(this, typeof(DashboardActivity));
                     StartActivity(intent);
                     interaction.SetOutput(Unit.Default);
+                    Finish();
                 })); 
             });
         }

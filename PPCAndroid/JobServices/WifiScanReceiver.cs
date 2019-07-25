@@ -20,24 +20,19 @@ namespace PPCAndroid.JobServices
         private IWorkStorage _sessionManagerWorkStorage;
         private bool _wifiLost;
 
-
         private readonly List<string> _availableSsids = new List<string>
         {
-            //"AndroidWifi"
-            "Xperia Z2_bf43"
+            "AndroidWifi"
+            //"Xperia Z2_bf43"
         };
 
         private WifiManager WifiManager { get; set; }
-        private readonly Subject<IEnumerable<WifiNetwork>> _wiFiNetworksSubject;
-
         private List<WifiNetwork> WifiNetworks { get; set; }
-        public IObservable<IEnumerable<WifiNetwork>> WiFiNetworksObs => _wiFiNetworksSubject;
-        
+
         public WifiScanReceiver(WifiManager wifiManager)
         {
             _wifiLost = false;
             WifiManager = wifiManager;
-            _wiFiNetworksSubject = new Subject<IEnumerable<WifiNetwork>>();
         }
 
         public override void OnReceive(Context context, Intent intent)
@@ -46,7 +41,6 @@ namespace PPCAndroid.JobServices
             var wifiFound = false;
             if (!intent.Action.Equals(WifiManager.ScanResultsAvailableAction)) return;
             WifiNetworks = WifiManager.ScanResults.ToDomainWifiNetworks().ToList();
-            _wiFiNetworksSubject.OnNext(WifiNetworks);
 
             foreach (var availableSsid in _availableSsids)
             {
