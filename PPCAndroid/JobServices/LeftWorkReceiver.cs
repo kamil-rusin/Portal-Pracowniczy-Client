@@ -44,8 +44,8 @@ namespace PPCAndroid.JobServices
 
         private string BuildNotificationText()
         {
-            var timeAtWork = EventsCounter.CountWorkExits(_eventService,DateTime.Now);
-            return timeAtWork > 0 ? $"Dzisiaj pracowałeś: {timeAtWork:hh\\:mm\\:ss}. W czasie pracy wyszedłeś {timeAtWork} raz(y)" : $"Dzisiaj pracowałeś: {timeAtWork:hh\\:mm\\:ss}";
+            var x = EventsCounter.CountWorkExits(_eventService,DateTime.Now);
+            return x > 0 ? $"Dzisiaj pracowałeś: {EventsCounter.CountWorkTime(_eventService.GetAll(),DateTime.Now):hh\\:mm\\:ss}. W czasie pracy wyszedłeś {x} raz(y)" : $"Dzisiaj pracowałeś: {EventsCounter.CountWorkTime(_eventService.GetAll(),DateTime.Now):hh\\:mm\\:ss}";
         }
     }
 }

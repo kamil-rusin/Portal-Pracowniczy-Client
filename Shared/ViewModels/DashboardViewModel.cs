@@ -72,6 +72,8 @@ namespace Shared.ViewModels
                     {
                         if (i == enumerable.Length - 1)
                             baseTimeSpan += DateTime.Now - enumerable[i].When;
+                        else if (enumerable[i].EventType == nameof(EndWorkEvent))
+                            continue;
                         else
                         {
                             baseTimeSpan += enumerable[i + 1].When - enumerable[i].When;
