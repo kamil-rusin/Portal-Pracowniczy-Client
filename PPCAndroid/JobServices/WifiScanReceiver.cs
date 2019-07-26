@@ -1,13 +1,11 @@
 using System;
 using System.Collections.Generic;
 using System.Linq;
-using System.Reactive.Subjects;
 using System.Threading.Tasks;
 using Android.App;
 using Android.Content;
 using Android.Net.Wifi;
 using Android.Support.V4.App;
-using Android.Util;
 using Java.Lang;
 using PPCAndroid.Mappers;
 using PPCAndroid.Shared.Domain;

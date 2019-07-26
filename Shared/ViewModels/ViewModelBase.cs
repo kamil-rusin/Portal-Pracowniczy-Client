@@ -1,5 +1,4 @@
 using ReactiveUI;
-using Splat;
 
 namespace Shared.ViewModels
 {

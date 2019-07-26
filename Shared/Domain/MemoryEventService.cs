@@ -1,7 +1,6 @@
 using System;
 using System.Collections.Generic;
 using System.Linq;
-using Java.Util;
 
 namespace PPCAndroid.Shared.Domain
 {
@@ -42,25 +41,6 @@ namespace PPCAndroid.Shared.Domain
         {
             if (_events.OrderByDescending(n => n.When).First().EventType != nameof(EndWorkEvent))
                 _events.Add(new EndWorkEvent(DateTime.Now));
-        }
-
-        public TimeSpan CountWorkTime(DateTime day)
-        {
-            var dayEvents = _events.Where(n => n.When.Date == day.Date).OrderBy(n => n.When).ToArray();
-            var workTime = TimeSpan.Zero;
-            for (var i = 0; i < dayEvents.Length - 1; i+=2)
-            {
-                workTime += dayEvents[i + 1].When - dayEvents[i].When;
-            }
-
-            return workTime;
-        }
-
-        public int CountWorkExits(DateTime day)
-        {
-            var events = GetEventsFromDay(day);
-            //if only 2 kind of events Start and End
-            return (events.Count() / 2) - 1;
-        }
+        } 
     }
 }

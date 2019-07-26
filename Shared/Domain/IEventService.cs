@@ -9,7 +9,5 @@ namespace PPCAndroid.Shared.Domain
         void ClearAllEvents();
         IList<EventBase> GetAll();
         IEnumerable<EventBase> GetEventsFromDay(DateTime day);
-        TimeSpan CountWorkTime(DateTime day);
-        int CountWorkExits(DateTime day);
     }
 }

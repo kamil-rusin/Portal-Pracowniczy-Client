@@ -2,7 +2,6 @@ using System;
 using System.Globalization;
 using Android.Content;
 using Android.Preferences;
-using Android.Util;
 using PPCAndroid.Shared.Domain;
 
 namespace PPCAndroid

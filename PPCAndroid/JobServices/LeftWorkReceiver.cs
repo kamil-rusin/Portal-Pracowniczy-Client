@@ -2,6 +2,7 @@ using System;
 using Android.App;
 using Android.Content;
 using Android.Support.V4.App;
+using PPCAndroid.Domain;
 using PPCAndroid.Shared.Domain;
 
 namespace PPCAndroid.JobServices
@@ -43,8 +44,8 @@ namespace PPCAndroid.JobServices
 
         private string BuildNotificationText()
         {
-            var x = _eventService.CountWorkExits(DateTime.Now);
-            return x > 0 ? $"Dzisiaj pracowałeś: {_eventService.CountWorkTime(DateTime.Now):hh\\:mm\\:ss}. W czasie pracy wyszedłeś {x} raz(y)" : $"Dzisiaj pracowałeś: {_eventService.CountWorkTime(DateTime.Now):hh\\:mm\\:ss}";
+            var timeAtWork = EventsCounter.CountWorkExits(_eventService,DateTime.Now);
+            return timeAtWork > 0 ? $"Dzisiaj pracowałeś: {timeAtWork:hh\\:mm\\:ss}. W czasie pracy wyszedłeś {timeAtWork} raz(y)" : $"Dzisiaj pracowałeś: {timeAtWork:hh\\:mm\\:ss}";
         }
     }
 }

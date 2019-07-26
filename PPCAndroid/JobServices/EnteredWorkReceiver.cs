@@ -1,9 +1,5 @@
 using System;
-using System.Linq;
-using System.Reactive.Subjects;
-using Android.App;
 using Android.Content;
-using PPCAndroid;
 using PPCAndroid.Shared.Domain;
 
 namespace PPCAndroid.JobServices

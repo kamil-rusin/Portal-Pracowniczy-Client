@@ -1,13 +1,7 @@
 using System;
-using System.Collections.Generic;
-using System.Linq;
 using System.Reactive;
-using System.Reactive.Disposables;
 using System.Reactive.Linq;
 using System.Threading.Tasks;
-using Android.App;
-using Android.Util;
-using PPCAndroid;
 using PPCAndroid.Shared.Domain;
 using PPCAndroid.Shared.Service;
 using ReactiveUI;

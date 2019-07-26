@@ -1,5 +1,3 @@
-using Android.Runtime;
-
 namespace PPCAndroid
 {
     public static class AppConstants
@@ -9,6 +7,5 @@ namespace PPCAndroid
         public const  int NotificationIdStartedWork = 1000;
         public const  int NotificationIdLeftWork = 1001;
         public const int NotificationIdAlreadyLeftWork = 1002;
-        
     }
 }

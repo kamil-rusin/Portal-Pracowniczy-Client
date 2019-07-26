@@ -1,6 +1,5 @@
 using System.Collections.Generic;
 using System.Threading.Tasks;
-using Android.Util;
 
 namespace PPCAndroid.Shared.Service
 {

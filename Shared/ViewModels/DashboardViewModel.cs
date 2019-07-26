@@ -1,9 +1,9 @@
 using System;
-using System.Collections.Generic;
 using System.Linq;
 using System.Reactive;
 using System.Reactive.Linq;
 using System.Threading.Tasks;
+using PPCAndroid.Domain;
 using PPCAndroid.Shared.Domain;
 using ReactiveUI;
 
@@ -64,7 +64,7 @@ namespace Shared.ViewModels
                 EntryTime = enumerable.First().When.ToString(@"hh\:mm\:ss");
                 if (enumerable.Last().EventType == nameof(EndWorkEvent))
                 {
-                    baseTimeSpan = _eventService.CountWorkTime(DateTime.Now);
+                    baseTimeSpan = EventsCounter.CountWorkTime(_eventService.GetAll(),DateTime.Now);
                 }
                 else if (enumerable.Last().EventType == nameof(StartWorkEvent))
                 {
@@ -72,8 +72,6 @@ namespace Shared.ViewModels
                     {
                         if (i == enumerable.Length - 1)
                             baseTimeSpan += DateTime.Now - enumerable[i].When;
-                        else if (enumerable[i].EventType == nameof(EndWorkEvent))
-                            continue;
                         else
                         {
                             baseTimeSpan += enumerable[i + 1].When - enumerable[i].When;
