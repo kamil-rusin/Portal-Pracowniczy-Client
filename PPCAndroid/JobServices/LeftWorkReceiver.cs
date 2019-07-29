@@ -30,11 +30,14 @@ namespace PPCAndroid.JobServices
 
         private void SummaryNotify(Context context)
         {
+            var summaryActivityIntent = new Intent(context, typeof(SummaryActivity));
+            var pendingIntent = PendingIntent.GetActivity(context, 0, summaryActivityIntent, 0);
             var builder = new NotificationCompat.Builder(context, AppConstants.ChannelId)
                 .SetContentTitle("Koniec pracy!")
                 .SetStyle(new NotificationCompat.BigTextStyle().BigText(BuildNotificationText()))
                 .SetContentText(BuildNotificationText())
                 .SetSmallIcon(Resource.Drawable.raports)
+                .SetContentIntent(pendingIntent)
                 .SetAutoCancel(true)
                 .SetDefaults((int) NotificationDefaults.Sound | (int) NotificationDefaults.Vibrate)
                 .SetPriority(NotificationCompat.PriorityHigh);

@@ -12,6 +12,7 @@
     <Compile Include="$(MSBuildThisFileDirectory)Domain\EndWorkEvent.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)Domain\EventBase.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)Domain\EventsCounter.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)Domain\EventTuple.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)Domain\IEventService.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)Domain\IWorkStorage.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)Domain\IUserStorage.cs" />
@@ -19,7 +20,8 @@
     <Compile Include="$(MSBuildThisFileDirectory)Domain\MemoryEventService.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)Domain\StartWorkEvent.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)Domain\WifiNetwork.cs" />
-    <Folder Include="$(MSBuildThisFileDirectory)View" />
+    <Compile Include="$(MSBuildThisFileDirectory)ViewModels\SummaryViewModel.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)View\EventsListAdapter.cs" />
     <Folder Include="$(MSBuildThisFileDirectory)Model" />
     <Compile Include="$(MSBuildThisFileDirectory)Service\ILogin.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)Service\LoginService.cs" />
