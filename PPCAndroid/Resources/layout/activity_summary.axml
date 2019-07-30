@@ -21,6 +21,6 @@
             android:id="@+id/summedTimeTextView"
             android:layout_centerHorizontal="true"
             android:theme="@style/MyCustomTheme" android:layout_alignParentBottom="true"
-            android:layout_marginBottom="66dp"/>
+            android:layout_marginBottom="33dp"/>
     
 </RelativeLayout>

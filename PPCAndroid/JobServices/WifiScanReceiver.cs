@@ -4,6 +4,7 @@ using System.Linq;
 using System.Threading.Tasks;
 using Android.App;
 using Android.Content;
+using Android.Media;
 using Android.Net.Wifi;
 using Android.Support.V4.App;
 using Java.Lang;
@@ -73,14 +74,16 @@ namespace PPCAndroid.JobServices
         private static void LostNetworkNotify(Context context)
         {
             var notificationIntent = new Intent(context, typeof(LeftWorkReceiver));
-            var pendingIntent = PendingIntent.GetBroadcast(context, 0, notificationIntent, PendingIntentFlags.UpdateCurrent);
+            var pendingIntent = PendingIntent.GetBroadcast(context, 0, notificationIntent, PendingIntentFlags.CancelCurrent);
             var builder = new NotificationCompat.Builder(context, AppConstants.ChannelId)
                 .SetContentTitle("Utracono firmową sieć")
                 .SetContentText("Kliknij, jeżeli wyszedłeś z pracy.")
                 .SetSmallIcon(Resource.Drawable.raports)
                 .SetContentIntent(pendingIntent)
+                .SetOnlyAlertOnce(true)
+                .SetSound(RingtoneManager.GetDefaultUri(RingtoneType.Notification))
                 .SetAutoCancel(true)
-                .SetDefaults((int) NotificationDefaults.Sound | (int) NotificationDefaults.Vibrate)
+                .SetDefaults((int) NotificationDefaults.Vibrate)
                 .SetPriority(NotificationCompat.PriorityHigh);
 
             var notificationManager = NotificationManagerCompat.From(context);
@@ -90,14 +93,16 @@ namespace PPCAndroid.JobServices
         private static void FoundNetworkNotify(Context context, WifiNetwork wifi)
         {
             var startWorkReceiverIntent = new Intent(context, typeof(EnteredWorkReceiver));
-            var pendingIntent = PendingIntent.GetBroadcast(context, 0, startWorkReceiverIntent, PendingIntentFlags.UpdateCurrent);
+            var pendingIntent = PendingIntent.GetBroadcast(context, 0, startWorkReceiverIntent, PendingIntentFlags.CancelCurrent);
             var builder = new NotificationCompat.Builder(context, AppConstants.ChannelId)
                 .SetContentTitle("Wykryto sieć " + wifi.Ssid)
                 .SetContentText("Kliknij, jeżeli jesteś w pracy.")
                 .SetSmallIcon(Resource.Drawable.raports)
                 .SetContentIntent(pendingIntent)
+                .SetOnlyAlertOnce(true)
                 .SetAutoCancel(true)
-                .SetDefaults((int) NotificationDefaults.Sound | (int) NotificationDefaults.Vibrate)
+                .SetSound(RingtoneManager.GetDefaultUri(RingtoneType.Notification))
+                .SetDefaults((int) NotificationDefaults.Vibrate)
                 .SetPriority(NotificationCompat.PriorityHigh);
 
             var notificationManager = NotificationManagerCompat.From(context);

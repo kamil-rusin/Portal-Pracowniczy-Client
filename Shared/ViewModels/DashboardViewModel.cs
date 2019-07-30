@@ -1,4 +1,5 @@
 using System;
+using System.Globalization;
 using System.Linq;
 using System.Reactive;
 using System.Reactive.Linq;
@@ -61,7 +62,7 @@ namespace Shared.ViewModels
             if (eventBases != null)
             {
                 var enumerable = eventBases as EventBase[] ?? eventBases.ToArray();
-                EntryTime = enumerable.First().When.ToString(@"hh\:mm\:ss");
+                EntryTime = enumerable.First().When.ToLongTimeString().ToString(CultureInfo.CurrentCulture);
                 if (enumerable.Last().EventType == nameof(EndWorkEvent))
                 {
                     baseTimeSpan = EventsCounter.CountWorkTime(_eventService.GetAll(),DateTime.Now);

@@ -1,6 +1,7 @@
 using System;
 using Android.App;
 using Android.Content;
+using Android.Media;
 using Android.Support.V4.App;
 using PPCAndroid.Domain;
 using PPCAndroid.Shared.Domain;
@@ -39,7 +40,8 @@ namespace PPCAndroid.JobServices
                 .SetSmallIcon(Resource.Drawable.raports)
                 .SetContentIntent(pendingIntent)
                 .SetAutoCancel(true)
-                .SetDefaults((int) NotificationDefaults.Sound | (int) NotificationDefaults.Vibrate)
+                .SetSound(RingtoneManager.GetDefaultUri(RingtoneType.Notification))
+                .SetDefaults((int) NotificationDefaults.Vibrate)
                 .SetPriority(NotificationCompat.PriorityHigh);
             var notificationManager = NotificationManagerCompat.From(context);
             notificationManager.Notify(AppConstants.NotificationIdAlreadyLeftWork, builder.Build());

@@ -3,7 +3,7 @@
               android:orientation="horizontal"
               android:layout_width="match_parent"
               android:layout_height="match_parent"
-              android:weightSum="100">
+              android:weightSum="100" android:theme="@style/MyCustomTheme">
 
 
     <TextView
@@ -13,7 +13,8 @@
             android:layout_width="match_parent"
             android:layout_height="60dp"
             android:id="@+id/summaryTextView"
-            android:layout_weight="66.6"/>
+            android:layout_weight="66.6" android:textSize="16sp"
+            android:textStyle="bold" android:theme="@style/MyCustomTheme"/>
 
     <LinearLayout
             android:orientation="vertical"
@@ -26,7 +27,8 @@
                 android:text="TextView2"
                 android:layout_width="match_parent"
                 android:layout_height="30dp"
-                android:id="@+id/startedWorkTextView"/>
+                android:id="@+id/startedWorkTextView"
+                android:theme="@style/MyCustomTheme"/>
 
         <TextView
                 android:gravity="center"
@@ -34,7 +36,8 @@
                 android:layout_width="match_parent"
                 android:layout_height="30dp"
                 android:id="@+id/leftWorkTextView"
-                android:layout_below="@+id/startedWorkTextView"/>
+                android:layout_below="@+id/startedWorkTextView"
+                android:theme="@style/MyCustomTheme"/>
     </LinearLayout>
 
 </LinearLayout>

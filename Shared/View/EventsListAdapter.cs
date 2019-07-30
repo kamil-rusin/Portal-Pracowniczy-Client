@@ -1,5 +1,6 @@
 using System;
 using System.Collections.Generic;
+using System.Globalization;
 using Android.Content;
 using Android.Views;
 using Android.Widget;
@@ -21,9 +22,12 @@ namespace PPCAndroid.Shared.View
 
         public override Android.Views.View GetView(int position, Android.Views.View convertView, ViewGroup parent)
         {
-            var summary = $"{GetItem(position).CountDifference():ss} sek.";
-            var startWork = $"Od: {GetItem(position).StartWorkEvent.When:hh\\:mm\\:ss}";
-            var endWork = $"Do: {GetItem(position).EndWorkEvent.When:hh\\:mm\\:ss}";
+            var summary = $"{Math.Floor(GetItem(position).CountDifference().TotalMinutes)} min.";
+            //var startWork = $"Od: {GetItem(position).StartWorkEvent.When:hh\\:mm\\:ss}";
+            var startWork =
+                $"Od: {GetItem(position).StartWorkEvent.When.ToLongTimeString().ToString(CultureInfo.CurrentCulture)}";
+            var endWork = $"Do: {GetItem(position).EndWorkEvent.When.ToLongTimeString().ToString(CultureInfo.CurrentCulture)}";
+            //var endWork = $"Do: {GetItem(position).EndWorkEvent.When:hh\\:mm\\:ss}";
             
             var eventTuple = new EventTuple(GetItem(position).StartWorkEvent,GetItem(position).EndWorkEvent);
             
