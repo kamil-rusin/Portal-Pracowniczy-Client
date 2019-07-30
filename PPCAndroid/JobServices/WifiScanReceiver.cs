@@ -73,7 +73,7 @@ namespace PPCAndroid.JobServices
         private static void LostNetworkNotify(Context context)
         {
             var notificationIntent = new Intent(context, typeof(LeftWorkReceiver));
-            var pendingIntent = PendingIntent.GetBroadcast(context, 0, notificationIntent, 0);
+            var pendingIntent = PendingIntent.GetBroadcast(context, 0, notificationIntent, PendingIntentFlags.UpdateCurrent);
             var builder = new NotificationCompat.Builder(context, AppConstants.ChannelId)
                 .SetContentTitle("Utracono firmową sieć")
                 .SetContentText("Kliknij, jeżeli wyszedłeś z pracy.")
@@ -90,7 +90,7 @@ namespace PPCAndroid.JobServices
         private static void FoundNetworkNotify(Context context, WifiNetwork wifi)
         {
             var startWorkReceiverIntent = new Intent(context, typeof(EnteredWorkReceiver));
-            var pendingIntent = PendingIntent.GetBroadcast(context, 0, startWorkReceiverIntent, 0);
+            var pendingIntent = PendingIntent.GetBroadcast(context, 0, startWorkReceiverIntent, PendingIntentFlags.UpdateCurrent);
             var builder = new NotificationCompat.Builder(context, AppConstants.ChannelId)
                 .SetContentTitle("Wykryto sieć " + wifi.Ssid)
                 .SetContentText("Kliknij, jeżeli jesteś w pracy.")
