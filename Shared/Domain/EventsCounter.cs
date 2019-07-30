@@ -18,6 +18,12 @@ namespace PPCAndroid.Domain
 
             return workTime;
         }
+        
+        public static TimeSpan CountWorkTime(IEnumerable<EventTuple> eventTuples)
+        {
+            var tuples = eventTuples.OrderBy(n => n.EndWorkEvent.When);
+            return tuples.Aggregate(TimeSpan.Zero, (current, tuple) => current + tuple.CountDifference());
+        }
 
         public static int CountWorkExits(IEventService eventService, DateTime day)
         {

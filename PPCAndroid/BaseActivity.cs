@@ -9,12 +9,11 @@ namespace PPCAndroid
         protected void OnCreateBase(Bundle savedInstanceState)
         {
             base.OnCreate(savedInstanceState);
-            RegisterInteractions();
-            RegisterViewModel();
             RegisterView();
             RegisterControls();
-            
-            
+            RegisterInteractions();
+            RegisterViewModel();
+
             this.WhenActivated(disposables =>
             {
                 BindProperties(disposables);

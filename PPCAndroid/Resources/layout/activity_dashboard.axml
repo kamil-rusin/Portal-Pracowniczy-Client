@@ -27,7 +27,7 @@
             android:textSize="24sp"
             android:textColor="#ffffff"
             android:layout_alignParentTop="true"
-            android:layout_marginTop="84dp"
+            android:layout_marginTop="120dp"
             android:id="@+id/entryTextView"
             android:layout_centerHorizontal="true"
             android:theme="@style/MyCustomTheme"/>
@@ -41,21 +41,7 @@
             android:textSize="24sp"
             android:textColor="#ffffff"
             android:layout_alignParentTop="true"
-            android:layout_marginTop="277dp"
-            android:id="@+id/workDateTextView"
-            android:layout_centerHorizontal="true"
-            android:theme="@style/MyCustomTheme"/>
-
-    <TextView
-            android:text="00:00"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_gravity="center"
-            android:textStyle="bold"
-            android:textSize="24sp"
-            android:textColor="#ffffff"
-            android:layout_alignParentTop="true"
-            android:layout_marginTop="124dp"
+            android:layout_marginTop="169dp"
             android:id="@+id/entryDateTextView"
             android:layout_centerHorizontal="true"
             android:theme="@style/MyCustomTheme"/>
@@ -65,12 +51,24 @@
             android:layout_height="wrap_content"
             android:layout_gravity="center"
             android:layout_alignParentTop="true"
-            android:layout_marginTop="226dp"
+            android:layout_marginTop="246dp"
             android:textStyle="bold"
             android:textSize="24sp"
             android:textColor="#ffffff"
             android:id="@+id/timeTextView"
             android:layout_centerHorizontal="true"
             android:theme="@style/MyCustomTheme"/>
+    <TextView
+            android:text="00:00"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_gravity="center"
+            android:textStyle="bold"
+            android:textSize="24sp"
+            android:textColor="#ffffff"
+            android:id="@+id/workDateTextView"
+            android:theme="@style/MyCustomTheme"
+            android:layout_centerHorizontal="true" android:layout_alignParentTop="true"
+            android:layout_marginTop="293dp"/>
 
 </RelativeLayout>

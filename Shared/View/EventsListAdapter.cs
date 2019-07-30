@@ -10,8 +10,8 @@ namespace PPCAndroid.Shared.View
 {
     public class EventsListAdapter : ArrayAdapter<EventTuple>
     {
-        private Context _context;
-        private int _resource;
+        private readonly Context _context;
+        private readonly int _resource;
         
         public EventsListAdapter(Context context, int textViewResourceId, IList<EventTuple> objects) : base(context, textViewResourceId, objects)
         {
@@ -21,7 +21,7 @@ namespace PPCAndroid.Shared.View
 
         public override Android.Views.View GetView(int position, Android.Views.View convertView, ViewGroup parent)
         {
-            var summary = $"{GetItem(position).CountDifference().TotalSeconds} sek.";
+            var summary = $"{GetItem(position).CountDifference():ss} sek.";
             var startWork = $"Od: {GetItem(position).StartWorkEvent.When:hh\\:mm\\:ss}";
             var endWork = $"Do: {GetItem(position).EndWorkEvent.When:hh\\:mm\\:ss}";
             

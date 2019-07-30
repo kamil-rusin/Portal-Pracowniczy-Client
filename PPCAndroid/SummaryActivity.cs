@@ -1,17 +1,9 @@
 using System;
-using System.Collections;
-using System.Collections.Generic;
 using System.Reactive;
 using System.Reactive.Disposables;
 using Android.App;
-using Android.Content;
-using Android.Net.Wifi;
 using Android.OS;
-using Android.Support.Design.Widget;
-using Android.Views;
 using Android.Widget;
-using PPCAndroid.Domain;
-using PPCAndroid.JobServices;
 using PPCAndroid.Shared.Domain;
 using PPCAndroid.Shared.View;
 using ReactiveUI;
@@ -23,19 +15,14 @@ namespace PPCAndroid
     public class SummaryActivity :  BaseActivity<SummaryViewModel>
     {
         private ListView _summaryListView;
+        private TextView _timeTextView;
 
         protected override void OnCreate(Bundle savedInstanceState)
         {
             OnCreateBase(savedInstanceState);
             
-            //Create objects, TODO: get tuples
-            var tuple1 = new EventTuple(new StartWorkEvent(DateTime.Now),new EndWorkEvent(DateTime.Now));
-            var tuple2 = new EventTuple(new StartWorkEvent(DateTime.Now),new EndWorkEvent(DateTime.Now));
-            var tuple3 = new EventTuple(new StartWorkEvent(DateTime.Now),new EndWorkEvent(DateTime.Now));
-
-            var tupleList = new List<EventTuple> {tuple1, tuple2, tuple3};
-
-            var adapter = new EventsListAdapter(this, Resource.Layout.adapter_view_layout, tupleList);
+            IEventService eventService = new MemoryEventService();
+            var adapter = new EventsListAdapter(this, Resource.Layout.adapter_view_layout, eventService.GetTuplesFromDay(DateTime.Now));
             _summaryListView.Adapter = adapter;
         }
 
@@ -47,17 +34,22 @@ namespace PPCAndroid
 
         protected override void BindProperties(CompositeDisposable disposables)
         {
-            
+            this.OneWayBind(ViewModel, x => x.WorkTimeObservable, a => a._timeTextView.Text).DisposeWith(disposables);
         }
 
         protected override void RegisterViewModel()
         {
-            ViewModel = new SummaryViewModel();
+            ViewModel = new SummaryViewModel(AndroidObjectFactory.GetEventService());
         }
 
         protected override void RegisterInteractions()
         {
-
+           /* this.WhenActivated(d => { d(ViewModel.SetAdapter.RegisterHandler(interaction =>
+            {
+                var adapter = new EventsListAdapter(this, Resource.Layout.adapter_view_layout, interaction.Input);
+                _summaryListView.Adapter = adapter;
+                interaction.SetOutput(Unit.Default);
+            })); });*/
         }
 
         protected override void RegisterView()
@@ -68,6 +60,7 @@ namespace PPCAndroid
         protected override void RegisterControls()
         {
             _summaryListView = FindViewById<ListView>(Resource.Id.eventsListView);
+            _timeTextView = FindViewById<TextView>(Resource.Id.summedTimeTextView);
         }
     }
 }

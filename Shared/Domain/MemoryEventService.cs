@@ -1,6 +1,9 @@
 using System;
+using System.Collections;
 using System.Collections.Generic;
 using System.Linq;
+using System.Xml;
+using PPCAndroid.Domain;
 
 namespace PPCAndroid.Shared.Domain
 {
@@ -24,6 +27,20 @@ namespace PPCAndroid.Shared.Domain
         public IList<EventBase> GetAll()
         {
             return _events;
+        }
+        
+        public List<EventTuple> GetTuplesFromDay(DateTime day)
+        {
+            var dayEvents = _events.Where(n => n.When.Date == day.Date).OrderBy(n => n.When).ToList();
+            if (dayEvents.Count % 2 != 0)
+                throw new Exception("Number of events must be even");
+            var tuples = new List<EventTuple>();
+            for (var i = 0; i < _events.Count-1; i+=2)
+            {
+                tuples.Add(new EventTuple((StartWorkEvent)_events[i],(EndWorkEvent)_events[i+1]));
+            }
+
+            return tuples;
         }
 
         public IEnumerable<EventBase> GetEventsFromDay(DateTime day)

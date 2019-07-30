@@ -1,5 +1,6 @@
 using System;
 using System.Collections.Generic;
+using PPCAndroid.Domain;
 
 namespace PPCAndroid.Shared.Domain
 {
@@ -8,6 +9,7 @@ namespace PPCAndroid.Shared.Domain
         void Add(EventBase eventBase);
         void ClearAllEvents();
         IList<EventBase> GetAll();
+        List<EventTuple> GetTuplesFromDay(DateTime day);
         IEnumerable<EventBase> GetEventsFromDay(DateTime day);
     }
 }
