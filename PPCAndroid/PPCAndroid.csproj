@@ -62,9 +62,9 @@
         <Compile Include="AppConstants.cs" />
         <Compile Include="BaseActivity.cs" />
         <Compile Include="DashboardActivity.cs" />
-        <Compile Include="JobServices\EnteredWorkReceiver.cs" />
-        <Compile Include="JobServices\LeftWorkReceiver.cs" />
-        <Compile Include="JobServices\WifiScanReceiver.cs" />
+        <Compile Include="Receivers\EnteredWorkReceiver.cs" />
+        <Compile Include="Receivers\LeftWorkReceiver.cs" />
+        <Compile Include="Receivers\WifiScanReceiver.cs" />
         <Compile Include="MainActivity.cs" />
         <Compile Include="Mappers\WifiNetworkMapper.cs" />
         <Compile Include="Resources\Resource.Designer.cs" />

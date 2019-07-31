@@ -49,7 +49,7 @@ namespace Shared.ViewModels
                 .ToProperty(this,n => n.EntryTimeObservable);
             
             var interval = TimeSpan.FromSeconds(1);
-            _workTime = Observable.Timer(TimeSpan.FromSeconds(5), interval)
+            _workTime = Observable.Timer(TimeSpan.FromSeconds(1), interval)
                 .Select(unit => this.UpdateWorkingTime())
                 .ObserveOn(RxApp.MainThreadScheduler)
                 .ToProperty(this, n => n.WorkTime);
