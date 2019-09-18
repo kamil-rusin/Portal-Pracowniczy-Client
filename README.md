@@ -10,8 +10,12 @@ Aplikacja wykrywa Wi-Fi zakładu pracy. Użytkownik otrzymuje powiadomienie z za
 
 # Narzędzia:
 
-Xamarin.Native Android, Xamarin.Android.Support 27.0.2.1, framework: ReactiveUI 9.18.2 Minimalne SDK:23 Docelowe SDK:27
+Xamarin.Native Android
+Xamarin.Android.Support 27.0.2.1
+framework: ReactiveUI 9.18.2 
+Minimalne SDK:23 
+Docelowe SDK:27
 
 # Uwagi
 
-Aby program działał w należyty sposób, konieczne jest posiadanie włączonej funkcji Wi-Fi oraz program należy przetrzymywać "w tle". W przypadku zmiany zakładowego wifi, należy w pliku WifiScanReceiver.cs zmienić nazwę użytą w kodzie w zmiennej _availableSsids na właściwą.
+Aby program działał w należyty sposób, konieczne jest posiadanie włączonej funkcji Wi-Fi oraz program należy przetrzymywać "w tle". W przypadku zmiany zakładowego Wi-Fi, należy w pliku WifiScanReceiver.cs zmienić nazwę użytą w kodzie w zmiennej _availableSsids na właściwą.
