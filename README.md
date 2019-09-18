@@ -23,4 +23,4 @@ Aplikacja wykrywa Wi-Fi zakładu pracy. Użytkownik otrzymuje powiadomienie z za
 
 Aby program działał w należyty sposób, konieczne jest posiadanie włączonej funkcji Wi-Fi oraz program należy przetrzymywać "w tle". W przypadku zmiany zakładowego Wi-Fi, należy w pliku WifiScanReceiver.cs zmienić nazwę użytą w kodzie w zmiennej _availableSsids na właściwą.
 
-Projekt był realizowany w parach podczas miesięcznych praktyk w firmie Rekord SI. 
+Projekt był realizowany w parze podczas miesięcznych praktyk w firmie Rekord SI.
